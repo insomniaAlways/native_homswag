@@ -185,6 +185,7 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02"
     implementation project(path: ':react-native-gesture-handler')
     // implementation project(path: ':react-native-vector-icons')
+    // implementation project(path: ':react-native-svg')
 
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";
