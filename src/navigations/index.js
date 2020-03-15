@@ -8,7 +8,7 @@ import DashboardScreen from '../src/screens/DashboardScreen';
 import ItemsScreen from '../src/screens/ItemsScreen';
 import CartScreen from '../src/screens/CartScreen';
 import ScheduleAppointmentScreen from '../src/screens/ScheduleAppointmentScreen'
-import PaymentScreen from '../src/screens/PaymentScreen';
+// import PaymentScreen from '../src/screens/PaymentScreen';
 import PaymentSelectionScreen from '../src/screens/PaymentSelectionScreen';
 import DefaultStyles from '../src/style/customStyles';
 import ProfileScreen from '../src/screens/ProfileScreen';
@@ -57,9 +57,9 @@ const AppNavigator = createStackNavigator({
         title: `Payment Type`,
       }),
     },
-    Payment: {
-      screen: PaymentScreen
-    },
+    // Payment: {
+    //   screen: PaymentScreen
+    // },
     
     AddAddress: {
       screen: AddAddressScreen,
