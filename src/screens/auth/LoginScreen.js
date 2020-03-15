@@ -3,8 +3,8 @@ import { StyleSheet, View, Image, Dimensions } from 'react-native';
 import { Text, Spinner } from '@ui-kitten/components';
 import { ImageOverlay } from '../../components/imageOverlay';
 import { KeyboardAvoidingView } from '../../components/KeyboardAvoidView';
-import ImageBackground from '../../../assets/images/login_background.png'
-import Logo from '../../../assets/images/logo_rounded_512*512.png'
+import ImageBackground from '../../assets/images/login_background.png'
+import Logo from '../../assets/images/logo_rounded_512*512.png'
 import { connect } from 'react-redux';
 import { register, validatedAuthToken } from '../../store/actions/authenticationAction';
 import { setSessionUnauthenticated, setSessionAuthenticated } from '../../store/actions/sessionActions';
@@ -13,9 +13,9 @@ import { AsyncStorage } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LoginForm from '../../components/helpers/loginForm';
 import LoginButtons from '../../components/helpers/loginButtons';
-import Constants from 'expo-constants';
+// import Constants from 'expo-constants';
 import moment from 'moment';
-import * as Sentry from 'sentry-expo';
+// import * as Sentry from 'sentry-expo';
 
 const LoginScreen = (props) => {
   const { navigation,
@@ -104,7 +104,7 @@ const LoginScreen = (props) => {
   // ------------------- : Hooks : ---------------------
 
   useLayoutEffect(() => {
-    Sentry.captureMessage(`Login screen load on: ${moment().unix()}`);
+    // Sentry.captureMessage(`Login screen load on: ${moment().unix()}`);
     checkAuthentication()
   }, [])
 
@@ -126,7 +126,7 @@ const LoginScreen = (props) => {
   //trigger after session is authenticated
   useEffect(() => {
     if(session.isSessionAuthenticated) {
-      Sentry.captureMessage(`Get User called on ${moment().unix()}`);
+      // Sentry.captureMessage(`Get User called on ${moment().unix()}`);
       getUser()
     }
   }, [session.isSessionAuthenticated])
@@ -136,7 +136,7 @@ const LoginScreen = (props) => {
   useEffect(() => {
     if(session.isSessionAuthenticated) {
       if(!currentUserModel.isLoading && currentUserModel.values && currentUserModel.values.id) {
-        Sentry.captureMessage(`Redirect To called on: ${moment().unix()}`);
+        // Sentry.captureMessage(`Redirect To called on: ${moment().unix()}`);
         redirectTo()
       } else if(!currentUserModel.isLoading && currentUserModel.error) {
         setButtonLoading(false)
@@ -233,10 +233,12 @@ const styles = StyleSheet.create({
     flex: 3,
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
-    paddingTop: Constants.statusBarHeight + 60
+    // paddingTop: Constants.statusBarHeight + 60
+    paddingTop:60
   },
   headerContainer: {
-    paddingTop: Constants.statusBarHeight + 40,
+    paddingTop: 40,
+    // paddingTop: Constants.statusBarHeight + 40,
     justifyContent: 'center',
     alignItems: 'center',
     minHeight: 216,

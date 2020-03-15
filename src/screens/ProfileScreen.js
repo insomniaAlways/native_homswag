@@ -3,7 +3,7 @@ import { StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Text, Layout } from '@ui-kitten/components';
 import PlaceHolderTextInput from '../components/placeHolderTextInput';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Constants from 'expo-constants';
+// import Constants from 'expo-constants';
 import { connect } from 'react-redux';
 import { fetchUser, updateUser } from '../store/actions/userActions';
 import { KeyboardAvoidingView } from '../components/KeyboardAvoidView';
@@ -202,7 +202,8 @@ function ProfileScreen(props) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: Constants.statusBarHeight,
+    // paddingTop: Constants.statusBarHeight,
+    paddingTop: 40,
     // borderWidth: 1,
     justifyContent: 'center',
     marginHorizontal: 20,

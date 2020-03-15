@@ -5,8 +5,8 @@ import { StyleSheet, ScrollView, View, Image, Text, ImageBackground } from 'reac
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import ProfileBackground from '../../assets/images/blue-wave.jpg';
-import Constants from 'expo-constants';
+import ProfileBackground from '../assets/images/blue-wave.jpg';
+// import Constants from 'expo-constants';
 import { onSigout } from '../store/actions/authenticationAction';
 import { connect } from 'react-redux';
 import { setSessionUnauthenticated } from '../store/actions/sessionActions';
@@ -67,7 +67,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-start',
     paddingLeft: 30,
-    paddingTop: Constants.statusBarHeight
+    // paddingTop: Constants.statusBarHeight
+    paddingTop: 40
   },
   profilePic: {
     height: 100,

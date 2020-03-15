@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import OrderItem from './orderItem';
 import { Layout, List, Text, Spinner } from '@ui-kitten/components';
 import { StyleSheet, Image } from 'react-native';
-import EmptyOrder from '../../assets/images/order_empty.png'
+import EmptyOrder from '../assets/images/order_empty.png'
 
 const OrderList = function(props) {
   const { orders, navigation, orderModel } = props

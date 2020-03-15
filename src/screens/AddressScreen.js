@@ -2,7 +2,7 @@ import React, { useState, useEffect, useLayoutEffect, useCallback } from 'react'
 import { connect } from 'react-redux';
 import { View, SafeAreaView, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import DefaultStyles from '../style/customStyles';
-import Constants from 'expo-constants';
+// import Constants from 'expo-constants';
 import CustomHeader from '../components/customHeader';
 import { fetchAddress, deleteAddresss, updateAddress } from '../store/actions/addressActions';
 import { Layout, List, Text, Spinner } from '@ui-kitten/components';
@@ -127,7 +127,8 @@ function AddressScreen(props) {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: Constants.statusBarHeight,
+    marginTop: 40,
+    // marginTop: Constants.statusBarHeight,
     flex: 1
   },
   button: {

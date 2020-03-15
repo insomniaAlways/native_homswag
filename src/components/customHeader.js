@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from "react-native";
 import DefaultStyles from '../style/customStyles';
 import HeaderRightView from './headerRight';
-import Constants from 'expo-constants';
+// import Constants from 'expo-constants';
 
 function CustomHeader(props) {
   const { navigation } = props
@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     width: '100%',
     paddingRight: 15,
-    paddingTop: Constants.statusBarHeight
+    // paddingTop: Constants.statusBarHeight
+    paddingTop: 40
   },
   headerContent: {
 

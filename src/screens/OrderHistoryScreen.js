@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
 import { fetchAllOrder } from '../store/actions/orderActions'
 import OrderList from '../components/orderList';
-import Constants from 'expo-constants';
+// import Constants from 'expo-constants';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function OrderHistoryScreen(props) {
@@ -50,7 +50,8 @@ function OrderHistoryScreen(props) {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: Constants.statusBarHeight,
+    // marginTop: Constants.statusBarHeight,
+    marginTop: 40,
     flex: 1
   }
 })

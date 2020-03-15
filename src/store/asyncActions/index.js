@@ -2,7 +2,7 @@ import axios from 'axios';
 // const host = "http://192.168.0.105:1337/api/v1/";
 const host = "https://homswag.herokuapp.com/api/v1";
 export const organization = "organization_id=2"
-import Constants from 'expo-constants';
+// import Constants from 'expo-constants';
 
 const axiosInstance = axios.create({
   baseURL: host
@@ -85,12 +85,12 @@ export function deleteRecord(type, id, payload) {
 }
 
 export function getLocationDetails(latitude, longitude) {
-  let key = Constants.manifest.extra.webAPIKey
+  let key = "AIzaSyCgz8jG03p1OFzrRAh3fZ45jx3X8j783lQ"
   return axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${key}`)
 }
 
 export function getPlaceDetails(place_id) {
-  let key = Constants.manifest.extra.webAPIKey
+  let key = "AIzaSyCgz8jG03p1OFzrRAh3fZ45jx3X8j783lQ"
   return axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&key=${key}`)
 }
 

@@ -5,7 +5,7 @@ import { fetchOrder } from '../store/actions/orderActions';
 import { Layout, Text } from '@ui-kitten/components';
 import { StyleSheet, BackHandler, Image } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
-import Tick from '../../assets/images/tick.png'
+import Tick from '../assets/images/tick.png'
 import { brandColor } from '../style/customStyles';
 
 const resetAction = StackActions.reset({

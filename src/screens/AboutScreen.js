@@ -1,23 +1,23 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, Platform } from 'react-native';
-import Logo from '../../assets/images/logo.png';
+import Logo from '../assets/images/logo.png';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-import { Linking } from 'expo';
+// import { Linking } from 'expo';
 
 function ContactScreen(props) {
 
   const chechAccessibity = (url) => {
-    Linking.canOpenURL(url)
-    .then((supported) => {
-      if (!supported) {
-        alert(url)
-      } else {
-        return Linking.openURL(url);
-      }
-    })
-    .catch((err) => console.error('An error occurred', err));
+    // Linking.canOpenURL(url)
+    // .then((supported) => {
+    //   if (!supported) {
+    //     alert(url)
+    //   } else {
+    //     return Linking.openURL(url);
+    //   }
+    // })
+    // .catch((err) => console.error('An error occurred', err));
   }
 
   const openDialScreen = () => {

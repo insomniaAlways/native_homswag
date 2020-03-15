@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Image, TouchableOpacity, ImageBackground, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import Constants from 'expo-constants';
+// import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import { Text, Layout } from '@ui-kitten/components';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import * as firebase from 'firebase';
-import ProfilePicPlaceholder from '../../assets/images/profile_pic_placeholder.png'
+// import * as firebase from 'firebase';
+import ProfilePicPlaceholder from '../assets/images/profile_pic_placeholder.png'
 
 const ImagePickerView = (props) => {
   const { image, setImage, user_id, isEdit, isUploading, setUploding, isOffline } = props
@@ -53,30 +53,30 @@ const ImagePickerView = (props) => {
   }
 
   const uploadImage = async (uri) => {
-    try {
-      const response = await fetch(uri);
-      const blob = await response.blob();
-      let ref = firebase.storage().ref().child('profile_pic/' + user_id);
-      const uploadTask = ref.put(blob);
-      uploadTask.on('state_changed',
-      (snapshot) => progressStatus(snapshot),
-      (error) => catchError(error),
-      () => uploadTask.snapshot.ref.getDownloadURL()
-      .then((url) => setImage(url)))
-    } catch (e) {
-      alert(e)
-      reset()
-    }
+    // try {
+    //   const response = await fetch(uri);
+    //   const blob = await response.blob();
+    //   let ref = firebase.storage().ref().child('profile_pic/' + user_id);
+    //   const uploadTask = ref.put(blob);
+    //   uploadTask.on('state_changed',
+    //   (snapshot) => progressStatus(snapshot),
+    //   (error) => catchError(error),
+    //   () => uploadTask.snapshot.ref.getDownloadURL()
+    //   .then((url) => setImage(url)))
+    // } catch (e) {
+    //   alert(e)
+    //   reset()
+    // }
   }
 
   const getPermissionAsync = async () => {
-    if (Constants.platform.ios) {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-      if (status !== 'granted') {
-        alert('Sorry, we need camera roll permissions to make this work!');
-      }
-    }
-    _pickImage()
+    // if (Constants.platform.ios) {
+    //   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    //   if (status !== 'granted') {
+    //     alert('Sorry, we need camera roll permissions to make this work!');
+    //   }
+    // }
+    // _pickImage()
   }
 
   const _pickImage = async () => {

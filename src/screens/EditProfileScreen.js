@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useState, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, Layout } from '@ui-kitten/components';
 import PlaceHolderTextInput from '../components/placeHolderTextInput';
-import Constants from 'expo-constants';
+// import Constants from 'expo-constants';
 import { connect } from 'react-redux';
 import { brandColor, brandLightBackdroundColor } from '../style/customStyles';
 import { fetchUser, updateUser } from '../store/actions/userActions';
@@ -115,7 +115,8 @@ const styles = StyleSheet.create({
     borderRadius: 20
   },
   container: {
-    paddingTop: Constants.statusBarHeight,
+    paddingTop: 40,
+    // paddingTop: Constants.statusBarHeight,
     paddingBottom: 40,
     marginHorizontal: 40,
     marginVertical: 60,

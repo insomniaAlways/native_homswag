@@ -8,7 +8,7 @@ import PriceBreakDown from '../components/priceBreackDown';
 import DefaultStyles from '../style/customStyles';
 import AppointmentDetails from '../components/appointmentDetails';
 import CartPromoItemList from '../components/cartPromoItemList';
-import EmptyCart from '../../assets/images/empty_cart.png'
+import EmptyCart from '../assets/images/empty_cart.png'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment'
 

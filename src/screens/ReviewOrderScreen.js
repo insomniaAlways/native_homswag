@@ -4,9 +4,9 @@ import { fetchCart } from '../store/actions/cartAction';
 import { createOrder } from '../store/actions/orderActions';
 import { Layout, Text } from '@ui-kitten/components';
 import { ImageOverlay } from '../components/imageOverlay';
-import Graphics from '../../assets/images/order_confirm_background.png'
+import Graphics from '../assets/images/order_confirm_background.png'
 import { StyleSheet, ScrollView, ImageBackground } from 'react-native';
-import Constants from 'expo-constants';
+// import Constants from 'expo-constants';
 import ItemView from '../components/itemView';
 import { TouchableOpacity } from 'react-native';
 import moment from 'moment';
@@ -148,7 +148,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(ReviewOrderScreen);
 const styles = StyleSheet.create({
   infoContainer: {
     flex: 2,
-    paddingTop: Constants.statusBarHeight,
+    // paddingTop: Constants.statusBarHeight,
+    paddingTop: 40,
     justifyContent: 'center',
     alignItems: 'center'
   },
