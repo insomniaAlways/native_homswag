@@ -11,7 +11,7 @@ import ItemView from '../components/itemView';
 import { TouchableOpacity } from 'react-native';
 import moment from 'moment';
 import { brandColor, brandLightBackdroundColor } from '../style/customStyles';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function ReviewOrderScreen (props) {
   const { cart, orderModel, getCart, placeOrder, appointment, networkAvailability } = props

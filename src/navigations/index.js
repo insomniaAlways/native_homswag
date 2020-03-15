@@ -21,7 +21,10 @@ import AddressScreen from '../src/screens/AddressScreen';
 import UpdateProfileScreen from '../src/screens/EditProfileScreen';
 import HeaderRightView from '../src/components/headerRight';
 
-import { MaterialCommunityIcons, FontAwesome, AntDesign } from '@expo/vector-icons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+
 import ReferralScreen from '../src/screens/ReferralScreen';
 import PackageScreen from '../src/screens/PackageScreen';
 import LoginScreen from '../src/screens/auth/LoginScreen';

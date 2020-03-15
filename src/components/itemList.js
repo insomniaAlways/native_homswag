@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { Dimensions, ImageBackground, View, StyleSheet, Image } from 'react-native';
 import { Card, List, Text } from '@ui-kitten/components';
 import ItemRow from './ItemRow';
-import { FontAwesome } from '@expo/vector-icons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const ItemsList = (props) => {
   const { data, cartItems, cart, setShowButton, getCartItems} = props

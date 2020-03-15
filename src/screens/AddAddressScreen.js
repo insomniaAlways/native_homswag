@@ -8,7 +8,7 @@ import { creatNew, fetchAddress } from '../../store/actions/addressActions';
 import { Modal, Spinner, Layout, Text } from '@ui-kitten/components';
 import { KeyboardAvoidingView } from '../components/KeyboardAvoidView'
 import _ from 'lodash';
-import { FontAwesome } from '@expo/vector-icons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Label } from 'native-base';
 import * as Permissions from 'expo-permissions';
 import { brandColor, brandLightBackdroundColor } from '../style/customStyles';

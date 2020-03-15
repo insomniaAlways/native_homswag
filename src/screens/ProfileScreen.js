@@ -2,7 +2,7 @@ import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Text, Layout } from '@ui-kitten/components';
 import PlaceHolderTextInput from '../components/placeHolderTextInput';
-import { FontAwesome } from '@expo/vector-icons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Constants from 'expo-constants';
 import { connect } from 'react-redux';
 import { fetchUser, updateUser } from '../../store/actions/userActions';

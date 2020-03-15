@@ -6,7 +6,8 @@ import Constants from 'expo-constants';
 import CustomHeader from '../components/customHeader';
 import { fetchAddress, deleteAddresss, updateAddress } from '../../store/actions/addressActions';
 import { Layout, List, Text, Spinner } from '@ui-kitten/components';
-import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 function AddressScreen(props) {
   const { addressModel, getAddress, navigation, deleteSelected, setDefault, networkAvailability } = props;

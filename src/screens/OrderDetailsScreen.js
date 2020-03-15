@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import { Icon, Layout } from '@ui-kitten/components';
 import Moment from 'react-moment';
-import { FontAwesome } from '@expo/vector-icons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { updateOrder } from '../../store/actions/orderActions';
 import moment from 'moment';

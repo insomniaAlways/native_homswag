@@ -4,7 +4,7 @@ import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
 import { fetchAllOrder } from '../../store/actions/orderActions'
 import OrderList from '../components/orderList';
 import Constants from 'expo-constants';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function OrderHistoryScreen(props) {
   const { orderModel, getOrders, navigation, networkAvailability } = props;

@@ -1,6 +1,6 @@
 import React from "react";
 import { View, TouchableOpacity } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CartButton from './cartButton';
 import { Linking } from 'expo';
 

@@ -4,7 +4,7 @@ import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import { Text, Layout } from '@ui-kitten/components';
-import { FontAwesome } from '@expo/vector-icons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as firebase from 'firebase';
 import ProfilePicPlaceholder from '../../assets/images/profile_pic_placeholder.png'
 

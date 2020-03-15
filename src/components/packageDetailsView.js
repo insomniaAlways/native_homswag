@@ -7,7 +7,7 @@ import { createCartItem, deleteItem } from "../../store/actions/cartItemAction";
 import _ from 'lodash';
 import { Layout, Text } from '@ui-kitten/components';
 import { Dimensions } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 
