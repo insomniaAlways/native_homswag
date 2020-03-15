@@ -10,18 +10,41 @@ import { brandTheme } from './src/style/custom-theme';
 
 const theme = { ...lightTheme, ...brandTheme };
 
+XMLHttpRequest = GLOBAL.originalXMLHttpRequest ?
+    GLOBAL.originalXMLHttpRequest :
+    GLOBAL.XMLHttpRequest;
+
+  // fetch logger
+global._fetch = fetch;
+global.fetch = function (uri, options, ...args) {
+  return global._fetch(uri, options, ...args).then((response) => {
+    return response;
+  });
+};
+
+// const App = () => {
+//   return (
+//     <>
+//       <SafeAreaView>
+//         <Provider store={store}>
+//         <IconRegistry icons={EvaIconsPack} />
+//           <ApplicationProvider mapping={mapping} theme={theme}>
+//             <AppNavigator />
+//           </ApplicationProvider>
+//         </Provider>
+//       </SafeAreaView>
+//     </>
+//   );
+// };
+
 const App = () => {
   return (
-    <>
-      <SafeAreaView>
-        <Provider store={store}>
-        <IconRegistry icons={EvaIconsPack} />
-          <ApplicationProvider mapping={mapping} theme={theme}>
-            <AppNavigator />
-          </ApplicationProvider>
-        </Provider>
-      </SafeAreaView>
-    </>
+    <Provider store={store}>
+      <IconRegistry icons={EvaIconsPack} />
+      <ApplicationProvider mapping={mapping} theme={theme}>
+        <AppNavigator />
+      </ApplicationProvider>
+    </Provider>
   );
 };
 

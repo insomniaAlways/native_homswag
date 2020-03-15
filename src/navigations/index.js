@@ -93,7 +93,7 @@ const AppNavigator = createStackNavigator({
         fontWeight: 'bold',
         flex: 1
       },
-      headerRight: <HeaderRightView navigation={navigation}/>
+      headerRight: () => <HeaderRightView navigation={navigation}/>
     })
   }
 );
@@ -120,7 +120,7 @@ const OrderStackNavigator = createStackNavigator({
       fontWeight: 'bold',
       flex: 1
     },
-    headerRight: <HeaderRightView navigation={navigation}/>
+    headerRight: () => <HeaderRightView navigation={navigation}/>
   })
 })
 

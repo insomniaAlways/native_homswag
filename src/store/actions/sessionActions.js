@@ -1,5 +1,5 @@
 import { SESSION_AUTHENTICATED, SESSION_AUTHENTICATING, SESSION_AUTHENTICATION_FAILED, SESSION_UNAUTHENTICATED, SESSION_UNAUTHENTICATION_FAILED, SESSION_UNAUTHENTICATING } from '../actionTypes';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export const setSessionAuthenticated = (authToken, refreshToken) => {
   return async function(dispatch) {
