@@ -231,8 +231,10 @@ export default connect(mapStateToProps,mapDispatchToProps)(LoginScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 3,
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    width: 300,
+    height: 800,
+    // width: Dimensions.get('window').width,
+    // height: Dimensions.get('window').height,
     // paddingTop: Constants.statusBarHeight + 60
     paddingTop:60
   },

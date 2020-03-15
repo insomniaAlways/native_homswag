@@ -25,7 +25,6 @@ function LoginForm(props) {
         keyboardType={'number-pad'}
         value={phone}
         onChangeText={(text) => setPhone(text)}
-        placeholderTextColor={{color: '#000'}}
       />
       {showOtpField && 
         <Input
@@ -35,8 +34,7 @@ function LoginForm(props) {
           keyboardType={'number-pad'}
           value={otp}
           onChangeText={(text) => setOtp(text)}
-          textStyle={{color: "#fff", fontSize: 18, fontWeight: 'bold'}}
-          placeholderTextColor={{color: '#000'}}/>
+          textStyle={{color: "#fff", fontSize: 18, fontWeight: 'bold'}}/>
         }
       {showOtpField && 
         <View style={{flexDirection: 'row', justifyContent: 'flex-end', width: '100%', paddingRight: 10}}>
