@@ -3,10 +3,10 @@ import { StyleSheet, View, ImageBackground, Image } from 'react-native';
 import { Text, Card, List, Layout } from '@ui-kitten/components';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import { fetchCart } from '../../store/actions/cartAction';
+import { fetchCart } from '../store/actions/cartAction';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AddToCartButton from './addToCartButton';
-import { fetchCartItems, createCartItem } from '../../store/actions/cartItemAction';
+import { fetchCartItems, createCartItem } from '../store/actions/cartItemAction';
 
 const CartPromoItemList = (props) => {
   const defaultLength = 5

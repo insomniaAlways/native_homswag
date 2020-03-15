@@ -5,7 +5,7 @@ import PlaceHolderTextInput from '../components/placeHolderTextInput';
 import Constants from 'expo-constants';
 import { connect } from 'react-redux';
 import { brandColor, brandLightBackdroundColor } from '../style/customStyles';
-import { fetchUser, updateUser } from '../../store/actions/userActions';
+import { fetchUser, updateUser } from '../store/actions/userActions';
 import ImagePickerView from '../components/ImagePicker';
 
 function UpdateProfileScreen(props) {

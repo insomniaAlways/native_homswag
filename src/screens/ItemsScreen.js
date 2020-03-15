@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
-import { fetchItems } from '../../store/actions/itemActions';
+import { fetchItems } from '../store/actions/itemActions';
 import { connect } from 'react-redux';
 import ItemsList from '../components/itemList';
 import { Spinner, Layout, Text } from '@ui-kitten/components';
@@ -8,9 +8,9 @@ import _ from 'lodash';
 import DynamicTabs from '../components/dynamicTabs';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { brandColor } from '../style/customStyles';
-import { fetchCategories } from '../../store/actions/index';
-import { fetchCartItems } from '../../store/actions/cartItemAction';
-import { fetchAllItems } from '../../store/actions/itemActions';
+import { fetchCategories } from '../store/actions/index';
+import { fetchCartItems } from '../store/actions/cartItemAction';
+import { fetchAllItems } from '../store/actions/itemActions';
 
 function Items(props) {
   const { navigation, items, cartItemModel, cart } = props;

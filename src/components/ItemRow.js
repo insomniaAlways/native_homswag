@@ -4,7 +4,7 @@ import ModifyButton from './itemModifyButton';
 import AddToCartButton from './addToCartButton';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { fetchCartItems, createCartItem } from '../../store/actions/cartItemAction';
+import { fetchCartItems, createCartItem } from '../store/actions/cartItemAction';
 
 function ItemRow(props) {
   const { item, cartItemModel, cart, addItemToCart, networkAvailability } = props;

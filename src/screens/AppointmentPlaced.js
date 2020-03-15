@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import { fetchOrder } from '../../store/actions/orderActions';
+import { fetchOrder } from '../store/actions/orderActions';
 import { Layout, Text } from '@ui-kitten/components';
 import { StyleSheet, BackHandler, Image } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';

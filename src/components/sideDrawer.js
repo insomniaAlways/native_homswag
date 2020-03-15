@@ -7,9 +7,9 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ProfileBackground from '../../assets/images/blue-wave.jpg';
 import Constants from 'expo-constants';
-import { onSigout } from '../../store/actions/authenticationAction';
+import { onSigout } from '../store/actions/authenticationAction';
 import { connect } from 'react-redux';
-import { setSessionUnauthenticated } from '../../store/actions/sessionActions';
+import { setSessionUnauthenticated } from '../store/actions/sessionActions';
 
 const SideDrawer = props => {
   const { navigation, signOut, currentUserModel, unAuthenticate } = props

@@ -3,8 +3,8 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import MapView from 'react-native-maps';
 import FloatingInput from '../components/input-helpers.js/floatingInput';
 import { connect } from 'react-redux';
-import { geoCoding, getPlace } from '../../store/actions/locationActions';
-import { creatNew, fetchAddress } from '../../store/actions/addressActions';
+import { geoCoding, getPlace } from '../store/actions/locationActions';
+import { creatNew, fetchAddress } from '../store/actions/addressActions';
 import { Modal, Spinner, Layout, Text } from '@ui-kitten/components';
 import { KeyboardAvoidingView } from '../components/KeyboardAvoidView'
 import _ from 'lodash';

@@ -1,16 +1,15 @@
 import React from 'react';
-import {SafeAreaView, Text} from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { Provider } from 'react-redux';
 import store from './src/store';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AppNavigator from './src/navigations';
 
 const App = () => {
   return (
     <>
       <SafeAreaView>
         <Provider store={store}>
-          <Text>Hello</Text>
-          <FontAwesome name="rocket" size={30} color="#900" />
+          <AppNavigator />
         </Provider>
       </SafeAreaView>
     </>

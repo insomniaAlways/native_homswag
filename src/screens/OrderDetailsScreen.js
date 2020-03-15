@@ -4,7 +4,7 @@ import { Icon, Layout } from '@ui-kitten/components';
 import Moment from 'react-moment';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
-import { updateOrder } from '../../store/actions/orderActions';
+import { updateOrder } from '../store/actions/orderActions';
 import moment from 'moment';
 
 const OrderDetails = function(props) {

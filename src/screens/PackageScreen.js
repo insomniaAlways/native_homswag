@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PackageDetails from '../components/packageDetailsView';
 import TabView from '../components/tabView';
-import { fetchCartItems } from '../../store/actions/cartItemAction';
+import { fetchCartItems } from '../store/actions/cartItemAction';
 
 const PackageScreen = (props) => {
   const { packages, networkAvailability } = props

@@ -7,10 +7,10 @@ import DefaultStyles, { brandColor } from '../style/customStyles';
 import { connect } from 'react-redux';
 import Modal from "react-native-modal";
 import AddressList from '../components/addressList';
-import { fetchAddress } from '../../store/actions/addressActions';
+import { fetchAddress } from '../store/actions/addressActions';
 import { Layout, Text } from '@ui-kitten/components';
 import { KeyboardAvoidingView } from '../components/KeyboardAvoidView';
-import { updateAppointmentState } from '../../store/actions/appointmentActions';
+import { updateAppointmentState } from '../store/actions/appointmentActions';
 import _ from 'lodash';
 import moment from 'moment';
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect } from 'react';
 import { connect } from 'react-redux';
 import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
-import { fetchAllOrder } from '../../store/actions/orderActions'
+import { fetchAllOrder } from '../store/actions/orderActions'
 import OrderList from '../components/orderList';
 import Constants from 'expo-constants';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';

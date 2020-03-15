@@ -4,33 +4,33 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 
 // screens
-import DashboardScreen from '../src/screens/DashboardScreen';
-import ItemsScreen from '../src/screens/ItemsScreen';
-import CartScreen from '../src/screens/CartScreen';
-import ScheduleAppointmentScreen from '../src/screens/ScheduleAppointmentScreen'
-// import PaymentScreen from '../src/screens/PaymentScreen';
-import PaymentSelectionScreen from '../src/screens/PaymentSelectionScreen';
-import DefaultStyles from '../src/style/customStyles';
-import ProfileScreen from '../src/screens/ProfileScreen';
-import AddAddressScreen from '../src/screens/AddAddressScreen';
-import OrderHistoryScreen from '../src/screens/OrderHistoryScreen';
-import ContactScreen from '../src/screens/ContactScreen';
-import AboutScreen from '../src/screens/AboutScreen';
-import SideDrawer from '../src/components/sideDrawer';
-import AddressScreen from '../src/screens/AddressScreen';
-import UpdateProfileScreen from '../src/screens/EditProfileScreen';
-import HeaderRightView from '../src/components/headerRight';
+import DashboardScreen from '../screens/DashboardScreen';
+import ItemsScreen from '../screens/ItemsScreen';
+import CartScreen from '../screens/CartScreen';
+import ScheduleAppointmentScreen from '../screens/ScheduleAppointmentScreen'
+// import PaymentScreen from '../screens/PaymentScreen';
+import PaymentSelectionScreen from '../screens/PaymentSelectionScreen';
+import DefaultStyles from '../style/customStyles';
+import ProfileScreen from '../screens/ProfileScreen';
+import AddAddressScreen from '../screens/AddAddressScreen';
+import OrderHistoryScreen from '../screens/OrderHistoryScreen';
+import ContactScreen from '../screens/ContactScreen';
+import AboutScreen from '../screens/AboutScreen';
+import SideDrawer from '../components/sideDrawer';
+import AddressScreen from '../screens/AddressScreen';
+import UpdateProfileScreen from '../screens/EditProfileScreen';
+import HeaderRightView from '../components/headerRight';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-import ReferralScreen from '../src/screens/ReferralScreen';
-import PackageScreen from '../src/screens/PackageScreen';
-import LoginScreen from '../src/screens/auth/LoginScreen';
-import ReviewOrderScreen from '../src/screens/ReviewOrderScreen';
-import AppointmentPlaced from '../src/screens/AppointmentPlaced';
-import OrderDetails from '../src/screens/OrderDetailsScreen';
+import ReferralScreen from '../screens/ReferralScreen';
+import PackageScreen from '../screens/PackageScreen';
+import LoginScreen from '../screens/auth/LoginScreen';
+import ReviewOrderScreen from '../screens/ReviewOrderScreen';
+import AppointmentPlaced from '../screens/AppointmentPlaced';
+import OrderDetails from '../screens/OrderDetailsScreen';
 
 const AppNavigator = createStackNavigator({
     Dashboard: {

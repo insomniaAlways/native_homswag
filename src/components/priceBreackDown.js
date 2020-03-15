@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { brandLightBackdroundColor, brandColor } from '../style/customStyles';
 import { connect } from 'react-redux';
-import { fetchCart } from '../../store/actions/cartAction';
+import { fetchCart } from '../store/actions/cartAction';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 function PriceBreakDown(props) {

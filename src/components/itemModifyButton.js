@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Icon } from '@ui-kitten/components';
-import { fetchCartItems, updateItem, deleteItem } from '../../store/actions/cartItemAction';
+import { fetchCartItems, updateItem, deleteItem } from '../store/actions/cartItemAction';
 
 function ModifyButton(props) {
   const { item, cartItem, updateCartItem, deleteCartItem, isOffline } = props

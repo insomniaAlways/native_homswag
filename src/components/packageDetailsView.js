@@ -3,7 +3,7 @@ import { TouchableOpacity, ScrollView, Image } from 'react-native';
 import DefaultStyles from '../style/customStyles';
 import { StyleSheet } from 'react-native';
 import { connect } from "react-redux";
-import { createCartItem, deleteItem } from "../../store/actions/cartItemAction";
+import { createCartItem, deleteItem } from "../store/actions/cartItemAction";
 import _ from 'lodash';
 import { Layout, Text } from '@ui-kitten/components';
 import { Dimensions } from 'react-native';

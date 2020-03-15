@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { fetchAllItems } from '../../store/actions/itemActions';
+import { fetchAllItems } from '../store/actions/itemActions';
 import _ from 'lodash';
 import { Layout, Text } from '@ui-kitten/components';
 import { StyleSheet } from 'react-native';

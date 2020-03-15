@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { Icon } from '@ui-kitten/components';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
-import { updateItem, deleteItem } from '../../store/actions/cartItemAction';
+import { updateItem, deleteItem } from '../store/actions/cartItemAction';
 
 const CartItemRow = (props) => {
   const { cartItem, updateCartItem, deleteCartItem } = props

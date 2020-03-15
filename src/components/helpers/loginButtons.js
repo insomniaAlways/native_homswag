@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Text, Spinner } from '@ui-kitten/components';
 import { connect } from 'react-redux';
-import { register, validateToken } from '../../../store/actions/authenticationAction';
+import { register, validateToken } from '../../store/actions/authenticationAction';
 
 function LoginButtons(props) {
   const { phone,

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { connect } from 'react-redux';
-import { fetchCart } from '../../store/actions/cartAction';
-import { createOrder } from '../../store/actions/orderActions';
+import { fetchCart } from '../store/actions/cartAction';
+import { createOrder } from '../store/actions/orderActions';
 import { Layout, Text } from '@ui-kitten/components';
 import { ImageOverlay } from '../components/imageOverlay';
 import Graphics from '../../assets/images/order_confirm_background.png'

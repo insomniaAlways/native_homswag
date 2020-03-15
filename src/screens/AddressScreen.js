@@ -4,7 +4,7 @@ import { View, SafeAreaView, StyleSheet, TouchableOpacity, Image } from 'react-n
 import DefaultStyles from '../style/customStyles';
 import Constants from 'expo-constants';
 import CustomHeader from '../components/customHeader';
-import { fetchAddress, deleteAddresss, updateAddress } from '../../store/actions/addressActions';
+import { fetchAddress, deleteAddresss, updateAddress } from '../store/actions/addressActions';
 import { Layout, List, Text, Spinner } from '@ui-kitten/components';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';

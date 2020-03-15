@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Text } from '@ui-kitten/components';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import { fetchCart } from '../../store/actions/cartAction';
+import { fetchCart } from '../store/actions/cartAction';
 import CartItemRow from './cartItemRow';
 
 const ItemsList = (props) => {

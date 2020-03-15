@@ -5,7 +5,7 @@ import PlaceHolderTextInput from '../components/placeHolderTextInput';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Constants from 'expo-constants';
 import { connect } from 'react-redux';
-import { fetchUser, updateUser } from '../../store/actions/userActions';
+import { fetchUser, updateUser } from '../store/actions/userActions';
 import { KeyboardAvoidingView } from '../components/KeyboardAvoidView';
 import _ from 'lodash';
 import ImagePickerView from '../components/ImagePicker';

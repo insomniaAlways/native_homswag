@@ -3,7 +3,7 @@ import { TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
 import { Text, Layout } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import CartItemList from '../components/cartItemList';
-import { fetchCart } from '../../store/actions/cartAction';
+import { fetchCart } from '../store/actions/cartAction';
 import PriceBreakDown from '../components/priceBreackDown';
 import DefaultStyles from '../style/customStyles';
 import AppointmentDetails from '../components/appointmentDetails';
