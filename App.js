@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import store from './src/store';
 import AppNavigator from './src/navigations';
@@ -39,6 +39,7 @@ global.fetch = function (uri, options, ...args) {
 
 const App = () => {
   console.log('add load', moment().format('mm:ss, SS'))
+
   return (
     <Provider store={store}>
       {/* <IconRegistry icons={EvaIconsPack} /> */}
