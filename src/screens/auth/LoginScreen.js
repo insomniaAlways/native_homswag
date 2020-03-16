@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { StyleSheet, View, Image, Dimensions } from 'react-native';
-import { Text, Spinner } from '@ui-kitten/components';
+import { StyleSheet, View, Image, Dimensions, Text } from 'react-native';
+// import { Text, Spinner } from '@ui-kitten/components';
 import { ImageOverlay } from '../../components/imageOverlay';
 import { KeyboardAvoidingView } from '../../components/KeyboardAvoidView';
 import ImageBackground from '../../assets/images/login_background.png'
@@ -35,6 +35,7 @@ const LoginScreen = (props) => {
   const [ isButtonLoading, setButtonLoading ] = useState(false)
   const [ isResendEnable, enableResend ] = useState(false)
   let resendTimer;
+  console.log('login load', moment().format('mm:ss, SS'))
 
   //  ------------------ : Methods: ---------------------
 
@@ -103,7 +104,7 @@ const LoginScreen = (props) => {
 
   // ------------------- : Hooks : ---------------------
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     // Sentry.captureMessage(`Login screen load on: ${moment().unix()}`);
     checkAuthentication()
   }, [])
@@ -121,7 +122,7 @@ const LoginScreen = (props) => {
         alert(authModel.error)
       }
     }
-  }, [authModel.isLoading, authModel.userToken])
+  }, [authModel])
 
   //trigger after session is authenticated
   useEffect(() => {
@@ -147,7 +148,7 @@ const LoginScreen = (props) => {
         }
       }
     }
-  }, [currentUserModel.isLoading, currentUserModel.values, currentUserModel.error])
+  }, [currentUserModel])
 
   // -------------------: END : ---------------------
 
@@ -181,7 +182,7 @@ const LoginScreen = (props) => {
                 { isLoading ? 
                   <View style={styles.signInButtonContainer}>
                     <View style={[styles.signInButton, {justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent'}]}>
-                      <Spinner status='primary'/>
+                      {/* <Spinner status='primary'/> */}
                     </View>
                   </View> :
                   <LoginButtons
@@ -202,7 +203,7 @@ const LoginScreen = (props) => {
             </View>
           </Animatable.View> : 
           <View style={[{top: '39%', alignItems: 'center', position: 'absolute'}, styles.container]}>
-            <Spinner status='primary'/>
+            {/* <Spinner status='primary'/> */}
             <Text style={{color: '#000', fontSize: 20, fontWeight: 'bold', marginTop: 10}}>Loading...</Text>
           </View>
         }
@@ -231,10 +232,8 @@ export default connect(mapStateToProps,mapDispatchToProps)(LoginScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 3,
-    width: 300,
-    height: 800,
-    // width: Dimensions.get('window').width,
-    // height: Dimensions.get('window').height,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
     // paddingTop: Constants.statusBarHeight + 60
     paddingTop:60
   },

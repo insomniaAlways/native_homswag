@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import { Text, Spinner } from '@ui-kitten/components';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+// import { Text, Spinner } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import { register, validateToken } from '../../store/actions/authenticationAction';
 
@@ -60,7 +60,7 @@ function LoginButtons(props) {
     return (
       <View style={styles.signInButtonContainer}>
         <View style={[styles.signInButton, {justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent'}]}>
-          <Spinner status='primary'/>
+          {/* <Spinner status='primary'/> */}
         </View>
       </View>
     )

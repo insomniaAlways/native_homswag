@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, View, TouchableOpacity, TextInput } from 'react-native';
-import { Input, Text } from '@ui-kitten/components';
-import { Icon } from '@ui-kitten/components';
+import {Text, StyleSheet, View, TouchableOpacity, TextInput } from 'react-native';
+// import { Input, Text } from '@ui-kitten/components';
+// import { Icon } from '@ui-kitten/components';
 
 const PhoneIcon = (style) => (
   <Icon {...style} name='phone'/>
@@ -15,7 +15,7 @@ function LoginForm(props) {
       <Text style={{width: '100%', textAlign: 'left', marginBottom: 10, fontSize: 18, fontWeight: 'bold', color: '#fff', paddingLeft: 0}}>
         Login or Signup:
       </Text>
-      <Input
+      {/* <Input
         status='control'
         placeholder='Phone Number'
         style={styles.inputBox}
@@ -25,16 +25,16 @@ function LoginForm(props) {
         keyboardType={'number-pad'}
         value={phone}
         onChangeText={(text) => setPhone(text)}
-      />
+      /> */}
       {showOtpField && 
-        <Input
+        {/* <Input
           style={[styles.inputBox, styles.passwordInput]}
           status='control'
           placeholder='OTP'
           keyboardType={'number-pad'}
           value={otp}
           onChangeText={(text) => setOtp(text)}
-          textStyle={{color: "#fff", fontSize: 18, fontWeight: 'bold'}}/>
+          textStyle={{color: "#fff", fontSize: 18, fontWeight: 'bold'}}/> */}
         }
       {showOtpField && 
         <View style={{flexDirection: 'row', justifyContent: 'flex-end', width: '100%', paddingRight: 10}}>
