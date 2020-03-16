@@ -2,25 +2,26 @@ import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import store from './src/store';
 import AppNavigator from './src/navigations';
-// // import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
+// import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 // import { EvaIconsPack } from '@ui-kitten/eva-icons';
 // import { mapping, light as lightTheme } from '@eva-design/eva';
 import { brandTheme } from './src/style/custom-theme';
+import SplashScreen from 'react-native-splash-screen'
 import moment from 'moment';
 
 // const theme = { ...lightTheme, ...brandTheme };
 
-XMLHttpRequest = GLOBAL.originalXMLHttpRequest ?
-    GLOBAL.originalXMLHttpRequest :
-    GLOBAL.XMLHttpRequest;
+// XMLHttpRequest = GLOBAL.originalXMLHttpRequest ?
+//     GLOBAL.originalXMLHttpRequest :
+//     GLOBAL.XMLHttpRequest;
 
-  // fetch logger
-global._fetch = fetch;
-global.fetch = function (uri, options, ...args) {
-  return global._fetch(uri, options, ...args).then((response) => {
-    return response;
-  });
-};
+//   // fetch logger
+// global._fetch = fetch;
+// global.fetch = function (uri, options, ...args) {
+//   return global._fetch(uri, options, ...args).then((response) => {
+//     return response;
+//   });
+// };
 
 // const App = () => {
 //   return (
@@ -39,6 +40,10 @@ global.fetch = function (uri, options, ...args) {
 
 const App = () => {
   console.log('add load', moment().format('mm:ss, SS'))
+
+  useEffect(() => {
+    SplashScreen.hide()
+  }, [])
 
   return (
     <Provider store={store}>
