@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { StyleSheet, View, Image, Dimensions, Text } from 'react-native';
-// import { Text, Spinner } from '@ui-kitten/components';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Image, Dimensions, Text, ActivityIndicator } from 'react-native';
 import { ImageOverlay } from '../../components/imageOverlay';
 import { KeyboardAvoidingView } from '../../components/KeyboardAvoidView';
 import ImageBackground from '../../assets/images/login_background.png'
@@ -9,7 +8,7 @@ import { connect } from 'react-redux';
 import { register, validatedAuthToken } from '../../store/actions/authenticationAction';
 import { setSessionUnauthenticated, setSessionAuthenticated } from '../../store/actions/sessionActions';
 import { fetchUser } from '../../store/actions/userActions'
-import AsyncStorage from '@react-native-community/async-storage';
+import { AsyncStorage } from '@react-native-community/async-storage';
 import * as Animatable from 'react-native-animatable';
 import LoginForm from '../../components/helpers/loginForm';
 import LoginButtons from '../../components/helpers/loginButtons';
@@ -35,8 +34,6 @@ const LoginScreen = (props) => {
   const [ isButtonLoading, setButtonLoading ] = useState(false)
   const [ isResendEnable, enableResend ] = useState(false)
   let resendTimer;
-  console.log('login load', moment().format('mm:ss, SS'))
-
   //  ------------------ : Methods: ---------------------
 
   //called when first time login and after logout
@@ -49,9 +46,14 @@ const LoginScreen = (props) => {
   const checkAuthentication = async () => {
     try {
       let token = await AsyncStorage.getItem('token')
-      let tokenObject = JSON.parse(token)
-      if(tokenObject && tokenObject.authToken && tokenObject.refreshToken) {
-        validateCurrentToken(tokenObject.authToken, tokenObject.refreshToken)
+      if(token) {
+        let tokenObject = JSON.parse(token)
+        if(tokenObject && tokenObject.authToken && tokenObject.refreshToken) {
+          // Sentry.captureMessage(`Refresh token initiated on: ${moment().unix()}`);
+          validateCurrentToken(tokenObject.authToken, tokenObject.refreshToken)
+        } else {
+          startLoginProcess()
+        }
       } else {
         startLoginProcess()
       }
@@ -112,6 +114,7 @@ const LoginScreen = (props) => {
   //trigger when otp validation succeed
   useEffect(() => {
     if(!authModel.isLoading && authModel.userToken && authModel.refreshToken) {
+      // Sentry.captureMessage(`User authentication initiated on: ${moment().unix()}`);
       authenticate(authModel.userToken, authModel.refreshToken)
     } else if(!authModel.isLoading && authModel.error) {
       setButtonLoading(false)
@@ -127,7 +130,7 @@ const LoginScreen = (props) => {
   //trigger after session is authenticated
   useEffect(() => {
     if(session.isSessionAuthenticated) {
-      // Sentry.captureMessage(`Get User called on ${moment().unix()}`);
+      // Sentry.captureMessage(`Get User initiated on ${moment().unix()}`);
       getUser()
     }
   }, [session.isSessionAuthenticated])
@@ -137,7 +140,7 @@ const LoginScreen = (props) => {
   useEffect(() => {
     if(session.isSessionAuthenticated) {
       if(!currentUserModel.isLoading && currentUserModel.values && currentUserModel.values.id) {
-        // Sentry.captureMessage(`Redirect To called on: ${moment().unix()}`);
+        // Sentry.captureMessage(`Redirection initiated no: ${moment().unix()}`);
         redirectTo()
       } else if(!currentUserModel.isLoading && currentUserModel.error) {
         setButtonLoading(false)
@@ -182,7 +185,7 @@ const LoginScreen = (props) => {
                 { isLoading ? 
                   <View style={styles.signInButtonContainer}>
                     <View style={[styles.signInButton, {justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent'}]}>
-                      {/* <Spinner status='primary'/> */}
+                      <ActivityIndicator size="small" color="#0000ff" />
                     </View>
                   </View> :
                   <LoginButtons
@@ -203,7 +206,7 @@ const LoginScreen = (props) => {
             </View>
           </Animatable.View> : 
           <View style={[{top: '39%', alignItems: 'center', position: 'absolute'}, styles.container]}>
-            {/* <Spinner status='primary'/> */}
+            <ActivityIndicator size="large" color="#0000ff" />
             <Text style={{color: '#000', fontSize: 20, fontWeight: 'bold', marginTop: 10}}>Loading...</Text>
           </View>
         }
@@ -235,10 +238,8 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
     // paddingTop: Constants.statusBarHeight + 60
-    paddingTop:60
   },
   headerContainer: {
-    paddingTop: 40,
     // paddingTop: Constants.statusBarHeight + 40,
     justifyContent: 'center',
     alignItems: 'center',

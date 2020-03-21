@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { Icon, Layout } from '@ui-kitten/components';
 import Moment from 'react-moment';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -27,11 +26,11 @@ const OrderItem = function(props) {
   
   return (
     <TouchableOpacity onPress={() => props.navigation.navigate('OrderDetails', {order: order})}>
-      <Layout style={{paddingLeft: 10, paddingRight: 10, borderWidth: 1, borderColor: "#eee", margin: 10, borderBottomWidth: 3, borderRadius: 20}}>
+      <View style={{paddingLeft: 10, paddingRight: 10, borderWidth: 1, borderColor: "#eee", margin: 10, borderBottomWidth: 3, borderRadius: 20}}>
         <View style={{padding: 10}}>
-          <Layout style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <Text style={{fontWeight: 'bold', fontSize: 14, width: '100%'}}>Appointment No: {order.id}</Text>
-          </Layout>
+          </View>
           <Text style={{color: status.color, width: '100%', textAlign: 'right'}}>  {status.name}</Text>
           <Moment element={Text}
               date={order.created_at}
@@ -42,7 +41,7 @@ const OrderItem = function(props) {
         <View style={{paddingLeft: 10, paddingBottom: 10, borderBottomColor: '#eee', borderBottomWidth: 1}}>
           <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
             <View style={{justifyContent: 'center'}}>
-              <Icon name='checkmark-circle-2-outline' width={12} height={12} fill="#0D5618"/>
+              <FontAwesome name='check-circle-o' size={12} color={"#0D5618"}/>
             </View>
             <View style={{paddingLeft: 10, flex: 1}}>
               <RenderOrderedItem />
@@ -62,7 +61,7 @@ const OrderItem = function(props) {
             />
           </View>
         </View>
-      </Layout>
+      </View>
     </TouchableOpacity>
   )
 };

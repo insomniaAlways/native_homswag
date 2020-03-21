@@ -1,12 +1,11 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { fetchItems } from '../store/actions/itemActions';
 import { connect } from 'react-redux';
 import ItemsList from '../components/itemList';
-import { Spinner, Layout, Text } from '@ui-kitten/components';
 import * as Animatable from 'react-native-animatable';
 import _ from 'lodash';
 import DynamicTabs from '../components/dynamicTabs';
-import { TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, ActivityIndicator, Text } from 'react-native';
 import { brandColor } from '../style/customStyles';
 import { fetchCategories } from '../store/actions/index';
 import { fetchCartItems } from '../store/actions/cartItemAction';
@@ -40,7 +39,7 @@ function Items(props) {
   }, [cartItemModel.values.length])
 
   return (
-    <Layout style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: "#F7F9FC"}}>
       { category.hasSubCategory ?
         <DynamicTabs
           category={category}
@@ -50,9 +49,9 @@ function Items(props) {
           {...props}/> :
         (
           selectedItems.isLoading ? 
-          <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <Spinner status='info'/>
-          </Layout> :
+          <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View> :
           <Animatable.View
             animation={'fadeInLeft'}
             duration={400}
@@ -74,7 +73,7 @@ function Items(props) {
           <Text style={styles.buttonText}>Schedule Appointment</Text>
         </TouchableOpacity>
       }
-    </Layout>
+    </View>
   );
 }
 

@@ -1,6 +1,5 @@
 import React, { useEffect, useLayoutEffect } from 'react';
-import { TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
-import { Text, Layout } from '@ui-kitten/components';
+import { View, TouchableOpacity, StyleSheet, ScrollView, Image, Text } from 'react-native';
 import { connect } from 'react-redux';
 import CartItemList from '../components/cartItemList';
 import { fetchCart } from '../store/actions/cartAction';
@@ -91,52 +90,54 @@ function CartScreen(props) {
 
   if(networkAvailability.isOffline) {
     return (
-      <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <MaterialCommunityIcons name="wifi-strength-alert-outline" size={60} color='grey'/>
-        <Layout style={{paddingTop: 30, alignItems: 'center'}}>
+        <View style={{paddingTop: 30, alignItems: 'center'}}>
           <Text style={{fontSize: 22, fontFamily: 'roboto-medium'}}>Whoops!</Text>
           <Text style={{fontFamily: 'roboto-light-italic'}}>No Internet connection</Text>
-        </Layout>
-      </Layout>
+        </View>
+      </View>
     )
   } else {
     return (
-      <Layout style={{flex: 1}}>
+      <View style={{flex: 1, backgroundColor: '#F7F9FC'}}>
        {cartItemModel && cartItemModel.values && cartItemModel.values.length ? (
-        <Layout style={{flex: 1}}>
-          <Layout style={{flex: 14, backgroundColor: "#F7F9FC"}}>
+        <View style={{flex: 1}}>
+          <View style={{flex: 14}}>
             <ScrollView showsVerticalScrollIndicator={false} style={{backgroundColor: 'transparent'}}>
-              <Layout style={{marginVertical: 10, paddingVertical: 10, borderRadius: 20, marginHorizontal: 10, paddingHorizontal: 10}}>
+            <View>
+              <View style={{backgroundColor: "#FFFFFF", marginVertical: 10, paddingVertical: 10, borderRadius: 20, marginHorizontal: 10, paddingHorizontal: 10}}>
                 <Text style={{padding: 10, fontWeight: 'bold'}}>Added Items: </Text>
                 <CartItemList cart={cartModel.values} cartItems={cartItemModel.values}/>
-              </Layout>
-              <Layout style={{marginVertical: 10, paddingVertical: 20, borderRadius: 20, marginHorizontal: 10}}>
+              </View>
+              <View style={{backgroundColor: "#FFFFFF", marginVertical: 10, paddingVertical: 20, borderRadius: 20, marginHorizontal: 10}}>
                 <AppointmentDetails bookingDetails={appointment.defaultValues} navigation={navigation}/>
-              </Layout>
-              <Layout style={{borderTopLeftRadius: 20, borderTopRightRadius: 20, paddingVertical: 10, paddingHorizontal: 10}}>
+              </View>
+              <View style={{backgroundColor: "#FFFFFF", borderTopLeftRadius: 20, borderRadius: 20, paddingVertical: 10, paddingHorizontal: 10}}>
                 <Text style={{paddingBottom: 10, marginTop: 10, paddingLeft: 10}}>People also search for:</Text>
-              </Layout>
+              </View>
               <CartPromoItemList />
-              <Layout style={{marginHorizontal: 10, marginBottom: 10, borderTopLeftRadius: 20, borderTopRightRadius: 20, paddingBottom: 10, paddingHorizontal: 10}}>
+              <View style={{backgroundColor: "#FFFFFF", marginHorizontal: 10, marginBottom: 10, borderRadius: 20, borderRadius: 20, paddingBottom: 10, paddingHorizontal: 10}}>
                 <Text style={{paddingTop: 10, paddingBottom: 10, fontWeight: "bold"}}>Price Breakdown: </Text>
                 <PriceBreakDown />
-              </Layout>
+              </View>
+            </View>
             </ScrollView>
-          </Layout>
-          <Layout style={[{height: 55}, DefaultStyles.brandBackgroundColor]}>
+          </View>
+          <View style={[{height: 55}, DefaultStyles.brandBackgroundColor]}>
             <TouchableOpacity style={[styles.button, DefaultStyles.brandColorButton]} onPress={() => goToConfirmPage()}>
               <Text style={{color:'#fff', fontSize: 18, fontWeight: 'bold', width: '100%', textAlign: 'center'}}>Next</Text>
             </TouchableOpacity>
-          </Layout>
-        </Layout> ) : (
-          <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          </View>
+        </View> ) : (
+          <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <Image source={EmptyCart} style={{height: 60, width: 60}}/>
-            <Layout style={{paddingTop: 10}}>
+            <View style={{paddingTop: 10}}>
               <Text>No item added</Text>
-            </Layout>
-          </Layout>
+            </View>
+          </View>
        )}
-      </Layout>
+      </View>
     );
   }
 

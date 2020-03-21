@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, View, TouchableOpacity, ScrollView, StyleSheet, SafeAreaView } from 'react-native';
+import { Button, View, TouchableOpacity, ScrollView, StyleSheet, SafeAreaView, Text } from 'react-native';
 import SelectDate from '../components/SelectDate';
 import SelectTimeSlot from '../components/selectTimeSlot';
 import BookingDetails from '../components/bookingDetails';
@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import Modal from "react-native-modal";
 import AddressList from '../components/addressList';
 import { fetchAddress } from '../store/actions/addressActions';
-import { Layout, Text } from '@ui-kitten/components';
 import { KeyboardAvoidingView } from '../components/KeyboardAvoidView';
 import { updateAppointmentState } from '../store/actions/appointmentActions';
 import _ from 'lodash';
@@ -122,7 +121,7 @@ function ScheduleAppointmentScreen(props) {
 
   return (
     <KeyboardAvoidingView style={{flex: 1}} showsVerticalScrollIndicator={false}>
-      <View style={{flex: 1, padding: 10, }}>
+      <View style={{flex: 1, padding: 10, backgroundColor: "#FFFFFF"}}>
         <View>
           <Text style={{fontSize: 16, fontWeight: 'bold'}}>Select Date and Time: </Text>
           <View>
@@ -172,22 +171,22 @@ function ScheduleAppointmentScreen(props) {
           style={{flex: 1}}
           showsVerticalScrollIndicator={false}
           scrollEventThrottle={16}>
-            <Layout style={{height: 300, backgroundColor: 'transparent'}}></Layout>
-            <Layout style={styles.scrollableModal}>
-              <Layout style={styles.addressListHeader}>
+            <View style={{height: 300, backgroundColor: 'transparent'}}></View>
+            <View style={styles.scrollableModal}>
+              <View style={styles.addressListHeader}>
                 <Text style={[styles.addressListHeaderText, {width: '70%'}]}>
                   Address Lists: 
                 </Text>
                 <TouchableOpacity onPress={() => goToAddAddress()}>
                   <Text style={[{width: 50}, styles.addressListHeaderText]}>+ Add</Text>
                 </TouchableOpacity>
-              </Layout>
+              </View>
               <AddressList addresses={addresses}
                 style={{padding: 10, flex: 1}}
                 setSelectedAddress={setSelectedAddress}
                 setModal={setModal}
                 />
-            </Layout>
+            </View>
           </ScrollView>
       </Modal>
     </KeyboardAvoidingView>

@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useLayoutEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
-import { View, SafeAreaView, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import DefaultStyles from '../style/customStyles';
+import { Text, View, SafeAreaView, StyleSheet, TouchableOpacity, ActivityIndicator, FlatList, StatusBar } from 'react-native';
+import DefaultStyles, { statusBarBrandColor } from '../style/customStyles';
 // import Constants from 'expo-constants';
-import CustomHeader from '../components/customHeader';
 import { fetchAddress, deleteAddresss, updateAddress } from '../store/actions/addressActions';
-import { Layout, List, Text, Spinner } from '@ui-kitten/components';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function AddressScreen(props) {
   const { addressModel, getAddress, navigation, deleteSelected, setDefault, networkAvailability } = props;
@@ -45,18 +43,18 @@ function AddressScreen(props) {
   }
 
   const renderItem = ({ item, index }) => (
-    <Layout style={{paddingHorizontal: 20, marginBottom: 10, paddingTop: 10, borderRadius: 10}}>
-      <Layout style={{flexDirection: 'row'}}>
-        <Layout style={{marginRight: 10}}>
+    <View style={{backgroundColor: '#FFFFFF',paddingHorizontal: 20, marginBottom: 10, paddingTop: 10, borderRadius: 10}}>
+      <View style={{flexDirection: 'row'}}>
+        <View style={{marginRight: 10}}>
           <FontAwesome name="map-marker" size={20} color="black" />
-        </Layout>
-        <Layout style={{flex: 1}}>
+        </View>
+        <View style={{flex: 1}}>
           <Text style={{fontFamily: 'roboto-regular'}}>{item.address.formatedAddress}</Text>
           {item.address.localAddress ? <Text style={{fontFamily: 'roboto-regular'}}>{item.address.localAddress}</Text> : null }
           {item.address.landmark ? <Text style={{fontFamily: 'roboto-regular'}}>{item.address.landmark}</Text> : null}
-        </Layout>
-      </Layout>
-      <Layout style={{flexDirection: 'row', justifyContent: 'flex-start', paddingHorizontal: 20, paddingVertical: 10}}>
+        </View>
+      </View>
+      <View style={{flexDirection: 'row', justifyContent: 'flex-start', paddingHorizontal: 20, paddingVertical: 10}}>
         {item.is_default || networkAvailability.isOffline ? 
           <View style={{marginRight: 30}}><Text style={styles.isDefaultTrue}>Set default</Text></View>:
           <TouchableOpacity onPress={() => setDefaultAddress(item)} style={{marginRight: 30}}><Text style={styles.isDefaultFalse}>Set default</Text></TouchableOpacity>
@@ -65,69 +63,72 @@ function AddressScreen(props) {
           <View><Text style={styles.deleteButtonTrue}>Delete</Text></View>:
           <TouchableOpacity onPress={() => deleteRecord(item)}><Text style={styles.deleteButtonFalse}>Delete</Text></TouchableOpacity>
         }
-      </Layout>
-    </Layout>
+      </View>
+    </View>
   );
 
 
   const AddressList = function() {
     if(addresses && Array.isArray(addresses) && addresses.length) {
       return (
-        <List
-          contentContainerStyle={styles.addressList}
-          showsVerticalScrollIndicator={false}
-          data={addressModel.values}
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          renderItem={renderItem}
-        />
+        <View style={{backgroundColor: "#F7F9FC", marginBottom: 55}}>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={addressModel.values}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            renderItem={renderItem}
+            keyExtractor={item => `${item.id}`}
+          />
+        </View>
       )
     } else {
       return (
-        <Layout style={{flex: 1,justifyContent: 'center', alignItems: 'center', marginBottom: 30}}>
+        <View style={{flex: 1,justifyContent: 'center', alignItems: 'center', marginBottom: 55}}>
           <FontAwesome name="map-o" size={80} color="#d4d4d4" />
           <Text style={{paddingTop: 10}}>No Address found.</Text>
-        </Layout>
+        </View>
       )
     }
   }
   if(networkAvailability.isOffline) {
     return (
-      <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <MaterialCommunityIcons name="wifi-strength-alert-outline" size={60} color='grey'/>
-        <Layout style={{paddingTop: 30, alignItems: 'center'}}>
+        <View style={{paddingTop: 30, alignItems: 'center'}}>
           <Text style={{fontSize: 22, fontFamily: 'roboto-medium'}}>Whoops!</Text>
           <Text style={{fontFamily: 'roboto-light-italic'}}>No Internet connection</Text>
-        </Layout>
-      </Layout>
+        </View>
+      </View>
     )
   } else {
     return (
-      <View style={{flex: 1}}>
-        <CustomHeader {...props}/>
-        {addressModel.isLoading ? (
-          <Layout style={styles.loaderContainer}>
-            <Spinner status='success' style={{height: 20, width: 20}}/>
-            <Text>Loading...</Text>
-          </Layout>
-        ) : ( 
-          <SafeAreaView style={{flex: 1}}>
-            <AddressList />
-            <View style={[{height: 55}, DefaultStyles.brandBackgroundColor]}>
-              <TouchableOpacity style={[styles.button, DefaultStyles.brandColorButton]} onPress={() => navigation.navigate('AddAddress', { previousRoute: 'Address' })}>
-                <Text style={{color:'#fff', fontSize: 18, fontWeight: 'bold', width: '100%', textAlign: 'center'}}>Add new Address</Text>
-              </TouchableOpacity>
+      <SafeAreaView style={{flex: 1}}>
+        <StatusBar barStyle={"list-content"} backgroundColor={statusBarBrandColor} />
+        <View style={{flex: 1}}>
+          {addressModel.isLoading ? (
+            <View style={styles.loaderContainer}>
+              <ActivityIndicator size={'small'} color={"#0000ff"} />
+              <Text>Loading...</Text>
             </View>
-          </SafeAreaView>
-        )}
-      </View>
+          ) : ( 
+            <View style={{flex: 1}}>
+              <AddressList />
+              <View style={[{height: 55, position: 'absolute', bottom: 0, width: '100%'}, DefaultStyles.brandBackgroundColor]}>
+                <TouchableOpacity style={[styles.button, DefaultStyles.brandColorButton]} onPress={() => navigation.navigate('AddNewAddress', { previousRoute: 'Address' })}>
+                  <Text style={{color:'#fff', fontSize: 18, fontWeight: 'bold', width: '100%', textAlign: 'center'}}>Add new Address</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+        </View>
+      </SafeAreaView>
     )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 40,
     // marginTop: Constants.statusBarHeight,
     flex: 1
   },
@@ -156,7 +157,8 @@ const styles = StyleSheet.create({
   loaderContainer: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#ffffff'
   },
   isDefaultTrue: {
     color: 'grey',

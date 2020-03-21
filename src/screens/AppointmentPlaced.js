@@ -2,8 +2,7 @@ import React, { useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { fetchOrder } from '../store/actions/orderActions';
-import { Layout, Text } from '@ui-kitten/components';
-import { StyleSheet, BackHandler, Image } from 'react-native';
+import { View, StyleSheet, BackHandler, Image, Text } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import Tick from '../assets/images/tick.png'
 import { brandColor } from '../style/customStyles';
@@ -35,26 +34,26 @@ const AppointmentPlacedScreen = (props) => {
   };
 
   return (
-    <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#F7F9FC"}}>
-      <Layout style={styles.content}>
-        <Layout style={{justifyContent: 'center', marginBottom: 30}}>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#F7F9FC"}}>
+      <View style={styles.content}>
+        <View style={{justifyContent: 'center', marginBottom: 30}}>
           <Image
             style={{width: 160, height: 160}}
             source={Tick}
           />
-        </Layout>
-        <Layout style={{height: 200, alignItems: 'center'}}>
+        </View>
+        <View style={{height: 200, alignItems: 'center'}}>
           <Text style={styles.fontFamily}>All Right!</Text>
           <Text style={styles.fontFamily}>Sit back and relax.</Text>
           <Text style={styles.fontFamily}>The appointment has successfully placed.</Text>
-        </Layout>
+        </View>
         <TouchableOpacity style={styles.button} onPress={() => handleBackButtonPressAndroid()}>
-          <Layout style={styles.buttomView}>
+          <View style={styles.buttomView}>
             <Text style={{color: '#fff'}}>Continue Surfing</Text>
-          </Layout>
+          </View>
         </TouchableOpacity>
-      </Layout>
-    </Layout>
+      </View>
+    </View>
   )
 }
 

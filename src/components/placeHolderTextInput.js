@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { TextInput, StyleSheet } from 'react-native';
-import { Text, Layout } from '@ui-kitten/components';
+import { View, TextInput, StyleSheet, Text } from 'react-native';
 import _ from 'lodash';
 
 function PlaceHolderTextInput(props) {
@@ -16,7 +15,7 @@ function PlaceHolderTextInput(props) {
 
   const [ inputStyle, setStyle ] = useState(styles.placeholder);
   return (
-    <Layout style={[props.containerStyle]}>
+    <View style={[props.containerStyle]}>
       {disabled ?
        (<Text style={[styles.placeholder, styles.disabledInput, props.styles]}>{value}</Text>) :
         <TextInput
@@ -32,7 +31,7 @@ function PlaceHolderTextInput(props) {
           disabled={disabled}
         />
       }
-    </Layout>
+    </View>
   )
 }
 

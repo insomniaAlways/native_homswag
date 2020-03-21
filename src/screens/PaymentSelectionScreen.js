@@ -3,15 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity, KeyboardAvoidingView, ScrollV
 import PlaceHolderTextInput from '../components/placeHolderTextInput';
 import DefaultStyles, { brandColor } from '../style/customStyles';
 import _ from 'lodash';
-import {
-  Radio,
-  RadioGroup,
-} from '@ui-kitten/components';
 import * as Animatable from 'react-native-animatable';
 import { connect } from 'react-redux';
 import { fetchCart } from '../store/actions/cartAction';
 import { createOrder, fetchAllOrder } from '../store/actions/orderActions';
-import LoadingModal from '../components/loadingModal';
+// import LoadingModal from '../components/loadingModal';
 
 function PaymentScreen(props) {
   const { getCart, placeOrder, cart, order, getOrders } = props
@@ -87,13 +83,13 @@ function PaymentScreen(props) {
                 <Text style={{width: '100%', textAlign: 'center', fontWeight: 'bold'}}>Total Payable amount: Rs. {totalAmount}</Text>
               </View>
               <Text style={{marginBottom: 5}}>Choose the amount to pay: </Text>
-              <RadioGroup
+              {/* <RadioGroup
                 selectedIndex={selectedIndex}
-                onChange={onCheckedChange}>
-                {paymentTypes.map((type, index) => (
-                    <Radio key={index} style={styles.radio} text={type.title}/>
-                ))}
-              </RadioGroup>
+                onChange={onCheckedChange}> */}
+                {/* {paymentTypes.map((type, index) => ( */}
+                    {/* <Radio key={index} style={styles.radio} text={type.title}/> */}
+                {/* ))} */}
+              {/* </RadioGroup> */}
               { selectedPaymentType.type == 3 && 
                 <Animatable.View
                   duration={800}
@@ -132,7 +128,7 @@ function PaymentScreen(props) {
           </TouchableOpacity>
         </View>
       </View>
-      <LoadingModal isLoading={isLoading}/>
+      {/* <LoadingModal isLoading={isLoading}/> */}
     </KeyboardAvoidingView>
   )
 }

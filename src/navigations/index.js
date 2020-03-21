@@ -124,6 +124,31 @@ const OrderStackNavigator = createStackNavigator({
   })
 })
 
+const AddressStack = createStackNavigator({
+  AddressListScreen: {
+    screen: AddressScreen,
+    navigationOptions: () => ({
+      title: `Address`,
+    }),
+  },
+  AddNewAddress: {
+    screen: AddAddressScreen,
+    navigationOptions: () => ({
+      title: `Add Address`,
+    }),
+  }
+},
+{
+  defaultNavigationOptions: ({ navigation }) => ({
+    headerStyle: DefaultStyles.brandBackgroundColor,
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+      flex: 1
+    },
+    headerRight: () => <HeaderRightView navigation={navigation}/>
+  })
+})
 
 const DrawerNavigation = createDrawerNavigator({
   Dashboard: {
@@ -144,7 +169,7 @@ const DrawerNavigation = createDrawerNavigator({
     }
   },
   Address: {
-    screen: AddressScreen,
+    screen: AddressStack,
     navigationOptions: ({tintColor}) => {
       return {
         drawerIcon: <FontAwesome name="address-book-o" size={18} color={tintColor}/>

@@ -1,6 +1,5 @@
 import React, { useLayoutEffect, useState, useEffect } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
-import { Text, Layout } from '@ui-kitten/components';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import PlaceHolderTextInput from '../components/placeHolderTextInput';
 // import Constants from 'expo-constants';
 import { connect } from 'react-redux';
@@ -48,9 +47,9 @@ function UpdateProfileScreen(props) {
   }, [])
 
   return (
-    <Layout style={{flex: 1, justifyContent: 'center', backgroundColor: "#F7F9FC"}}>
-      <Layout style={styles.container}>
-        <Layout style={styles.profilePicContainer}>
+    <View style={{flex: 1, justifyContent: 'center', backgroundColor: "#F7F9FC"}}>
+      <View style={styles.container}>
+        <View style={styles.profilePicContainer}>
         <ImagePickerView 
           styles={styles} 
           image={image} 
@@ -61,9 +60,9 @@ function UpdateProfileScreen(props) {
           isUploading={isUploading}
           setUploding={setUploding}
           />
-        </Layout>
-        <Layout style={styles.detialsContainer}>
-          <Layout style={styles.item}>
+        </View>
+        <View style={styles.detialsContainer}>
+          <View style={styles.item}>
             <Text style={styles.label}>Name</Text>
             <PlaceHolderTextInput
               placeholder="Name"
@@ -72,8 +71,8 @@ function UpdateProfileScreen(props) {
               value={name}
               setValue={setName}
               disabled={false}/>
-          </Layout>
-          <Layout style={styles.item}>
+          </View>
+          <View style={styles.item}>
             <Text style={styles.label}>Phone</Text>
             <PlaceHolderTextInput
               placeholder="phone"
@@ -84,12 +83,12 @@ function UpdateProfileScreen(props) {
               previousState={currentUserModel.values}
               itemKey="phone"
               disabled={true}/>
-          </Layout>
+          </View>
           {isLoading ? 
             <TouchableOpacity style={[styles.button, {paddingHorizontal: 40}]} disabled={true}>
               <Text style={{color: '#fff', fontFamily: 'roboto-regular'}}>Loading...</Text>
             </TouchableOpacity>:
-            <Layout>
+            <View>
               {networkAvailability.isOffline ? 
                 <TouchableOpacity style={[styles.button, {backgroundColor: brandLightBackdroundColor}]} disabled={true}>
                   <Text style={{color: '#fff', fontFamily: 'roboto-regular'}}>Save & Continue</Text>
@@ -98,11 +97,11 @@ function UpdateProfileScreen(props) {
                   <Text style={{color: '#fff', fontFamily: 'roboto-regular'}}>Save & Continue</Text>
                 </TouchableOpacity>
               }  
-            </Layout>
+            </View>
           }
-        </Layout>
-      </Layout>
-    </Layout>
+        </View>
+      </View>
+    </View>
   )
 }
 
@@ -115,12 +114,12 @@ const styles = StyleSheet.create({
     borderRadius: 20
   },
   container: {
-    paddingTop: 40,
     // paddingTop: Constants.statusBarHeight,
     paddingBottom: 40,
     marginHorizontal: 40,
     marginVertical: 60,
     shadowColor: "#000",
+    backgroundColor: '#FFFFFF',
     shadowOffset: { width: 0, height: 2, },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,

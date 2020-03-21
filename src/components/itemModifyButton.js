@@ -2,7 +2,7 @@ import React, { useReducer, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { Icon } from '@ui-kitten/components';
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { fetchCartItems, updateItem, deleteItem } from '../store/actions/cartItemAction';
 
 function ModifyButton(props) {
@@ -74,7 +74,7 @@ function ModifyButton(props) {
             <View style={{flex: 1, borderColor: '#eee', borderWidth: 1, height: 30}}>
               <TouchableOpacity onPress={() => dispatch({type: 'decrement'})}>
                 <View style={{alignItems: 'center', justifyContent: 'center', height: 30}}>
-                  <Icon name='minus-outline' width={12} height={12} fill="#0D5618"/>
+                  <FontAwesome name='minus' size={12} color={"#0D5618"}/>
                 </View>
               </TouchableOpacity>
             </View>
@@ -84,7 +84,7 @@ function ModifyButton(props) {
             <View style={{flex: 1, borderColor: '#eee', borderWidth: 1, height: 30}}>
               <TouchableOpacity onPress={() => dispatch({type: 'increment'})}>
                 <View style={{alignItems: 'center', justifyContent: 'center', height: 30}}>
-                  <Icon name='plus-outline' width={12} height={12} fill="#0D5618"/>
+                  <FontAwesome name='plus' size={12} color={"#0D5618"}/>
                 </View>
               </TouchableOpacity>
             </View>

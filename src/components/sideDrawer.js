@@ -1,7 +1,7 @@
 import React from 'react';
 import { SafeAreaView } from 'react-navigation';
 import { DrawerItems } from 'react-navigation-drawer';
-import { StyleSheet, ScrollView, View, Image, Text, ImageBackground } from 'react-native';
+import { StyleSheet, ScrollView, View, Image, Text, ImageBackground, StatusBar } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -59,7 +59,7 @@ const SideDrawer = props => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
   profilePicContainer: {
     height: 230,
@@ -68,7 +68,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingLeft: 30,
     // paddingTop: Constants.statusBarHeight
-    paddingTop: 40
   },
   profilePic: {
     height: 100,

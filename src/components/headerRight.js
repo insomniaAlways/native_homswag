@@ -7,7 +7,7 @@ import CartButton from './cartButton';
 const HeaderRightView = function (props) {
 
   const openWhatsApp = () => {
-    let url = `whatsapp://send?text=&phone=916366505567`
+    // let url = `whatsapp://send?text=&phone=916366505567`
     // Linking.canOpenURL(url)
     // .then((supported) => {
     //   if (!supported) {

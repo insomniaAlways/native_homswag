@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Layout, Text, Spinner } from '@ui-kitten/components';
+import { Text, View, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const AddressList = function(props) {
@@ -16,33 +15,33 @@ const AddressList = function(props) {
   const RenderItem = ({address}) => {
     return (
     <TouchableOpacity onPress={() => onSelect(address)}>
-      <Layout>
+      <View>
         <Text>{address.address.formatedAddress}</Text>
         <Text>{address.address.localAddress}</Text>
         <Text>{address.address.landmark}</Text>
-      </Layout>
+      </View>
     </TouchableOpacity>
   )};
 
   if(addresses.values && Array.isArray(addresses.values) && addresses.values.length) {
     return (
-      <Layout style={[styles.addressList ,props.style]}>
+      <View style={[styles.addressList ,props.style]}>
         {addresses.values.map((address) => (<RenderItem key={address.id} address={address} />))}
-      </Layout>
+      </View>
     )
   } else {
     return (
-      <View style={[{flex: 1, justifyContent: 'center', alignItems: 'center'}, props.style]}>
+      <View style={[{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFFFFF'}, props.style]}>
         { addresses.isLoading ? (
-          <Layout style={styles.loaderContainer}>
-            <Spinner status='success' style={{height: 20, width: 20}}/>
+          <View style={styles.loaderContainer}>
+            <ActivityIndicator size="large" color="#0000ff" />
             <Text>Loading...</Text>
-          </Layout>
+          </View>
         ) : 
-          <Layout style={{flex: 1,justifyContent: 'center', alignItems: 'center', marginBottom: 30}}>
+          <View style={{flex: 1,justifyContent: 'center', alignItems: 'center', marginBottom: 30}}>
             <FontAwesome name="map-o" size={80} color="#d4d4d4" />
             <Text style={{paddingTop: 10}}>No Address found.</Text>
-          </Layout>
+          </View>
         }
       </View>
     )
@@ -63,6 +62,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   addressList: {
-    flex: 1
+    flex: 1,
+    backgroundColor: '#FFFFFF'
   }
 })

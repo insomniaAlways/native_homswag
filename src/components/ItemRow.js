@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import React, { useState, useLayoutEffect } from 'react';
+import { View } from 'react-native';
 import ModifyButton from './itemModifyButton';
 import AddToCartButton from './addToCartButton';
 import { connect } from 'react-redux';
