@@ -249,11 +249,11 @@ const styles = StyleSheet.create({
   },
 
   textFontFamilyMediumItalic: {
-    fontFamily: 'roboto-medium-italic'
+    fontFamily: 'Roboto-MediumItalic'
   },
 
   textFontFamilyLightItalic: {
-    fontFamily: 'roboto-light-italic',
+    fontFamily: 'Roboto-LightItalic',
     fontSize: 13
   },
 
@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
     width: '26%',
     textAlign: 'left',
     justifyContent: 'center',
-    fontFamily: 'roboto-regular'
+    fontFamily: 'Roboto-Regular'
   }
 
 })

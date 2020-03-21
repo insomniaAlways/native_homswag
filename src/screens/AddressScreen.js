@@ -49,9 +49,9 @@ function AddressScreen(props) {
           <FontAwesome name="map-marker" size={20} color="black" />
         </View>
         <View style={{flex: 1}}>
-          <Text style={{fontFamily: 'roboto-regular'}}>{item.address.formatedAddress}</Text>
-          {item.address.localAddress ? <Text style={{fontFamily: 'roboto-regular'}}>{item.address.localAddress}</Text> : null }
-          {item.address.landmark ? <Text style={{fontFamily: 'roboto-regular'}}>{item.address.landmark}</Text> : null}
+          <Text style={{fontFamily: 'Roboto-Regular'}}>{item.address.formatedAddress}</Text>
+          {item.address.localAddress ? <Text style={{fontFamily: 'Roboto-Regular'}}>{item.address.localAddress}</Text> : null }
+          {item.address.landmark ? <Text style={{fontFamily: 'Roboto-Regular'}}>{item.address.landmark}</Text> : null}
         </View>
       </View>
       <View style={{flexDirection: 'row', justifyContent: 'flex-start', paddingHorizontal: 20, paddingVertical: 10}}>
@@ -96,15 +96,15 @@ function AddressScreen(props) {
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <MaterialCommunityIcons name="wifi-strength-alert-outline" size={60} color='grey'/>
         <View style={{paddingTop: 30, alignItems: 'center'}}>
-          <Text style={{fontSize: 22, fontFamily: 'roboto-medium'}}>Whoops!</Text>
-          <Text style={{fontFamily: 'roboto-light-italic'}}>No Internet connection</Text>
+          <Text style={{fontSize: 22, fontFamily: 'Roboto-Medium'}}>Whoops!</Text>
+          <Text style={{fontFamily: 'Roboto-LightItalic'}}>No Internet connection</Text>
         </View>
       </View>
     )
   } else {
     return (
       <SafeAreaView style={{flex: 1}}>
-        <StatusBar barStyle={"list-content"} backgroundColor={statusBarBrandColor} />
+        <StatusBar barStyle={"light-content"} backgroundColor={statusBarBrandColor} />
         <View style={{flex: 1}}>
           {addressModel.isLoading ? (
             <View style={styles.loaderContainer}>
@@ -162,22 +162,22 @@ const styles = StyleSheet.create({
   },
   isDefaultTrue: {
     color: 'grey',
-    fontFamily:'roboto-medium',
+    fontFamily:'Roboto-Medium',
     fontSize: 12
   },
   isDefaultFalse: {
     color: 'green',
     fontSize: 12,
-    fontFamily: 'roboto-medium'
+    fontFamily: 'Roboto-Medium'
   },
   deleteButtonTrue: {
     color: 'grey',
-    fontFamily: 'roboto-medium',
+    fontFamily: 'Roboto-Medium',
     fontSize: 12
   },
   deleteButtonFalse: {
     color: 'red',
-    fontFamily: 'roboto-medium',
+    fontFamily: 'Roboto-Medium',
     fontSize: 12
   }
 })

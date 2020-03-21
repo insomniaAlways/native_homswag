@@ -48,8 +48,8 @@ const OrderDetails = function(props) {
     <View
       style={styles.backdrop}>
       <View style={styles.popUpContainer}>
-        <Text style={{fontFamily: 'roboto-medium-italic', fontSize: 18}}>Heads Up</Text>
-        <Text style={{fontFamily: 'roboto-regular', fontSize: 14, marginTop: 10}}>Are you sure want to cancel the appointment ?</Text>
+        <Text style={{fontFamily: 'Roboto-MediumItalic', fontSize: 18}}>Heads Up</Text>
+        <Text style={{fontFamily: 'Roboto-Regular', fontSize: 14, marginTop: 10}}>Are you sure want to cancel the appointment ?</Text>
           {orderModel.isLoading ?
             <View style={{flexDirection: 'row', justifyContent: 'flex-end', marginTop: 20}}>
               <View style={{marginRight: 20}}>
@@ -105,7 +105,7 @@ const OrderDetails = function(props) {
           }
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={{marginRight: 10, fontFamily: 'roboto-medium'}}>Placed on: </Text>
+          <Text style={{marginRight: 10, fontFamily: 'Roboto-Medium'}}>Placed on: </Text>
           <Moment element={Text}
               date={order.created_at}
               format="hh:mm, DD/MM/YYYY"
@@ -118,20 +118,20 @@ const OrderDetails = function(props) {
       </View>
       <View style={{padding: 10}}>
         <View style={{flexDirection: "row", justifyContent: 'space-between'}}>
-          <Text style={{fontFamily: 'roboto-medium'}}>Total Amount</Text>
+          <Text style={{fontFamily: 'Roboto-Medium'}}>Total Amount</Text>
           <Text><FontAwesome name="rupee" size={12} color="black" /> {order.order_total}</Text>
         </View>
         <View style={{flexDirection: "row", justifyContent: 'space-between'}}>
-          <Text style={{fontFamily: 'roboto-medium'}}>Total Paid</Text>
+          <Text style={{fontFamily: 'Roboto-Medium'}}>Total Paid</Text>
           <Text><FontAwesome name="rupee" size={12} color="black" /> {order.total_paid}</Text>
         </View>
         <View style={{marginTop: 10}}>
-          <Text style={{fontFamily: 'roboto-medium'}}>Updates sent to:</Text>
+          <Text style={{fontFamily: 'Roboto-Medium'}}>Updates sent to:</Text>
           <Text>{props.currentUser.phone}</Text>
           {props.currentUser.email ? <Text>{props.currentUser.email}</Text> : null}
         </View>
         <View style={{marginTop: 10}}>
-          <Text style={{fontFamily: 'roboto-medium'}}>Appointment Details: </Text>
+          <Text style={{fontFamily: 'Roboto-Medium'}}>Appointment Details: </Text>
           <View style={{flexDirection: "row", justifyContent: 'space-between'}}>
             <Text>Booked for</Text>
             <Moment element={Text}
@@ -142,7 +142,7 @@ const OrderDetails = function(props) {
         </View>
         { showConfirmFrom &&
           <View style={{marginTop: 10}}>
-            <Text style={{fontFamily: 'roboto-medium'}}>Confirm Appointment Details: </Text>
+            <Text style={{fontFamily: 'Roboto-Medium'}}>Confirm Appointment Details: </Text>
             <View style={{flexDirection: "row", justifyContent: 'space-between'}}>
               <Text>Confirmed for</Text>
               <Moment element={Text}

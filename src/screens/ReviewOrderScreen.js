@@ -73,8 +73,8 @@ function ReviewOrderScreen (props) {
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <MaterialCommunityIcons name="wifi-strength-alert-outline" size={60} color='grey'/>
         <View style={{paddingTop: 30, alignItems: 'center'}}>
-          <Text style={{fontSize: 22, fontFamily: 'roboto-medium'}}>Whoops!</Text>
-          <Text style={{fontFamily: 'roboto-light-italic'}}>No Internet connection</Text>
+          <Text style={{fontSize: 22, fontFamily: 'Roboto-Medium'}}>Whoops!</Text>
+          <Text style={{fontFamily: 'Roboto-LightItalic'}}>No Internet connection</Text>
         </View>
       </View>
     )
@@ -109,8 +109,8 @@ function ReviewOrderScreen (props) {
               <Text style={{color: "#fff", fontWeight: "bold", width: '100%', textAlign: 'center'}}>You saved total Rs. {item_total_price - cart_total}</Text>
             </View>
             <View style={{flexDirection: 'row' ,marginHorizontal: 30, marginVertical: 28, borderWidth: 1, borderColor: '#a9d5de', padding: 10, borderRadius: 5, backgroundColor: '#f8ffff'}}>
-              <Text style={{fontFamily: 'roboto-medium', color: '#0e566c'}}>Note: </Text>
-              <Text style={{fontFamily: 'roboto-regular', fontSize: 14, alignItems: 'center', width: '88%', color: '#276f86', minHeight: 70}}>
+              <Text style={{fontFamily: 'Roboto-Medium', color: '#0e566c'}}>Note: </Text>
+              <Text style={{fontFamily: 'Roboto-Regular', fontSize: 14, alignItems: 'center', width: '88%', color: '#276f86', minHeight: 70}}>
                 If any cancellation or reschedule Appointment after the confirmation is mandatory in prior to 2 Hours, Appreciate you cooperation on the same.
               </Text>
             </View>

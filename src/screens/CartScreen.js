@@ -93,8 +93,8 @@ function CartScreen(props) {
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <MaterialCommunityIcons name="wifi-strength-alert-outline" size={60} color='grey'/>
         <View style={{paddingTop: 30, alignItems: 'center'}}>
-          <Text style={{fontSize: 22, fontFamily: 'roboto-medium'}}>Whoops!</Text>
-          <Text style={{fontFamily: 'roboto-light-italic'}}>No Internet connection</Text>
+          <Text style={{fontSize: 22, fontFamily: 'Roboto-Medium'}}>Whoops!</Text>
+          <Text style={{fontFamily: 'Roboto-LightItalic'}}>No Internet connection</Text>
         </View>
       </View>
     )

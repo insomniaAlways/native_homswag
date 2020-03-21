@@ -86,15 +86,15 @@ function UpdateProfileScreen(props) {
           </View>
           {isLoading ? 
             <TouchableOpacity style={[styles.button, {paddingHorizontal: 40}]} disabled={true}>
-              <Text style={{color: '#fff', fontFamily: 'roboto-regular'}}>Loading...</Text>
+              <Text style={{color: '#fff', fontFamily: 'Roboto-Regular'}}>Loading...</Text>
             </TouchableOpacity>:
             <View>
               {networkAvailability.isOffline ? 
                 <TouchableOpacity style={[styles.button, {backgroundColor: brandLightBackdroundColor}]} disabled={true}>
-                  <Text style={{color: '#fff', fontFamily: 'roboto-regular'}}>Save & Continue</Text>
+                  <Text style={{color: '#fff', fontFamily: 'Roboto-Regular'}}>Save & Continue</Text>
                 </TouchableOpacity> :
                 <TouchableOpacity onPress={updateProfile} style={styles.button}>
-                  <Text style={{color: '#fff', fontFamily: 'roboto-regular'}}>Save & Continue</Text>
+                  <Text style={{color: '#fff', fontFamily: 'Roboto-Regular'}}>Save & Continue</Text>
                 </TouchableOpacity>
               }  
             </View>

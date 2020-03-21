@@ -10,7 +10,7 @@ function OfferView(props) {
     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
       {packages.isLoading ? 
         <View style={{height: '100%', width: 380, marginRight: 10, justifyContent: 'center', alignItems: 'center'}}>
-          <Text style={{fontFamily: 'roboto-light-italic'}}>Loading...</Text>
+          <Text style={{fontFamily: 'Roboto-LightItalic'}}>Loading...</Text>
         </View> :
         packages.values.map((packageService, index) => <OfferCard navigation={navigation} key={packageService.id} packageService={packageService} styles={index == 0 && { marginLeft: 10 }}/>)
       }

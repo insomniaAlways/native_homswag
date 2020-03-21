@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   fontFamily: {
-    fontFamily: 'roboto-medium-italic'
+    fontFamily: 'Roboto-MediumItalic'
   },
   button: {
     position: 'absolute',

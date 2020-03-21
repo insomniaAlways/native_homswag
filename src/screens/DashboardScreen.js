@@ -59,7 +59,7 @@ function Dashboard(props) {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: "#FFFFFF"}}>
-      <StatusBar barStyle={"list-content"} backgroundColor={statusBarBrandColor} />
+      <StatusBar barStyle={"light-content"} backgroundColor={statusBarBrandColor} />
       <ScrollView showsVerticalScrollIndicator={false} refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} enabled={true}/>
         }>

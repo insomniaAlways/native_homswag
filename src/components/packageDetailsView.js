@@ -18,12 +18,12 @@ const ItemContainer = ({items, packageService}) => {
   return (
     <View style={{paddingHorizontal: 20, paddingVertical: 20}}>
       <View style={{flexDirection: 'row', justifyContent: 'center', marginBottom: 10, alignItems: 'center'}}>
-        <Text style={{fontSize: 24, fontFamily: 'roboto-medium-italic', paddingTop: 5}}>Package Price:</Text>
-        <Text style={{fontSize: 24, fontFamily: 'roboto-medium-italic', paddingTop: 5, textDecorationLine: 'line-through', color: 'red', marginLeft: 10}}>
+        <Text style={{fontSize: 24, fontFamily: 'Roboto-MediumItalic', paddingTop: 5}}>Package Price:</Text>
+        <Text style={{fontSize: 24, fontFamily: 'Roboto-MediumItalic', paddingTop: 5, textDecorationLine: 'line-through', color: 'red', marginLeft: 10}}>
           <FontAwesome name="rupee" size={20} color="black" />
           {packageService.mrp_price}
         </Text>
-        <Text style={{fontSize: 24, fontFamily: 'roboto-medium-italic', paddingTop: 5, color: 'green', marginLeft: 10}}>
+        <Text style={{fontSize: 24, fontFamily: 'Roboto-MediumItalic', paddingTop: 5, color: 'green', marginLeft: 10}}>
           <FontAwesome name="rupee" size={20} color="black" />
           {packageService.price}
         </Text>
@@ -33,7 +33,7 @@ const ItemContainer = ({items, packageService}) => {
           <Text style={{fontSize: 16}}>{packageService.description}</Text>
         </View> : null
       }
-      <Text style={{fontFamily: 'roboto-medium', fontSize: 18}}>Items</Text>
+      <Text style={{fontFamily: 'Roboto-Medium', fontSize: 18}}>Items</Text>
       {items.map((item, index) => (
         <View key={index} style={{paddingHorizontal: 10, paddingVertical: 10}}>
           <View>

@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { register, validatedAuthToken } from '../../store/actions/authenticationAction';
 import { setSessionUnauthenticated, setSessionAuthenticated } from '../../store/actions/sessionActions';
 import { fetchUser } from '../../store/actions/userActions'
-import { AsyncStorage } from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 import * as Animatable from 'react-native-animatable';
 import LoginForm from '../../components/helpers/loginForm';
 import LoginButtons from '../../components/helpers/loginButtons';

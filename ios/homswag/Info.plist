@@ -55,10 +55,17 @@
 	<false/>
 	<key>UIAppFonts</key>
 	<array>
+		<string></string>
 		<string>FontAwesome.ttf</string>
 		<string>MaterialCommunityIcons.ttf</string>
 		<string>AntDesign.ttf</string>
 		<string>Feather.ttf</string>
+		<string>Roboto-Bold.ttf</string>
+		<string>Roboto-Light.ttf</string>
+		<string>Roboto-Medium.ttf</string>
+		<string>Roboto-Regular.ttf</string>
+		<string>Roboto-LightItalic.ttf</string>
+		<string>Roboto-MediumItalic.ttf</string>
 	</array>
 </dict>
 </plist>

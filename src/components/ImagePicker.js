@@ -103,8 +103,8 @@ const ImagePickerView = (props) => {
             <View style={{paddingTop: 5}}>
             { isUploading ?
               <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                <Text style={{fontFamily: 'roboto-light-italic', fontSize: 12}}>{progress}%</Text>
-                <Text style={{fontFamily: 'roboto-light-italic', fontSize: 12}}>Uploading...</Text>
+                <Text style={{fontFamily: 'Roboto-LightItalic', fontSize: 12}}>{progress}%</Text>
+                <Text style={{fontFamily: 'Roboto-LightItalic', fontSize: 12}}>Uploading...</Text>
               </View> :
               <TouchableOpacity onPress={startModule} style={{justifyContent: 'center', alignItems: 'center'}}>
                 <Text>Change</Text>
