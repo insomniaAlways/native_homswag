@@ -5,6 +5,9 @@ import { View, Image, TouchableOpacity, ImageBackground, StyleSheet, Text } from
 // import * as Permissions from 'expo-permissions';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 // import * as firebase from 'firebase';
+import storage from '@react-native-firebase/storage';
+import { firebase } from '@react-native-firebase/storage';
+
 import ProfilePicPlaceholder from '../assets/images/profile_pic_placeholder.png'
 
 const ImagePickerView = (props) => {
@@ -52,20 +55,20 @@ const ImagePickerView = (props) => {
   }
 
   const uploadImage = async (uri) => {
-    // try {
-    //   const response = await fetch(uri);
-    //   const blob = await response.blob();
-    //   let ref = firebase.storage().ref().child('profile_pic/' + user_id);
-    //   const uploadTask = ref.put(blob);
-    //   uploadTask.on('state_changed',
-    //   (snapshot) => progressStatus(snapshot),
-    //   (error) => catchError(error),
-    //   () => uploadTask.snapshot.ref.getDownloadURL()
-    //   .then((url) => setImage(url)))
-    // } catch (e) {
-    //   alert(e)
-    //   reset()
-    // }
+    try {
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      let ref = firebase.storage().ref().child('profile_pic/' + user_id);
+      const uploadTask = ref.put(blob);
+      uploadTask.on('state_changed',
+      (snapshot) => progressStatus(snapshot),
+      (error) => catchError(error),
+      () => uploadTask.snapshot.ref.getDownloadURL()
+      .then((url) => setImage(url)))
+    } catch (e) {
+      alert(e)
+      reset()
+    }
   }
 
   const getPermissionAsync = async () => {
@@ -75,21 +78,21 @@ const ImagePickerView = (props) => {
     //     alert('Sorry, we need camera roll permissions to make this work!');
     //   }
     // }
-    // _pickImage()
+    _pickImage()
   }
 
   const _pickImage = async () => {
-    // let result = await ImagePicker.launchImageLibraryAsync({
-    //   mediaTypes: ImagePicker.MediaTypeOptions.All,
-    //   allowsEditing: true,
-    //   aspect: [4, 4],
-    //   quality: 0.5
-    // });
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 4],
+      quality: 0.5
+    });
 
-    // if (!result.cancelled) {
-    //   setUploding(true)
-    //   uploadImage(result.uri)
-    // }
+    if (!result.cancelled) {
+      setUploding(true)
+      uploadImage(result.uri)
+    }
   };
 
   return (
