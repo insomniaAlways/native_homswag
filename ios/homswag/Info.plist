@@ -67,5 +67,11 @@
 		<string>Roboto-LightItalic.ttf</string>
 		<string>Roboto-MediumItalic.ttf</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Homswag would like access to your photo gallery to set profile picture inside the application</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Homswag would like to use your camera to set profile picture inside the application</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Homswag would like to save photos to your photo gallery that set as profile picture inside the application</string>
 </dict>
 </plist>
