@@ -1,4 +1,4 @@
-package com.homswag;
+package com.capaz.homswag;
 
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;

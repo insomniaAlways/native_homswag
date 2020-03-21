@@ -1,4 +1,4 @@
-package com.homswag;
+package com.capaz.homswag;
 
 import android.app.Application;
 import android.content.Context;
