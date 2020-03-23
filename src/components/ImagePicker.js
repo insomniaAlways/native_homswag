@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Image, TouchableOpacity, ImageBackground, StyleSheet, Text } from 'react-native';
+import { View, Image, TouchableOpacity, ImageBackground, StyleSheet, Text, Platform, PermissionsAndroid } from 'react-native';
+// import ImagePicker from 'expo-image-picker';
 // import * as ImagePicker from 'expo-image-picker';
 // import Constants from 'expo-constants';
 // import * as Permissions from 'expo-permissions';
@@ -78,21 +79,50 @@ const ImagePickerView = (props) => {
     //     alert('Sorry, we need camera roll permissions to make this work!');
     //   }
     // }
-    _pickImage()
+    try {
+      if(Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+          {
+            title: 'Homswag File Access Permission',
+            message:
+              'Homswag needs access to your files ' +
+              'for setting profile picture..',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          },
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          _pickImage()
+        } else {
+          console.log('Camera permission denied');
+        }
+      }
+    } catch (err) {
+      // Sentry.captureException(err);
+      console.log(err)
+      alert(err)
+    }
   }
 
   const _pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 4],
-      quality: 0.5
-    });
-
-    if (!result.cancelled) {
-      setUploding(true)
-      uploadImage(result.uri)
-    }
+    // try {
+    //   let result = await ImagePicker.launchImageLibraryAsync({
+    //     mediaTypes: ImagePicker.MediaTypeOptions.All,
+    //     allowsEditing: true,
+    //     aspect: [4, 4],
+    //     quality: 0.5
+    //   });
+  
+    //   if (!result.cancelled) {
+    //     setUploding(true)
+    //     uploadImage(result.uri)
+    //   }
+    // } catch(e) {
+    //   console.log(e)
+    //   alert(e)
+    // }
   };
 
   return (
