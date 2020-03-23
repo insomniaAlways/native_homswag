@@ -17,7 +17,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="422" height="763"/>
                 </imageView>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_ic" translatesAutoresizingMaskIntoConstraints="NO" id="v5D-G0-Hib">
-                    <rect key="frame" x="84.5" y="255" width="253.00000000000023" height="253"/>
+                    <rect key="frame" x="84.5" y="255" width="253" height="253"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="v5D-G0-Hib" secondAttribute="height" multiplier="1:1" id="joi-ZO-a5o"/>
                     </constraints>
