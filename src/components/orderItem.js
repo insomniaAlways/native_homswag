@@ -50,7 +50,11 @@ const OrderItem = function(props) {
         </View>
         <View style={{padding: 10}}>
           <View style={{flexDirection: "row", justifyContent: 'space-between'}}>
-            <Text>Total</Text>
+            <Text>Total amount:</Text>
+            <Text><FontAwesome name="rupee" size={12} color="black" /> {order.order_total}</Text>
+          </View>
+          <View style={{flexDirection: "row", justifyContent: 'space-between'}}>
+            <Text>Total paid:</Text>
             <Text><FontAwesome name="rupee" size={12} color="black" /> {order.total_paid}</Text>
           </View>
           <View style={{paddingTop: 10, flexDirection: "row", justifyContent: 'space-between'}}>
