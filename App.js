@@ -5,6 +5,18 @@ import AppNavigator from './src/navigations';
 import SplashScreen from 'react-native-splash-screen'
 import moment from 'moment';
 
+XMLHttpRequest = GLOBAL.originalXMLHttpRequest ?
+    GLOBAL.originalXMLHttpRequest :
+    GLOBAL.XMLHttpRequest;
+
+  // fetch logger
+global._fetch = fetch;
+global.fetch = function (uri, options, ...args) {
+  return global._fetch(uri, options, ...args).then((response) => {
+    return response;
+  });
+};
+
 const App = () => {
   console.log('add load', moment().format('mm:ss, SS'))
 

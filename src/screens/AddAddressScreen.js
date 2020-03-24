@@ -1,5 +1,5 @@
 import React, { useState, useEffect }from 'react';
-import { View, StyleSheet, TouchableOpacity, ActivityIndicator, Modal, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ActivityIndicator, Modal, Text, PermissionsAndroid } from 'react-native';
 import MapView from 'react-native-maps';
 import FloatingInput from '../components/input-helpers.js/floatingInput';
 import { connect } from 'react-redux';
@@ -84,18 +84,48 @@ function AddressScreen(props) {
 
   const debounceCall = _.debounce(onRegionChange, 500);
 
+
+  async function getPemission() {
+    // let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    // if (status !== 'granted') {
+    //   onError()
+    // } else {
+      // return navigator.geolocation.getCurrentPosition(
+      //   ({coords}) => debounceCall(coords.latitude, coords.longitude),
+      //   onError, {enableHighAccuracy: true, maximumAge: 0});
+    // }
+    try {
+      if(Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            title: 'Homswag Location Access Permission',
+            message:
+              'Homswag needs access to your GPS ' +
+              'for getting current location.',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          },
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          debugger
+          return navigator.geolocation.getCurrentPosition(
+            ({coords}) => debounceCall(coords.latitude, coords.longitude),
+            onError, {enableHighAccuracy: true, maximumAge: 0});
+        } else {
+          onError()
+        }
+      }
+    } catch (err) {
+      // Sentry.captureException(err);
+      console.log(err)
+      onError()
+    }
+  }
+
   useEffect(() => {
     if(!isCurrentLoactionLoaded) {
-      async function getPemission() {
-        // let { status } = await Permissions.askAsync(Permissions.LOCATION);
-        // if (status !== 'granted') {
-        //   onError()
-        // } else {
-          // return navigator.geolocation.getCurrentPosition(
-          //   ({coords}) => debounceCall(coords.latitude, coords.longitude),
-          //   onError, {enableHighAccuracy: true, maximumAge: 0});
-        // }
-      }
       getPemission()
     }
     return () => setLoading(false)
