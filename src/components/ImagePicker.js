@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { View, Image, TouchableOpacity, ImageBackground, StyleSheet, Text, Platform, PermissionsAndroid } from 'react-native';
-// import ImagePicker from 'expo-image-picker';
-// import * as ImagePicker from 'expo-image-picker';
+import * as ImagePicker from 'expo-image-picker';
 // import Constants from 'expo-constants';
-// import * as Permissions from 'expo-permissions';
+import * as Permissions from 'expo-permissions';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 // import * as firebase from 'firebase';
 import storage from '@react-native-firebase/storage';
@@ -74,10 +73,12 @@ const ImagePickerView = (props) => {
 
   const getPermissionAsync = async () => {
     // if (Constants.platform.ios) {
-    //   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-    //   if (status !== 'granted') {
-    //     alert('Sorry, we need camera roll permissions to make this work!');
-    //   }
+      // const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      // if (status !== 'granted') {
+      //   alert('Sorry, we need camera roll permissions to make this work!');
+      // } else {
+      //   _pickImage()
+      // }
     // }
     try {
       if(Platform.OS === 'android') {
@@ -108,17 +109,33 @@ const ImagePickerView = (props) => {
 
   const _pickImage = async () => {
     // try {
-    //   let result = await ImagePicker.launchImageLibraryAsync({
-    //     mediaTypes: ImagePicker.MediaTypeOptions.All,
-    //     allowsEditing: true,
-    //     aspect: [4, 4],
-    //     quality: 0.5
-    //   });
+      debugger
+      return ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 4],
+        quality: 0.5
+      }).then((result) => {
+        debugger
+        if (!result.cancelled) {
+          setUploding(true)
+          uploadImage(result.uri)
+        }
+      }).catch((e) => {
+        debugger
+        console.log(e)
+      })
+      // let result = await ImagePicker.launchImageLibraryAsync({
+      //   mediaTypes: ImagePicker.MediaTypeOptions.All,
+      //   allowsEditing: true,
+      //   aspect: [4, 4],
+      //   quality: 0.5
+      // });
   
-    //   if (!result.cancelled) {
-    //     setUploding(true)
-    //     uploadImage(result.uri)
-    //   }
+      // if (!result.cancelled) {
+      //   setUploding(true)
+      //   uploadImage(result.uri)
+      // }
     // } catch(e) {
     //   console.log(e)
     //   alert(e)

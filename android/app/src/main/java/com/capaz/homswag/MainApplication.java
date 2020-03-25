@@ -7,13 +7,21 @@ import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
-// import com.horcrux.svg.SvgPackage;
-// import com.oblador.vectoricons.*;
+
+import com.capaz.homswag.generated.BasePackageList;
+import org.unimodules.adapters.react.ModuleRegistryAdapter;
+import org.unimodules.adapters.react.ReactModuleRegistryProvider;
+import org.unimodules.core.interfaces.SingletonModule;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Arrays;
 
 public class MainApplication extends Application implements ReactApplication {
-
+  private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(
+      new BasePackageList().getPackageList(),
+          Arrays.<SingletonModule>asList()
+  );
   private final ReactNativeHost mReactNativeHost =
       new ReactNativeHost(this) {
         @Override
@@ -29,6 +37,11 @@ public class MainApplication extends Application implements ReactApplication {
           // packages.add(new MyReactNativePackage());
           // packages.add(new VectorIconsPackage())
           // packages.add(new new SvgPackage()())
+          List<ReactPackage> unimodules = Arrays.<ReactPackage>asList(
+             new ModuleRegistryAdapter(mModuleRegistryProvider)
+          );
+          packages.addAll(unimodules);
+
           return packages;
         }
 

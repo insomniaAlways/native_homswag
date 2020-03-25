@@ -18,6 +18,7 @@
     "@react-native-firebase/app": "^6.3.4",
     "@react-native-firebase/storage": "^6.3.4",
     "axios": "^0.19.2",
+    "expo-image-picker": "^8.0.2",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "native-base": "^2.13.12",
