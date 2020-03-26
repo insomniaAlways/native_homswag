@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { View, Image, TouchableOpacity, ImageBackground, StyleSheet, Text, Platform, PermissionsAndroid } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-// import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-// import * as firebase from 'firebase';
 import storage from '@react-native-firebase/storage';
-import { firebase } from '@react-native-firebase/storage';
-
 import ProfilePicPlaceholder from '../assets/images/profile_pic_placeholder.png'
+
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 
 const ImagePickerView = (props) => {
   const { image, setImage, user_id, isEdit, isUploading, setUploding, isOffline } = props
@@ -54,16 +53,15 @@ const ImagePickerView = (props) => {
     reset()
   }
 
-  const uploadImage = async (uri) => {
+  const uploadImage = async (uri, fileExtention) => {
     try {
-      const response = await fetch(uri);
-      const blob = await response.blob();
-      let ref = firebase.storage().ref().child('profile_pic/' + user_id);
-      const uploadTask = ref.put(blob);
+      const fileName =  `${user_id}_${uuidv4()}`
+      let ref = storage().ref().child('profile_pic/' + fileName);
+      const uploadTask = ref.putFile(uri);
       uploadTask.on('state_changed',
       (snapshot) => progressStatus(snapshot),
       (error) => catchError(error),
-      () => uploadTask.snapshot.ref.getDownloadURL()
+      () => ref.getDownloadURL()
       .then((url) => setImage(url)))
     } catch (e) {
       alert(e)
@@ -72,14 +70,6 @@ const ImagePickerView = (props) => {
   }
 
   const getPermissionAsync = async () => {
-    // if (Constants.platform.ios) {
-      // const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-      // if (status !== 'granted') {
-      //   alert('Sorry, we need camera roll permissions to make this work!');
-      // } else {
-      //   _pickImage()
-      // }
-    // }
     try {
       if(Platform.OS === 'android') {
         const granted = await PermissionsAndroid.request(
@@ -97,49 +87,39 @@ const ImagePickerView = (props) => {
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
           _pickImage()
         } else {
-          console.log('Camera permission denied');
+          alert('Sorry, we file system permissions to make this work!');
+        }
+      } else if (Platform.OS === 'ios') {
+        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!');
+        } else {
+          _pickImage()
         }
       }
     } catch (err) {
       // Sentry.captureException(err);
-      console.log(err)
       alert(err)
     }
   }
 
   const _pickImage = async () => {
-    // try {
-      debugger
-      return ImagePicker.launchImageLibraryAsync({
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
         aspect: [4, 4],
         quality: 0.5
-      }).then((result) => {
-        debugger
-        if (!result.cancelled) {
-          setUploding(true)
-          uploadImage(result.uri)
-        }
-      }).catch((e) => {
-        debugger
-        console.log(e)
-      })
-      // let result = await ImagePicker.launchImageLibraryAsync({
-      //   mediaTypes: ImagePicker.MediaTypeOptions.All,
-      //   allowsEditing: true,
-      //   aspect: [4, 4],
-      //   quality: 0.5
-      // });
+      });
   
-      // if (!result.cancelled) {
-      //   setUploding(true)
-      //   uploadImage(result.uri)
-      // }
-    // } catch(e) {
-    //   console.log(e)
-    //   alert(e)
-    // }
+      if (!result.cancelled) {
+        setUploding(true)
+        let fileExtention =  result.uri.split('.').pop()
+        uploadImage(result.uri, fileExtention)
+      }
+    } catch(e) {
+      alert(e)
+    }
   };
 
   return (
