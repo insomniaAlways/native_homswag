@@ -12,10 +12,11 @@ import AsyncStorage from '@react-native-community/async-storage';
 import * as Animatable from 'react-native-animatable';
 import LoginForm from '../../components/helpers/loginForm';
 import LoginButtons from '../../components/helpers/loginButtons';
-// import Constants from 'expo-constants';
 import * as Sentry from '@sentry/react-native';
+import { useSafeArea } from 'react-native-safe-area-context';
 
 const LoginScreen = (props) => {
+  const insets = useSafeArea();
   const { navigation,
     registerUser,
     currentUserModel,
@@ -164,7 +165,7 @@ const LoginScreen = (props) => {
     <ImageOverlay
       style={styles.container}
       source={ImageBackground}>
-      <View style={{flex: 1}}>
+      <View style={{flex: 1, paddingTop: insets.top}}>
         <View style={styles.headerContainer}>
           <Image source={Logo} style={{width: 180, height: 180}}/>
         </View>
@@ -242,10 +243,8 @@ const styles = StyleSheet.create({
     flex: 3,
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
-    // paddingTop: Constants.statusBarHeight + 60
   },
   headerContainer: {
-    // paddingTop: Constants.statusBarHeight + 40,
     justifyContent: 'center',
     alignItems: 'center',
     minHeight: 216,

@@ -79,5 +79,12 @@
 	<string>Allow Homswag to use your location, such that we can fetch your current location's info for the getting appointment location.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Allow Homswag to use your location, such that we can fetch your current location's info for the getting appointment location.</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>tel</string>
+		<string>telprompt</string>
+		<string>mailto</string>
+		<string>whatsapp</string>
+	</array>
 </dict>
 </plist>

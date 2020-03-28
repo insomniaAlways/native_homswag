@@ -114,7 +114,7 @@ const ImagePickerView = (props) => {
         aspect: [4, 4],
         quality: 0.5
       });
-  
+
       if (!result.cancelled) {
         setUploding(true)
         let fileExtention =  result.uri.split('.').pop()

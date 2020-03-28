@@ -6,6 +6,7 @@ import SplashScreen from 'react-native-splash-screen'
 import moment from 'moment';
 
 import * as Sentry from '@sentry/react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 Sentry.init({ 
   dsn: 'https://16e35b4da8db4096b2298db1fb8049f0@sentry.io/2787983', 
@@ -31,7 +32,9 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <AppNavigator />
+      <SafeAreaProvider>
+        <AppNavigator />
+      </SafeAreaProvider>
     </Provider>
   );
 };

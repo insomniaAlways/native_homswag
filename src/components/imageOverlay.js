@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, ImageBackgroundProps, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { ImageBackground, StyleSheet } from 'react-native';
 
 const DEFAULT_OVERLAY_COLOR = 'rgba(0, 0, 0, 0.45)';
 

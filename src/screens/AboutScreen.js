@@ -5,6 +5,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import { statusBarLightColor } from '../style/customStyles';
+import * as Sentry from '@sentry/react-native';
 
 function ContactScreen(props) {
 

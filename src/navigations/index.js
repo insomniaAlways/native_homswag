@@ -60,7 +60,6 @@ const AppNavigator = createStackNavigator({
     // Payment: {
     //   screen: PaymentScreen
     // },
-    
     AddAddress: {
       screen: AddAddressScreen,
       navigationOptions: () => ({
@@ -88,7 +87,8 @@ const AppNavigator = createStackNavigator({
     defaultNavigationOptions: ({ navigation }) => ({
       title: navigation.state.routeName,
       headerStyle: DefaultStyles.brandBackgroundColor,
-      headerTintColor: '#fff',
+      headerTintColor: '#FFFFFF',
+      headerBackAllowFontScaling: true,
       headerTitleStyle: {
         fontWeight: 'bold',
         flex: 1
@@ -115,7 +115,8 @@ const OrderStackNavigator = createStackNavigator({
 {
   defaultNavigationOptions: ({ navigation }) => ({
     headerStyle: DefaultStyles.brandBackgroundColor,
-    headerTintColor: '#fff',
+    headerTintColor: '#FFFFFF',
+    headerBackAllowFontScaling: true,
     headerTitleStyle: {
       fontWeight: 'bold',
       flex: 1
@@ -141,7 +142,8 @@ const AddressStack = createStackNavigator({
 {
   defaultNavigationOptions: ({ navigation }) => ({
     headerStyle: DefaultStyles.brandBackgroundColor,
-    headerTintColor: '#fff',
+    headerTintColor: '#FFFFFF',
+    headerBackAllowFontScaling: true,
     headerTitleStyle: {
       fontWeight: 'bold',
       flex: 1

@@ -4,15 +4,16 @@ import { fetchCart } from '../store/actions/cartAction';
 import { createOrder } from '../store/actions/orderActions';
 import Graphics from '../assets/images/order_confirm_background.png'
 import { View, StyleSheet, ScrollView, ImageBackground, Text } from 'react-native';
-// import Constants from 'expo-constants';
 import ItemView from '../components/itemView';
 import { TouchableOpacity } from 'react-native';
 import moment from 'moment';
 import { brandColor, brandLightBackdroundColor } from '../style/customStyles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Sentry from '@sentry/react-native';
+import { useSafeArea } from 'react-native-safe-area-context';
 
 function ReviewOrderScreen (props) {
+  const insets = useSafeArea();
   const { cart, orderModel, getCart, placeOrder, appointment, networkAvailability } = props
   const [ isloading, setLoading ] = useState(false)
   const { cart_items, cart_total, item_total_price } = cart.values
@@ -119,10 +120,10 @@ function ReviewOrderScreen (props) {
           </ScrollView>
         </View>
         { isloading ?
-          <TouchableOpacity style={{height: 57, justifyContent: 'center', alignItems: 'center', backgroundColor: brandLightBackdroundColor}} disabled={true}>
+          <TouchableOpacity style={{height: 57, justifyContent: 'center', alignItems: 'center', backgroundColor: brandLightBackdroundColor, marginBottom: insets.bottom}} disabled={true}>
             <Text style={{width: '100%', textAlign: 'center', color: '#fff', fontSize: 16, fontWeight: 'bold'}}>Booking...</Text>
           </TouchableOpacity> :
-          <TouchableOpacity style={{height: 57, justifyContent: 'center', alignItems: 'center', backgroundColor: brandColor}} onPress={() => confirmBooking()}>
+          <TouchableOpacity style={{height: 57, justifyContent: 'center', alignItems: 'center', backgroundColor: brandColor, marginBottom: insets.bottom}} onPress={() => confirmBooking()}>
             <Text style={{width: '100%', textAlign: 'center', color: '#fff', fontSize: 16, fontWeight: 'bold'}}>Book Appointment</Text>
           </TouchableOpacity>
         }

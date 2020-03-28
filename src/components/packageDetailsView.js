@@ -8,6 +8,7 @@ import _ from 'lodash';
 import { Dimensions } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as Sentry from '@sentry/react-native';
+import { useSafeArea } from 'react-native-safe-area-context';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 
@@ -53,6 +54,7 @@ const ItemContainer = ({items, packageService}) => {
 }
 
 const PackageDetails = (props) => {
+  const insets = useSafeArea();
   const { tab: packageService, cartItemModel, addItemToCart, deletePackage, networkAvailability } = props
   const [ isAdded, setIsAdded ] = useState(false)
 
@@ -102,7 +104,7 @@ const PackageDetails = (props) => {
         </View> :
         <View>
           {!networkAvailability.isOffline &&
-            <View>
+            <View style={{marginBottom: insets.bottom}}>
               { isAdded ? 
                 <View style={[{height: 55}, DefaultStyles.brandBackgroundColor]}>
                   <TouchableOpacity style={[styles.button, DefaultStyles.brandColorButton]} onPress={removePackageFromCart}>

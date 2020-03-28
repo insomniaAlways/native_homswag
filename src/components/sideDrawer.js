@@ -27,36 +27,42 @@ const SideDrawer = props => {
   }
 
   return (
-  <SafeAreaView style={styles.container}>
+  <View style={styles.container}>
     <View style={{flex: 1}}>
       <ImageBackground source={ProfileBackground} style={styles.profilePicContainer}>
-        <View style={styles.profilePic}>
-          {currentUserModel.values.image_source ?
-          <Image style={styles.profilePic} source={{uri: currentUserModel.values.image_source}}/> :
-          <View style={styles.profilePic}></View> }
-        </View>
-        <View style={styles.nameContainer}>
-          <Text style={styles.name}>Hello, {currentUserModel.values.name}</Text>
-        </View>
+        <SafeAreaView>
+          <View style={styles.profilePic}>
+            {currentUserModel.values.image_source ?
+            <Image style={styles.profilePic} source={{uri: currentUserModel.values.image_source}}/> :
+            <View style={styles.profilePic}></View> }
+          </View>
+          <View style={styles.nameContainer}>
+            <Text style={styles.name}>Hello, {currentUserModel.values.name}</Text>
+          </View>
+        </SafeAreaView>
       </ImageBackground>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <DrawerItems {...props} labelStyle={{width: '100%'}}/>
-        <TouchableOpacity onPress={() => logOut()}>
-          <View style={styles.logout}>
-            <MaterialCommunityIcons name="logout" size={18} style={{marginHorizontal: 16, width: 24, alignItems: 'center', opacity: 0.62, paddingLeft: 3}}/>
-            <Text style={styles.logoutText}>Logout</Text>
+      <SafeAreaView>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <DrawerItems {...props} labelStyle={{width: '100%'}}/>
+          <TouchableOpacity onPress={() => logOut()}>
+            <View style={styles.logout}>
+              <MaterialCommunityIcons name="logout" size={18} style={{marginHorizontal: 16, width: 24, alignItems: 'center', opacity: 0.62, paddingLeft: 3}}/>
+              <Text style={styles.logoutText}>Logout</Text>
+            </View>
+          </TouchableOpacity>
+        </ScrollView>
+      </SafeAreaView>
+    </View>
+    <SafeAreaView>
+      <View style={styles.backButtonContainer}>
+        <TouchableOpacity onPress={() => props.navigation.toggleDrawer()}>
+          <View style={styles.backButton}>
+            <FontAwesome name="angle-left" size={20} color="white" />
           </View>
         </TouchableOpacity>
-      </ScrollView>
-    </View>
-    <View style={styles.backButtonContainer}>
-      <TouchableOpacity onPress={() => props.navigation.toggleDrawer()}>
-        <View style={styles.backButton}>
-          <FontAwesome name="angle-left" size={20} color="white" />
-        </View>
-      </TouchableOpacity>
-    </View>
-  </SafeAreaView>
+      </View>
+    </SafeAreaView>
+  </View>
 )};
 
 const styles = StyleSheet.create({

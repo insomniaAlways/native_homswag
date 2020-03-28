@@ -11,8 +11,10 @@ import EmptyCart from '../assets/images/empty_cart.png'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment'
 import * as Sentry from '@sentry/react-native';
+import { useSafeArea } from 'react-native-safe-area-context';
 
 function CartScreen(props) {
+  const insets = useSafeArea();
   const { navigation, cartModel, cartItemModel, appointment, networkAvailability } = props;
 
   useLayoutEffect(() => {
@@ -127,7 +129,7 @@ function CartScreen(props) {
             </View>
             </ScrollView>
           </View>
-          <View style={[{height: 55}, DefaultStyles.brandBackgroundColor]}>
+          <View style={[{height: 55, marginBottom: insets.bottom}, DefaultStyles.brandBackgroundColor]}>
             <TouchableOpacity style={[styles.button, DefaultStyles.brandColorButton]} onPress={() => goToConfirmPage()}>
               <Text style={{color:'#fff', fontSize: 18, fontWeight: 'bold', width: '100%', textAlign: 'center'}}>Next</Text>
             </TouchableOpacity>

@@ -12,8 +12,10 @@ import { KeyboardAvoidingView } from '../components/KeyboardAvoidView';
 import { updateAppointmentState } from '../store/actions/appointmentActions';
 import _ from 'lodash';
 import moment from 'moment';
+import { useSafeArea } from 'react-native-safe-area-context';
 
 function ScheduleAppointmentScreen(props) {
+  const insets = useSafeArea();
   const { appointmentModel, addresses, getAddress, currentUserModel, updateAppointment } = props
   const [ openAddressModal, setModal ] = useState(false)
   const [ scrollOffset, setScrollOffset ] = useState(0)
@@ -152,8 +154,8 @@ function ScheduleAppointmentScreen(props) {
           </View>
         </View>
       </View>
-      <View style={[{height: 55}, DefaultStyles.brandBackgroundColor]}>
-        <TouchableOpacity onPress={() => save()} style={{alignItems: 'center', paddingTop: 15, paddingBottom: 10, width: '100%'}}>
+      <View style={[{height: 55, marginBottom: insets.bottom, justifyContent: 'center'}, DefaultStyles.brandBackgroundColor]}>
+        <TouchableOpacity onPress={() => save()} style={{alignItems: 'center', width: '100%', justifyContent: 'center'}}>
           <Text style={{color: '#fff', fontSize: 16}}>Save & Continue</Text>
         </TouchableOpacity>
       </View>

@@ -182,7 +182,7 @@ function ProfileScreen(props) {
             <View>
               {isEdit ? 
                 <View>
-                  {networkAvailability.isOffline ? 
+                  {networkAvailability.isOffline || isUploading ? 
                     <TouchableOpacity disabled={true}>
                       <View style={[styles.backButton, {backgroundColor: brandLightBackdroundColor}]}>
                         <Text style={{color: "#fff"}}>Save</Text>
