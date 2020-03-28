@@ -87,15 +87,16 @@ function AddressScreen(props) {
 
   async function getPemission() {
     try {
-      let { status } = await Permissions.askAsync(Permissions.LOCATION);
+      let { status } = await Permissions.getAsync(Permissions.LOCATION);
       if (status !== 'granted') {
-        onError()
-      } else {
-        let location = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Highest})
-        return debounceCall(location.coords.latitude, location.coords.longitude)
+        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== 'granted') {
+          onError()
+        }
       }
     } catch (e) {
       console.log(e)
+      alert(e)
     }
   }
 
@@ -125,10 +126,10 @@ function AddressScreen(props) {
         <View style={isCurrentLoactionLoaded && coordinates && coordinates.latitude ? styles.padding_b : styles.padding_a}>
           <MapView style={{height: 300}}
             initialRegion={initialRegion}
-            region={coordinates}
             onRegionChangeComplete={({latitude, longitude}) => debounceCall(latitude, longitude)}
             showsUserLocation={true}
             loadingEnabled={true}
+            onUserLocationChange={getPemission}
             showsMyLocationButton={true}
             showsCompass={true}
             followsUserLocation={true}/>
