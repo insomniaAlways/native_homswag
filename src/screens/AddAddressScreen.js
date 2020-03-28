@@ -103,7 +103,6 @@ function AddressScreen(props) {
     if(!isCurrentLoactionLoaded) {
       getPemission()
     }
-    return () => setLoading(false)
   }, [])
 
   const save = async () => {
@@ -113,7 +112,7 @@ function AddressScreen(props) {
       await addNewAddress({address: {...locationValue, place_id: geoCoding.place_id, place_url: geoCoding.place_url}})
       await getfetchAddress()
       setLoading(false)
-      navigation.navigate(previousScreen)
+      navigation.goBack()
     } catch(e) {
       alert(e)
       setLoading(false)
@@ -122,7 +121,7 @@ function AddressScreen(props) {
 
   return (
     <KeyboardAvoidingView extraHeight={100} showsVerticalScrollIndicator={false}>
-      <View style={{flex: 1}}>
+      <View style={{flex: 1, backgroundColor: '#FFFFFF'}}>
         <View style={isCurrentLoactionLoaded && coordinates && coordinates.latitude ? styles.padding_b : styles.padding_a}>
           <MapView style={{height: 300}}
             initialRegion={initialRegion}
