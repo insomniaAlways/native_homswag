@@ -7,6 +7,7 @@ import { createCartItem, deleteItem } from "../store/actions/cartItemAction";
 import _ from 'lodash';
 import { Dimensions } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import * as Sentry from '@sentry/react-native';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 
@@ -62,6 +63,7 @@ const PackageDetails = (props) => {
   useEffect(() => {
     if(!cartItemModel.isLoading && cartItemModel.error) {
       alert(cartItemModel.error)
+      Sentry.captureException(cartItemModel.error)
     }
   }, [cartItemModel.error])
 

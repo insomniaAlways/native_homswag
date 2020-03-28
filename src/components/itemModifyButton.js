@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { fetchCartItems, updateItem, deleteItem } from '../store/actions/cartItemAction';
+import * as Sentry from '@sentry/react-native';
 
 function ModifyButton(props) {
   const { item, cartItem, updateCartItem, deleteCartItem, isOffline } = props
@@ -42,6 +43,7 @@ function ModifyButton(props) {
         } catch(e) {
           alert(e)
           setLoading(false)
+          Sentry.captureException(e)
         }
       } else if(cartItem && state.count && state.count >= 1) {
         let totalPrice = (+item.price * parseInt(state.count))
@@ -51,6 +53,7 @@ function ModifyButton(props) {
         } catch(e) {
           alert(e)
           setLoading(false)
+          Sentry.captureException(e)
         }
       } else {
         setLoading(false)

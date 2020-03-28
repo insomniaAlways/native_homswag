@@ -10,6 +10,7 @@ import { TouchableOpacity } from 'react-native';
 import moment from 'moment';
 import { brandColor, brandLightBackdroundColor } from '../style/customStyles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as Sentry from '@sentry/react-native';
 
 function ReviewOrderScreen (props) {
   const { cart, orderModel, getCart, placeOrder, appointment, networkAvailability } = props
@@ -25,6 +26,7 @@ function ReviewOrderScreen (props) {
   useEffect(() => {
     if(!orderModel.isloading && orderModel.error) {
       alert(orderModel.error)
+      Sentry.captureException(orderModel.error)
     }
   }, [orderModel.error])
 

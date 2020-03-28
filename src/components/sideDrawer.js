@@ -10,6 +10,7 @@ import ProfileBackground from '../assets/images/blue-wave.jpg';
 import { onSigout } from '../store/actions/authenticationAction';
 import { connect } from 'react-redux';
 import { setSessionUnauthenticated } from '../store/actions/sessionActions';
+import * as Sentry from '@sentry/react-native';
 
 const SideDrawer = props => {
   const { navigation, signOut, currentUserModel, unAuthenticate } = props
@@ -21,6 +22,7 @@ const SideDrawer = props => {
       navigation.navigate('Auth')
     } catch(e) {
       alert(e)
+      Sentry.captureException(e)
     }
   }
 

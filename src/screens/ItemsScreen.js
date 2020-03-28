@@ -10,6 +10,7 @@ import { brandColor } from '../style/customStyles';
 import { fetchCategories } from '../store/actions/index';
 import { fetchCartItems } from '../store/actions/cartItemAction';
 import { fetchAllItems } from '../store/actions/itemActions';
+import * as Sentry from '@sentry/react-native';
 
 function Items(props) {
   const { navigation, items, cartItemModel, cart } = props;
@@ -27,6 +28,7 @@ function Items(props) {
   useEffect(() => {
     if(!cartItemModel.isLoading && cartItemModel.error) {
       alert(cartItemModel.error)
+      Sentry.captureException(cartItemModel.error)
     }
   }, [cartItemModel.error])
 

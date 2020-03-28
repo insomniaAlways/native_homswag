@@ -10,6 +10,7 @@ import CartPromoItemList from '../components/cartPromoItemList';
 import EmptyCart from '../assets/images/empty_cart.png'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment'
+import * as Sentry from '@sentry/react-native';
 
 function CartScreen(props) {
   const { navigation, cartModel, cartItemModel, appointment, networkAvailability } = props;
@@ -24,12 +25,14 @@ function CartScreen(props) {
   useEffect(() => {
     if(!cartItemModel.isLoading && cartItemModel.error) {
       alert(cartItemModel.error)
+      Sentry.captureException(cartItemModel.error)
     }
   }, [cartItemModel.error])
 
   useEffect(() => {
     if(!cartModel.isLoading && cartModel.error) {
       alert(cartModel.error)
+      Sentry.captureException(cartModel.error)
     }
   }, [cartModel.error])
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { register, validateToken } from '../../store/actions/authenticationAction';
+import * as Sentry from '@sentry/react-native';
 
 function LoginButtons(props) {
   const { phone,
@@ -30,6 +31,7 @@ function LoginButtons(props) {
         } catch(e) {
           setButtonLoading(false)
           alert(e)
+          Sentry.captureException(e)
         }
       }
     }

@@ -13,8 +13,7 @@ import * as Animatable from 'react-native-animatable';
 import LoginForm from '../../components/helpers/loginForm';
 import LoginButtons from '../../components/helpers/loginButtons';
 // import Constants from 'expo-constants';
-import moment from 'moment';
-// import * as Sentry from 'sentry-expo';
+import * as Sentry from '@sentry/react-native';
 
 const LoginScreen = (props) => {
   const { navigation,
@@ -62,6 +61,7 @@ const LoginScreen = (props) => {
         alert('Your session has expired, Please Login again')
       } else {
         alert(e)
+        Sentry.captureException(e)
       }
       setLoading(false)
     }
@@ -95,6 +95,7 @@ const LoginScreen = (props) => {
         } catch(e) {
           setButtonLoading(false)
           alert(e)
+          Sentry.captureException(e)
         }
       } else {
         alert("Please provide a valid phone number")
@@ -121,8 +122,10 @@ const LoginScreen = (props) => {
       setLoading(false)
       if(authModel.error && authModel.error.message) {
         alert(authModel.error.message)
+        Sentry.captureException(authModel.error.message)
       } else {
         alert(authModel.error)
+        Sentry.captureException(authModel.error)
       }
     }
   }, [authModel])
@@ -146,8 +149,10 @@ const LoginScreen = (props) => {
         setButtonLoading(false)
         if(currentUserModel.error && currentUserModel.error.message) {
           alert(currentUserModel.error.message)
+          Sentry.captureException(currentUserModel.error.message)
         } else {
           alert(currentUserModel.error)
+          Sentry.captureException(currentUserModel.error)
         }
       }
     }

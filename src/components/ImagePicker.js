@@ -8,6 +8,7 @@ import ProfilePicPlaceholder from '../assets/images/profile_pic_placeholder.png'
 
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
+import * as Sentry from '@sentry/react-native';
 
 const ImagePickerView = (props) => {
   const { image, setImage, user_id, isEdit, isUploading, setUploding, isOffline } = props
@@ -39,6 +40,8 @@ const ImagePickerView = (props) => {
   }
 
   const catchError = (error) => {
+    Sentry.captureEvent(error)
+    reset()
     switch (error.code) {
       case 'storage/unauthorized': {
         return alert(error.code)
@@ -50,7 +53,6 @@ const ImagePickerView = (props) => {
         return alert(error.code)
       }
     }
-    reset()
   }
 
   const uploadImage = async (uri, fileExtention) => {
@@ -66,6 +68,7 @@ const ImagePickerView = (props) => {
     } catch (e) {
       alert(e)
       reset()
+      Sentry.captureException(error)
     }
   }
 
@@ -87,7 +90,7 @@ const ImagePickerView = (props) => {
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
           _pickImage()
         } else {
-          alert('Sorry, we file system permissions to make this work!');
+          alert('Sorry, we need file system permissions to make this work!');
         }
       } else if (Platform.OS === 'ios') {
         const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -98,8 +101,8 @@ const ImagePickerView = (props) => {
         }
       }
     } catch (err) {
-      // Sentry.captureException(err);
       alert(err)
+      Sentry.captureException(error)
     }
   }
 
@@ -119,6 +122,7 @@ const ImagePickerView = (props) => {
       }
     } catch(e) {
       alert(e)
+      Sentry.captureEvent(error)
     }
   };
 

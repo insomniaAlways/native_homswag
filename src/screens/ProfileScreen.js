@@ -9,6 +9,7 @@ import { KeyboardAvoidingView } from '../components/KeyboardAvoidView';
 import _ from 'lodash';
 import ImagePickerView from '../components/ImagePicker';
 import { brandLightBackdroundColor, statusBarLightColor } from '../style/customStyles';
+import * as Sentry from '@sentry/react-native';
 
 function ProfileScreen(props) {
   const { currentUserModel, getUser, updateUserDetails, networkAvailability } = props
@@ -50,8 +51,10 @@ function ProfileScreen(props) {
       setLoading(false)
       if(currentUserModel.error.message) {
         alert(currentUserModel.error.message)
+        Sentry.captureException(currentUserModel.error)
       } else {
         alert(currentUserModel.error)
+        Sentry.captureException(currentUserModel.error)
       }
     } else if(!currentUserModel.isLoading && _.isNil(currentUserModel.error)){
       setLoading(false)

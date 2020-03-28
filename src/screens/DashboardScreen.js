@@ -12,6 +12,7 @@ import OfferView from '../components/offerView';
 import PromoView from '../components/promoView';
 import { statusBarBrandColor } from '../style/customStyles';
 import * as Animatable from 'react-native-animatable';
+import * as Sentry from '@sentry/react-native';
 
 function Dashboard(props) {
   const [ refreshing, setRefreshing ] = useState(false);
@@ -31,6 +32,7 @@ function Dashboard(props) {
         } catch (e) {
           alert(e)
           setRefreshing(false)
+          Sentry.captureException(e)
         }
       }
       fetchData()
@@ -51,6 +53,7 @@ function Dashboard(props) {
           await props.getAllCartItems()
         } catch (e) {
           alert(e)
+          Sentry.captureException(e)
         }
       }
       fetchData()

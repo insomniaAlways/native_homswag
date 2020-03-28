@@ -5,6 +5,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { updateOrder } from '../store/actions/orderActions';
 import moment from 'moment';
+import * as Sentry from '@sentry/react-native';
 
 const OrderDetails = function(props) {
   const order = props.navigation.getParam('order');
@@ -41,6 +42,7 @@ const OrderDetails = function(props) {
   useEffect(() => {
     if(!orderModel.isLoading && orderModel.error) {
       alert(orderModel.error)
+      Sentry.captureException(orderModel.error)
     }
   }, [orderModel.error])
 
