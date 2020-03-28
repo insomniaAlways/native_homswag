@@ -9,9 +9,9 @@ import { KeyboardAvoidingView } from '../components/KeyboardAvoidView'
 import _ from 'lodash';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Label } from 'native-base';
-// import * as Permissions from 'expo-permissions';
+import { Permissions } from 'react-native-unimodules';
 import { brandColor, brandLightBackdroundColor } from '../style/customStyles';
-// import * as Location from 'expo-location';
+import * as Location from 'expo-location';
 
 const initialRegion = {
   latitude: 12.97194,
@@ -59,14 +59,14 @@ function AddressScreen(props) {
           setLoading(false)
           alert('Seems like you are not connected to Internet')
         } else {
-          // const locationResponse = await Location.reverseGeocodeAsync({latitude, longitude})
-          // let formatted_address = `${locationResponse[0].name}, ${locationResponse[0].street}, ${locationResponse[0].city}, ${locationResponse[0].postalCode}, ${locationResponse[0].region}, ${locationResponse[0].country}`
-          // setGeocoding({
-          //   formatedAddress: formatted_address,
-          //   geometry: { latitude: latitude, longitude: longitude },
-          // })
-          // setCoodinatesLoaded(true)
-          // setLoading(false)
+          const locationResponse = await Location.reverseGeocodeAsync({latitude, longitude})
+          let formatted_address = `${locationResponse[0].name}, ${locationResponse[0].street}, ${locationResponse[0].city}, ${locationResponse[0].postalCode}, ${locationResponse[0].region}, ${locationResponse[0].country}`
+          setGeocoding({
+            formatedAddress: formatted_address,
+            geometry: { latitude: latitude, longitude: longitude },
+          })
+          setCoodinatesLoaded(true)
+          setLoading(false)
         }
       } catch(e) {
         alert(e, location.error)
@@ -86,41 +86,16 @@ function AddressScreen(props) {
 
 
   async function getPemission() {
-    // let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    // if (status !== 'granted') {
-    //   onError()
-    // } else {
-      // return navigator.geolocation.getCurrentPosition(
-      //   ({coords}) => debounceCall(coords.latitude, coords.longitude),
-      //   onError, {enableHighAccuracy: true, maximumAge: 0});
-    // }
     try {
-      if(Platform.OS === 'android') {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-          {
-            title: 'Homswag Location Access Permission',
-            message:
-              'Homswag needs access to your GPS ' +
-              'for getting current location.',
-            buttonNeutral: 'Ask Me Later',
-            buttonNegative: 'Cancel',
-            buttonPositive: 'OK',
-          },
-        );
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          debugger
-          return navigator.geolocation.getCurrentPosition(
-            ({coords}) => debounceCall(coords.latitude, coords.longitude),
-            onError, {enableHighAccuracy: true, maximumAge: 0});
-        } else {
-          onError()
-        }
+      let { status } = await Permissions.askAsync(Permissions.LOCATION);
+      if (status !== 'granted') {
+        onError()
+      } else {
+        let location = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Highest})
+        return debounceCall(location.coords.latitude, location.coords.longitude)
       }
-    } catch (err) {
-      // Sentry.captureException(err);
-      console.log(err)
-      onError()
+    } catch (e) {
+      console.log(e)
     }
   }
 
@@ -151,6 +126,7 @@ function AddressScreen(props) {
         <View style={isCurrentLoactionLoaded && coordinates && coordinates.latitude ? styles.padding_b : styles.padding_a}>
           <MapView style={{height: 300}}
             initialRegion={initialRegion}
+            region={coordinates}
             onRegionChangeComplete={({latitude, longitude}) => debounceCall(latitude, longitude)}
             showsUserLocation={true}
             loadingEnabled={true}
@@ -166,11 +142,11 @@ function AddressScreen(props) {
         <View style={{flex: 3, paddingLeft: 30, paddingRight: 30, paddingTop: 5, justifyContent: 'center'}}>
           {locationValue && locationValue.formatedAddress ? 
             <View style={{paddingTop: 10}}>
-              <Text style={{color: 'rgba(0,0,0,0.5)'}}>Current Location</Text>
+              <Text style={{color: 'rgba(0,0,0,0.5)'}}>Location</Text>
               <Text style={{marginTop: 5}}>{locationValue.formatedAddress}</Text>
             </View> :
             <View style={{borderBottomWidth: 1, borderColor: '#eee', marginTop: 30}}>
-              <Label style={{fontSize: 18, color: 'rgba(0,0,0,0.64)'}}>Current Location</Label>
+              <Label style={{fontSize: 18, color: 'rgba(0,0,0,0.64)'}}>Location</Label>
             </View>
           }
           <FloatingInput label="House No/Room no" style={{paddingTop: 10}}

@@ -73,5 +73,11 @@
 	<string>Homswag would like to use your camera to set profile picture inside the application</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Homswag would like to save photos to your photo gallery that set as profile picture inside the application</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Allow Homswag to use your location, such that we can fetch your current location.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Allow Homswag to use your location, such that we can fetch your current location's info for the getting appointment location.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Allow Homswag to use your location, such that we can fetch your current location's info for the getting appointment location.</string>
 </dict>
 </plist>
