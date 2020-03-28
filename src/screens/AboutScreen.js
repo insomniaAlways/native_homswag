@@ -1,39 +1,34 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, Platform, StatusBar } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, StatusBar, Linking } from 'react-native';
 import Logo from '../assets/images/logo_rounded.png';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import { statusBarLightColor } from '../style/customStyles';
-// import { Linking } from 'expo';
 
 function ContactScreen(props) {
 
-  const chechAccessibity = (url) => {
-    // Linking.canOpenURL(url)
-    // .then((supported) => {
-    //   if (!supported) {
-    //     alert(url)
-    //   } else {
-    //     return Linking.openURL(url);
-    //   }
-    // })
-    // .catch((err) => console.error('An error occurred', err));
-  }
+  const openLink = async (url) => {
+    try {
+      const supported = await Linking.canOpenURL(url);
+      if (supported) {
+        await Linking.openURL(url);
+      } else {
+        alert(`Not able to open prefered application.`);
+        Sentry.captureException(url)
+      }
+    } catch (e) {
+      Sentry.captureException(e)
+    }
+  };
 
   const openDialScreen = () => {
-    let number = '';
-    if (Platform.OS === 'android') {
-      number = 'tel:${+916366505567}';
-    } else {
-      number = 'telprompt:${+916366505567}';
-    }
-    chechAccessibity(number);
+    let url = 'tel:+916366505567';
+    openLink(url);
   };
   const openMailScreen = () => {
-    let mailAddress = '';
-    mailAddress = 'mailto: care@homswag.com'
-    chechAccessibity(mailAddress);
+    let mailAddress = 'mailto: care@homswag.com';
+    openLink(mailAddress);
   };
 
   return (

@@ -1,23 +1,26 @@
 import React from "react";
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Linking, Alert } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CartButton from './cartButton';
-// import { Linking } from 'expo';
+import * as Sentry from '@sentry/react-native';
 
 const HeaderRightView = function (props) {
 
-  const openWhatsApp = () => {
-    // let url = `whatsapp://send?text=&phone=916366505567`
-    // Linking.canOpenURL(url)
-    // .then((supported) => {
-    //   if (!supported) {
-    //     alert(url);
-    //   } else {
-    //     return Linking.openURL(`whatsapp://send?text=&phone=916366505567`);
-    //   }
-    // })
-    // .catch((err) => alert(err));
-  }
+  const openWhatsApp = async () => {
+    let url = `whatsapp://send?text=&phone=916366505567`
+    try {
+      const supported = await Linking.canOpenURL(url);
+      if (supported) {
+        await Linking.openURL(url);
+      } else {
+        alert(`Not able to open WhatsApp. Either application is not avalable in your device or permission is available.`);
+        Sentry.captureException(url)
+      }
+    } catch (e) {
+      Sentry.captureException(e)
+    }
+  };
+
   return (
     <View style={{flexDirection: 'row', flexDirection: 'row', justifyContent: 'space-around', width: 120, alignItems: 'center', paddingRight: 10}}>
       <TouchableOpacity onPress={() => openWhatsApp()}>
