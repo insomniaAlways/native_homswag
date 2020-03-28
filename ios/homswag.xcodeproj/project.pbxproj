@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* homswagTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* homswagTests.m */; };
 		06AD6A6477393821D03175EF /* libPods-homswag-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B7BD6423BBC71C5F4715A6D /* libPods-homswag-tvOS.a */; };
@@ -37,6 +36,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* homswagTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* homswagTests.m */; };
 		4464F44D75B5D31828A91D72 /* libPods-homswagTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C254DA07B7332F4142B99D61 /* libPods-homswagTests.a */; };
 		C119F66ADDB5C832A1174DB1 /* libPods-homswag.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 094A5C22A2F4CEF6051C91FC /* libPods-homswag.a */; };
+		E34BE1240EEC42E28AF57686 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A715F36D17EC49F1B4975080 /* libz.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +93,7 @@
 		DD6B4854ED70F79F3272752A /* Pods-homswag.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-homswag.release.xcconfig"; path = "Target Support Files/Pods-homswag/Pods-homswag.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		A715F36D17EC49F1B4975080 /* libz.tbd */ = {isa = PBXFileReference; name = "libz.tbd"; path = "usr/lib/libz.tbd"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = sourcecode.text-based-dylib-definition; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +110,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C119F66ADDB5C832A1174DB1 /* libPods-homswag.a in Frameworks */,
+				E34BE1240EEC42E28AF57686 /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,6 +204,7 @@
 				3B7BD6423BBC71C5F4715A6D /* libPods-homswag-tvOS.a */,
 				66D80240996875A7BE079A87 /* libPods-homswag-tvOSTests.a */,
 				C254DA07B7332F4142B99D61 /* libPods-homswagTests.a */,
+				A715F36D17EC49F1B4975080 /* libz.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -240,6 +243,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		ABAACF8F8BFD436E9F1D4E22 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			path = Application;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -274,6 +285,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				A7A810F2F9FF2C41F80C24C6 /* [CP-User] [RNFB] Core Configuration */,
 				10D96D6D67C9D6C7D256E40E /* [CP] Copy Pods Resources */,
+				D5E1D1837CE147A58D0AE569 /* Upload Debug Symbols to Sentry */,
 			);
 			buildRules = (
 			);
@@ -432,7 +444,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport NODE_BINARY=node\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
 		10D96D6D67C9D6C7D256E40E /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -516,7 +528,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport NODE_BINARY=node\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
 		33E06AE4E48E6F7DCDBFB899 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -631,6 +643,20 @@
 			shellPath = /bin/sh;
 			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
 			showEnvVarsInLog = 0;
+		};
+		D5E1D1837CE147A58D0AE569 /* Upload Debug Symbols to Sentry */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			name = "Upload Debug Symbols to Sentry";
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			shellPath = /bin/sh;
+			shellScript = "export SENTRY_PROPERTIES=sentry.properties\n../node_modules/@sentry/cli/bin/sentry-cli upload-dsym";
 		};
 /* End PBXShellScriptBuildPhase section */
 

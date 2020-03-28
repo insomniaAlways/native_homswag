@@ -12,6 +12,7 @@ import { Label } from 'native-base';
 import { Permissions } from 'react-native-unimodules';
 import { brandColor, brandLightBackdroundColor } from '../style/customStyles';
 import * as Location from 'expo-location';
+import * as Sentry from '@sentry/react-native';
 
 const initialRegion = {
   latitude: 12.97194,
@@ -69,7 +70,8 @@ function AddressScreen(props) {
           setLoading(false)
         }
       } catch(e) {
-        alert(e, location.error)
+        alert(e)
+        Sentry.captureException(e)
         setLoading(false)
       }
     }
@@ -79,6 +81,7 @@ function AddressScreen(props) {
   useEffect(() => {
     if(location && location.error) {
       alert(error)
+      Sentry.captureException(e)
     }
   }, [location.error])
 
@@ -95,8 +98,8 @@ function AddressScreen(props) {
         }
       }
     } catch (e) {
-      console.log(e)
       alert(e)
+      Sentry.captureException(e)
     }
   }
 
@@ -117,6 +120,7 @@ function AddressScreen(props) {
     } catch(e) {
       alert(e)
       setLoading(false)
+      Sentry.captureException(e)
     }
   }
 

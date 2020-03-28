@@ -5,6 +5,13 @@ import AppNavigator from './src/navigations';
 import SplashScreen from 'react-native-splash-screen'
 import moment from 'moment';
 
+import * as Sentry from '@sentry/react-native';
+
+Sentry.init({ 
+  dsn: 'https://16e35b4da8db4096b2298db1fb8049f0@sentry.io/2787983', 
+});
+
+
 XMLHttpRequest = GLOBAL.originalXMLHttpRequest ?
     GLOBAL.originalXMLHttpRequest :
     GLOBAL.XMLHttpRequest;
