@@ -2,7 +2,6 @@ import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, StatusBar } from 'react-native';
 import PlaceHolderTextInput from '../components/placeHolderTextInput';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-// import Constants from 'expo-constants';
 import { connect } from 'react-redux';
 import { fetchUser, updateUser } from '../store/actions/userActions';
 import { KeyboardAvoidingView } from '../components/KeyboardAvoidView';
@@ -19,7 +18,7 @@ function ProfileScreen(props) {
   const [ isUploading, setUploding ] = useState(false)
 
   const updateProfile = () => {
-    if(currentUserObject.name && typeof(currentUserObject.name) == "string" && currentUserObject.name.length > 0) {
+    if(currentUserObject.name && typeof(currentUserObject.name) == "string" && currentUserObject.name.trim() && currentUserObject.name.trim().length > 0) {
       setLoading(true)
       updateUserDetails(_.omitBy({
         name: currentUserObject.name,

@@ -6,6 +6,7 @@ import { VALIDATION_INITIATED,
   ON_LOGIN_SUCCESS,
   ON_LOGIN_FAILED } from '../actionTypes';
 import { createRecord, initializeAxiosHeader } from '../asyncActions/index';
+import moment from 'moment';
 
 export const register = (phone) => {
   return function(dispatch) {
@@ -82,15 +83,22 @@ export const onSigout = () => {
 }
 
 export const validatedAuthToken = (authToken, refreshToken) => {
-  return function (dispatch) {
-    dispatch(onValidationStart())
-    return createRecord('token', {token: authToken, refresh_token: refreshToken})
-    .then((res) => {
+  return async (dispatch) => {
+    try {
+      console.log('token endpoint triggered', moment().format('s:SSS'))
+      dispatch(onValidationStart())
+      let res = await createRecord('token', {token: authToken, refresh_token: refreshToken})
+      console.log('token endpoint response', moment().format('s:SSS'))
       if(res && res.data && res.data.token) {
         dispatch(addHeader(res.data.token))
         return dispatch(onValidationSuccess(res.data))
       }
-    })
-    .catch(e => dispatch(onValidationError(e.response.data)))
+    } catch (e) {
+      if(e && e.response && e.response.data) {
+        dispatch(onValidationError(e.response.data))
+      } else {
+        dispatch(onValidationError(e))
+      }
+    }
   }
 }
