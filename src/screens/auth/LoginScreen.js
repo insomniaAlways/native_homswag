@@ -47,26 +47,32 @@ const LoginScreen = (props) => {
   //while application load
   const checkAuthentication = async () => {
     try {
-      Sentry.captureMessage('Token Collection Start on ' + moment().unix())
-      let token = await AsyncStorage.getItem('token')
-      if(token) {
-        setUserIsNew(false)
-        let tokenObject = JSON.parse(token)
-        if(tokenObject && tokenObject.authToken && tokenObject.refreshToken) {
-          Sentry.captureMessage('Token Validation Start on ' + moment().unix())
-          validateCurrentToken(tokenObject.authToken, tokenObject.refreshToken)
+      Sentry.captureMessage('Token Collection Start on ' + moment().unix() + ' session.isSessionAuthenticated: ' + session.isSessionAuthenticated)
+      if(!session.isSessionAuthenticated) {
+        let token = await AsyncStorage.getItem('token')
+        if(token) {
+          setUserIsNew(false)
+          let tokenObject = JSON.parse(token)
+          if(tokenObject && tokenObject.authToken && tokenObject.refreshToken) {
+            Sentry.captureMessage('Token Validation Start on ' + moment().unix())
+            validateCurrentToken(tokenObject.authToken, tokenObject.refreshToken)
+          } else {
+            startLoginProcess()
+          }
         } else {
+          setUserIsNew(true)
           startLoginProcess()
         }
       } else {
-        setUserIsNew(true)
-        startLoginProcess()
+        setButtonLoading(false)
+        setLoading(false)
+        navigation.navigate('App')
       }
     } catch (e) {
       if(typeof(e) == "string" && e.includes('JSON')) {
         alert('Your session has expired, Please Login again')
       } else {
-        // alert(e)
+        alert(e)
         Sentry.captureException(e)
       }
       setLoading(false)
@@ -100,7 +106,7 @@ const LoginScreen = (props) => {
           }, 5000);
         } catch(e) {
           setButtonLoading(false)
-          // alert(e)
+          alert(e)
           Sentry.captureException(e)
         }
       } else {
@@ -130,10 +136,10 @@ const LoginScreen = (props) => {
       setButtonLoading(false)
       setLoading(false)
       if(authModel.error && authModel.error.message) {
-        // alert(authModel.error.message)
+        alert(authModel.error.message)
         Sentry.captureException(authModel.error.message)
       } else {
-        // alert(authModel.error)
+        alert(authModel.error)
         Sentry.captureException(authModel.error)
       }
     }
@@ -157,10 +163,10 @@ const LoginScreen = (props) => {
       } else if(!currentUserModel.isLoading && currentUserModel.error) {
         setButtonLoading(false)
         if(currentUserModel.error && currentUserModel.error.message) {
-          // alert(currentUserModel.error.message)
+          alert(currentUserModel.error.message)
           Sentry.captureException(currentUserModel.error.message)
         } else {
-          // alert(currentUserModel.error)
+          alert(currentUserModel.error)
           Sentry.captureException(currentUserModel.error)
         }
       }
