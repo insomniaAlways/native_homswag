@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, ImageBackground, Image } from 'react-native';
-import { Text, Card, List, Layout } from '@ui-kitten/components';
+import { StyleSheet, View, Image, FlatList, Text } from 'react-native';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { fetchCart } from '../store/actions/cartAction';
@@ -27,7 +26,7 @@ const CartPromoItemList = (props) => {
   }
 
   const renderItemFooter = (info) => (
-    <View>
+    <View style={styles.itemCardFooter}>
       <View style={styles.itemFooter} accentStyle={{borderWidth:0}}>
         <Text category='s1' style={{color: 'green'}}>
         <FontAwesome name="rupee" size={12} color="black" /> {info.item.price}
@@ -62,26 +61,26 @@ const CartPromoItemList = (props) => {
   )};
 
   const renderProductItem = (info) => (
-    <Card
-      style={styles.productItem}
-      header={() => renderItemHeader(info)}
-      footer={() => renderItemFooter(info)}
-      accentStyle={{borderWidth:0}}>
-      <Layout>
+    <View style={[styles.itemCard, styles.productItem]}>
+      <View style={styles.itemCardHeader}>
+        {renderItemHeader(info)}
+      </View>
+      <View style={styles.itemCardBody}>
         <Text category='s1'>
           {info.item.name}
         </Text>
-      </Layout>
-    </Card>
+      </View>
+      {renderItemFooter(info)}
+    </View>
   );
 
   return (
-    <List
-      contentContainerStyle={styles.productList}
-      showsHorizontalScrollIndicator={false}
+    <FlatList
       data={itemList}
       horizontal={true}
+      showsHorizontalScrollIndicator={false}
       renderItem={renderProductItem}
+      keyExtractor={item => `${item.id}`}
     />
   )
 };
@@ -116,5 +115,84 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  itemCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#E4E9F2',
+    overflow: 'hidden',
+    justifyContent: 'space-between',
+    flex: 1,
+    margin: 8,
+    maxWidth: 200,
+    opacity: 1
+  },
+  itemCardHeader: {
+    // backgroundColor: '#FFFFFF',
+    // borderRadius: 10,
+    // borderWidth: 1,
+    // borderColor: '#E4E9F2',
+    // overflow: 'hidden',
+    // justifyContent: 'space-between',
+    // flex: 1,
+    // margin: 8,
+    // maxWidth: 200,
+    // opacity: 1,
+  },
+  itemCardBody: {
+    backgroundColor: '#FFFFFF',
+    // borderRadius: 10,
+    // borderWidth: 1,
+    // borderColor: 1,
+    // borderColor: '#E4E9F2',
+    overflow: 'hidden',
+    justifyContent: 'space-between',
+    flex: 1,
+    margin: 8,
+    maxWidth: 200,
+    opacity: 1
+  },
+  itemCardFooter: {
+    backgroundColor: '#FFFFFF',
+    // borderRadius: 10,
+    // borderWidth: 1,
+    // borderColor: '#E4E9F2',
+    overflow: 'hidden',
+    justifyContent: 'space-between',
+    flex: 1,
+    margin: 8,
+    maxWidth: 200,
+    opacity: 1
+  },
+
+  itemNameText: {
+    // fontFamily: System,
+    color: '#222B45',
+    fontSize: 15,
+    fontWeight: '600',
+    lineHeight: 24
+  },
+  itemNameDescription: {
+    // fontFamily: System,
+    color: '#8F9BB3',
+    fontSize: 12,
+    fontWeight: '400',
+    lineHeight: 16
+  },
+  itemNameDescription2: {
+    // fontFamily: System,
+    color: '#222B45',
+    fontSize: 12,
+    fontWeight: '400',
+    lineHeight: 16
+  },
+
+  listView: {
+    flexGrow: 1,
+    flexShrink: 1,
+    flexDirection: 'column',
+    overflow: 'scroll',
+    backgroundColor: '#FFFFFF'
   }
 });

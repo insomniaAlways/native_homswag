@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { Image, TouchableOpacity, ImageBackground, StyleSheet } from 'react-native';
+import { View, Image, TouchableOpacity, ImageBackground, StyleSheet, Text, Platform, PermissionsAndroid } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-// import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
-import { Text, Layout } from '@ui-kitten/components';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-// import * as firebase from 'firebase';
+import storage from '@react-native-firebase/storage';
 import ProfilePicPlaceholder from '../assets/images/profile_pic_placeholder.png'
+
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
+import * as Sentry from '@sentry/react-native';
 
 const ImagePickerView = (props) => {
   const { image, setImage, user_id, isEdit, isUploading, setUploding, isOffline } = props
@@ -38,6 +40,8 @@ const ImagePickerView = (props) => {
   }
 
   const catchError = (error) => {
+    Sentry.captureEvent(error)
+    reset()
     switch (error.code) {
       case 'storage/unauthorized': {
         return alert(error.code)
@@ -49,80 +53,109 @@ const ImagePickerView = (props) => {
         return alert(error.code)
       }
     }
-    reset()
   }
 
-  const uploadImage = async (uri) => {
-    // try {
-    //   const response = await fetch(uri);
-    //   const blob = await response.blob();
-    //   let ref = firebase.storage().ref().child('profile_pic/' + user_id);
-    //   const uploadTask = ref.put(blob);
-    //   uploadTask.on('state_changed',
-    //   (snapshot) => progressStatus(snapshot),
-    //   (error) => catchError(error),
-    //   () => uploadTask.snapshot.ref.getDownloadURL()
-    //   .then((url) => setImage(url)))
-    // } catch (e) {
-    //   alert(e)
-    //   reset()
-    // }
+  const uploadImage = async (uri, fileExtention) => {
+    try {
+      const fileName =  `${user_id}_${uuidv4()}`
+      let ref = storage().ref().child('profile_pic/' + fileName);
+      const uploadTask = ref.putFile(uri);
+      uploadTask.on('state_changed',
+      (snapshot) => progressStatus(snapshot),
+      (error) => catchError(error),
+      () => ref.getDownloadURL()
+      .then((url) => setImage(url)))
+    } catch (e) {
+      alert(e)
+      reset()
+      Sentry.captureException(error)
+    }
   }
 
   const getPermissionAsync = async () => {
-    // if (Constants.platform.ios) {
-    //   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-    //   if (status !== 'granted') {
-    //     alert('Sorry, we need camera roll permissions to make this work!');
-    //   }
-    // }
-    // _pickImage()
+    try {
+      if(Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+          {
+            title: 'Homswag File Access Permission',
+            message:
+              'Homswag needs access to your files ' +
+              'for setting profile picture..',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          },
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          _pickImage()
+        } else {
+          alert('Sorry, we need file system permissions to make this work!');
+        }
+      } else if (Platform.OS === 'ios') {
+        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!');
+        } else {
+          _pickImage()
+        }
+      }
+    } catch (err) {
+      alert(err)
+      Sentry.captureException(error)
+    }
   }
 
   const _pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 4],
-      quality: 0.5
-    });
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 4],
+        quality: 0.5
+      });
 
-    if (!result.cancelled) {
-      setUploding(true)
-      uploadImage(result.uri)
+      if (!result.cancelled) {
+        setUploding(true)
+        let fileExtention =  result.uri.split('.').pop()
+        uploadImage(result.uri, fileExtention)
+      }
+    } catch(e) {
+      alert(e)
+      Sentry.captureEvent(error)
     }
   };
 
   return (
-    <Layout style={props.styles.profilePicContainer}>
+    <View style={props.styles.profilePicContainer}>
       { image ?
-        <Layout>
-          <Layout style={props.styles.profilePic}>
+        <View>
+          <View style={props.styles.profilePic}>
             <Image style={props.styles.profilePic} source={{uri: image}}/>
-          </Layout>
+          </View>
           { isEdit &&
-            <Layout style={{paddingTop: 5}}>
+            <View style={{paddingTop: 5}}>
             { isUploading ?
-              <Layout style={{justifyContent: 'center', alignItems: 'center'}}>
-                <Text style={{fontFamily: 'roboto-light-italic', fontSize: 12}}>{progress}%</Text>
-                <Text style={{fontFamily: 'roboto-light-italic', fontSize: 12}}>Uploading...</Text>
-              </Layout> :
+              <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                <Text style={{fontFamily: 'Roboto-LightItalic', fontSize: 12}}>{progress}%</Text>
+                <Text style={{fontFamily: 'Roboto-LightItalic', fontSize: 12}}>Uploading...</Text>
+              </View> :
               <TouchableOpacity onPress={startModule} style={{justifyContent: 'center', alignItems: 'center'}}>
                 <Text>Change</Text>
               </TouchableOpacity>
             }
-            </Layout> 
+            </View> 
           }
-        </Layout> :
+        </View> :
         <TouchableOpacity onPress={startModule}>
           <ImageBackground style={styles.profilePicPlaceHolder} source={ProfilePicPlaceholder}>
-            <Layout style={{paddingBottom: 10, paddingRight: 10, backgroundColor: 'transparent'}}>
+            <View style={{paddingBottom: 10, paddingRight: 10, backgroundColor: 'transparent'}}>
               <FontAwesome name="camera" size={24} />
-            </Layout>
+            </View>
           </ImageBackground>
         </TouchableOpacity>
       }
-    </Layout>
+    </View>
   )
 }
 

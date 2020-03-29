@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import OrderItem from './orderItem';
-import { Layout, List, Text, Spinner } from '@ui-kitten/components';
-import { StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, Text, FlatList } from 'react-native';
 import EmptyOrder from '../assets/images/order_empty.png'
 
 const OrderList = function(props) {
@@ -29,21 +28,21 @@ const OrderList = function(props) {
 
   if(orders && Array.isArray(orders) && orders.length) {
     return (
-      <List
-        contentContainerStyle={styles.orderList}
+      <FlatList
         showsVerticalScrollIndicator={false}
         data={orders}
         refreshing={refreshing}
         onRefresh={onRefresh}
         renderItem={renderItem}
+        keyExtractor={item => `${item.id}`}
       />
     )
   } else {
     return (
-      <Layout style={{flex: 1,justifyContent: 'center', alignItems: 'center', marginBottom: 30}}>
+      <View style={{flex: 1,justifyContent: 'center', alignItems: 'center', marginBottom: 30}}>
         <Image source={EmptyOrder} style={{width: 80, height: 80}}/>
         <Text>No Appointment placed yet.</Text>
-      </Layout>
+      </View>
     )
   }
 }

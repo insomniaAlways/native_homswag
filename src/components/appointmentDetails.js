@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Picker } from 'react-native';
+import { View, Text } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Moment from 'react-moment';
-import { Layout } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 
 function AppointmentDetails(props) {
@@ -21,7 +20,7 @@ function AppointmentDetails(props) {
 
   return (
     <TouchableOpacity onPress={() => navigation.navigate('BookAppointment')}>
-      <Layout style={{justifyContent: 'center', alignItems: 'center', borderRadius: 20}}>
+      <View style={{justifyContent: 'center', alignItems: 'center', borderRadius: 20}}>
         <Text style={{width: '100%', textAlign: 'center', fontSize: 16, fontWeight: 'bold', paddingBottom: 10}}>Appointment Details & Slot</Text>
         <Moment element={Text}
           date={appointment.defaultValues.from}
@@ -31,17 +30,17 @@ function AppointmentDetails(props) {
         <Text>{appointment.defaultValues.slot.value}</Text>
         <Text style={{width: '100%', textAlign: 'center', fontSize: 16, fontWeight: 'bold', paddingBottom: 10, paddingTop: 10}}>Address</Text>
         {appointment && appointment.defaultValues.selectedAddress ? 
-          <Layout style={{alignItems: 'center'}}>
+          <View style={{alignItems: 'center'}}>
             <Text style={{textAlign: 'center'}}>{formatedAddress}</Text>
             {localAddress ? (<Text>{localAddress}</Text>) : null}
             {landmark ? (<Text>{landmark}</Text>) : null}
-          </Layout> :
-          <Layout style={{alignItems: 'center'}}>
+          </View> :
+          <View style={{alignItems: 'center'}}>
             <Text style={{fontSize: 14, width: '100%', textAlign: 'center', color: 'rgba(0,0,0,0.5)'}}>Address not selected</Text>
             <Text style={{fontSize: 12, color: 'rgba(0,0,0,0.5)'}}>(click here to select address)</Text>
-          </Layout>
+          </View>
         }
-      </Layout>
+      </View>
     </TouchableOpacity>
   )
 }

@@ -1,12 +1,7 @@
 import React from 'react';
-import {
-  Tab,
-  TabView,
-  Text,
-  TabBar,
-} from '@ui-kitten/components';
+import { Tab, Tabs } from 'native-base';
 import CategoryList from './categoryList';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 
 const TabViews = (props) => {
 
@@ -15,7 +10,7 @@ const TabViews = (props) => {
   const shouldLoadComponent = (index) => index === selectedIndex;
 
   return (
-    <TabView selectedIndex={selectedIndex}
+    <Tabs selectedIndex={selectedIndex}
       shouldLoadComponent={shouldLoadComponent}
       onSelect={setSelectedIndex}
       tabBarStyle={{paddingBottom: 10, paddingTop: 10, borderBottomWidth: 1, borderColor: '#eee'}}
@@ -28,7 +23,7 @@ const TabViews = (props) => {
           <Text>No Packages Available</Text>
         </View>
       </Tab>
-    </TabView>
+    </Tabs>
   );
 };
 

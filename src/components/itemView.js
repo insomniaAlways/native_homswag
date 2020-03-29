@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchAllItems } from '../store/actions/itemActions';
 import _ from 'lodash';
-import { Layout, Text } from '@ui-kitten/components';
-import { StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
 function ItemView (props) {
   const { itemModel, getItems, cartItem, packageModel } =  props
@@ -29,10 +28,10 @@ function ItemView (props) {
   }, [data])
 
     return (
-      <Layout style={styles.itemCard}>
+      <View style={styles.itemCard}>
         <Text>{currentItem && currentItem.name}</Text>
         <Text>{cartItem && cartItem.quantity}</Text>
-      </Layout>
+      </View>
     )
 }
 

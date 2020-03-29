@@ -55,10 +55,36 @@
 	<false/>
 	<key>UIAppFonts</key>
 	<array>
+		<string></string>
 		<string>FontAwesome.ttf</string>
 		<string>MaterialCommunityIcons.ttf</string>
 		<string>AntDesign.ttf</string>
 		<string>Feather.ttf</string>
+		<string>Roboto-Bold.ttf</string>
+		<string>Roboto-Light.ttf</string>
+		<string>Roboto-Medium.ttf</string>
+		<string>Roboto-Regular.ttf</string>
+		<string>Roboto-LightItalic.ttf</string>
+		<string>Roboto-MediumItalic.ttf</string>
+	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Homswag would like access to your photo gallery to set profile picture inside the application</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Homswag would like to use your camera to set profile picture inside the application</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Homswag would like to save photos to your photo gallery that set as profile picture inside the application</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Allow Homswag to use your location, such that we can fetch your current location.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Allow Homswag to use your location, such that we can fetch your current location's info for the getting appointment location.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Allow Homswag to use your location, such that we can fetch your current location's info for the getting appointment location.</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>tel</string>
+		<string>telprompt</string>
+		<string>mailto</string>
+		<string>whatsapp</string>
 	</array>
 </dict>
 </plist>

@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   },
   addressText: {
     width: '80%',
-    fontFamily: 'roboto-regular',
+    fontFamily: 'Roboto-Regular',
   },
   addressLoading: {
     width: '100%',

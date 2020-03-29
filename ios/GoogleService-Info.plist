@@ -6,6 +6,8 @@
 	<string>385989703905-2f67lbbv678lobus18ia9iua6l5bbjde.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
 	<string>com.googleusercontent.apps.385989703905-2f67lbbv678lobus18ia9iua6l5bbjde</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>385989703905-248dtk9d189diu3drhqls2jgljni3b2g.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCDVIV1MSeJJtMomXhbXnvBo8DeTdVd00E</string>
 	<key>GCM_SENDER_ID</key>
@@ -29,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:385989703905:ios:6f169316531e8986e3dfa0</string>
+	<string>1:385989703905:ios:1357abbcacce33ffe3dfa0</string>
 	<key>DATABASE_URL</key>
 	<string>https://homswag.firebaseio.com</string>
 </dict>

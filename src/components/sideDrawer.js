@@ -1,7 +1,7 @@
 import React from 'react';
 import { SafeAreaView } from 'react-navigation';
 import { DrawerItems } from 'react-navigation-drawer';
-import { StyleSheet, ScrollView, View, Image, Text, ImageBackground } from 'react-native';
+import { StyleSheet, ScrollView, View, Image, Text, ImageBackground, StatusBar } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -10,6 +10,7 @@ import ProfileBackground from '../assets/images/blue-wave.jpg';
 import { onSigout } from '../store/actions/authenticationAction';
 import { connect } from 'react-redux';
 import { setSessionUnauthenticated } from '../store/actions/sessionActions';
+import * as Sentry from '@sentry/react-native';
 
 const SideDrawer = props => {
   const { navigation, signOut, currentUserModel, unAuthenticate } = props
@@ -21,45 +22,52 @@ const SideDrawer = props => {
       navigation.navigate('Auth')
     } catch(e) {
       alert(e)
+      Sentry.captureException(e)
     }
   }
 
   return (
-  <SafeAreaView style={styles.container}>
+  <View style={styles.container}>
     <View style={{flex: 1}}>
       <ImageBackground source={ProfileBackground} style={styles.profilePicContainer}>
-        <View style={styles.profilePic}>
-          {currentUserModel.values.image_source ?
-          <Image style={styles.profilePic} source={{uri: currentUserModel.values.image_source}}/> :
-          <View style={styles.profilePic}></View> }
-        </View>
-        <View style={styles.nameContainer}>
-          <Text style={styles.name}>Hello, {currentUserModel.values.name}</Text>
-        </View>
+        <SafeAreaView>
+          <View style={styles.profilePic}>
+            {currentUserModel.values.image_source ?
+            <Image style={styles.profilePic} source={{uri: currentUserModel.values.image_source}}/> :
+            <View style={styles.profilePic}></View> }
+          </View>
+          <View style={styles.nameContainer}>
+            <Text style={styles.name}>Hello, {currentUserModel.values.name}</Text>
+          </View>
+        </SafeAreaView>
       </ImageBackground>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <DrawerItems {...props} labelStyle={{width: '100%'}}/>
-        <TouchableOpacity onPress={() => logOut()}>
-          <View style={styles.logout}>
-            <MaterialCommunityIcons name="logout" size={18} style={{marginHorizontal: 16, width: 24, alignItems: 'center', opacity: 0.62, paddingLeft: 3}}/>
-            <Text style={styles.logoutText}>Logout</Text>
+      <SafeAreaView>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <DrawerItems {...props} labelStyle={{width: '100%'}}/>
+          <TouchableOpacity onPress={() => logOut()}>
+            <View style={styles.logout}>
+              <MaterialCommunityIcons name="logout" size={18} style={{marginHorizontal: 16, width: 24, alignItems: 'center', opacity: 0.62, paddingLeft: 3}}/>
+              <Text style={styles.logoutText}>Logout</Text>
+            </View>
+          </TouchableOpacity>
+        </ScrollView>
+      </SafeAreaView>
+    </View>
+    <SafeAreaView>
+      <View style={styles.backButtonContainer}>
+        <TouchableOpacity onPress={() => props.navigation.toggleDrawer()}>
+          <View style={styles.backButton}>
+            <FontAwesome name="angle-left" size={20} color="white" />
           </View>
         </TouchableOpacity>
-      </ScrollView>
-    </View>
-    <View style={styles.backButtonContainer}>
-      <TouchableOpacity onPress={() => props.navigation.toggleDrawer()}>
-        <View style={styles.backButton}>
-          <FontAwesome name="angle-left" size={20} color="white" />
-        </View>
-      </TouchableOpacity>
-    </View>
-  </SafeAreaView>
+      </View>
+    </SafeAreaView>
+  </View>
 )};
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
   profilePicContainer: {
     height: 230,
@@ -68,7 +76,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingLeft: 30,
     // paddingTop: Constants.statusBarHeight
-    paddingTop: 40
   },
   profilePic: {
     height: 100,

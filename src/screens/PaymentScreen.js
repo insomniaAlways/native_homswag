@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import AccordionView from '../components/accordian';
+// import AccordionView from '../components/accordian';
 import PlaceHolderTextInput from '../components/placeHolderTextInput';
 
 function PaymentScreen() {
@@ -47,11 +47,11 @@ function PaymentScreen() {
       </View>
       <View style={styles.paymentSelectionContainer}>
         <View style={styles.paymentSelectionBlock}>
-          <AccordionView 
+          {/* <AccordionView 
             content={paymentTypes}
             containerStyles={{paddingLeft: 10,paddingRight: 10, justifyContent: 'flex-start', paddingTop: 0}}
             activeSection={selectedPaymentType}
-            setActiveSection={setSelectedPaymentType}/>
+            setActiveSection={setSelectedPaymentType}/> */}
         </View>
       </View>
       <View style={styles.paymentInfoContainer}>

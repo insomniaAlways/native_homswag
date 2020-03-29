@@ -2,18 +2,18 @@ import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchCart } from '../store/actions/cartAction';
 import { createOrder } from '../store/actions/orderActions';
-import { Layout, Text } from '@ui-kitten/components';
-import { ImageOverlay } from '../components/imageOverlay';
 import Graphics from '../assets/images/order_confirm_background.png'
-import { StyleSheet, ScrollView, ImageBackground } from 'react-native';
-// import Constants from 'expo-constants';
+import { View, StyleSheet, ScrollView, ImageBackground, Text } from 'react-native';
 import ItemView from '../components/itemView';
 import { TouchableOpacity } from 'react-native';
 import moment from 'moment';
 import { brandColor, brandLightBackdroundColor } from '../style/customStyles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as Sentry from '@sentry/react-native';
+import { useSafeArea } from 'react-native-safe-area-context';
 
 function ReviewOrderScreen (props) {
+  const insets = useSafeArea();
   const { cart, orderModel, getCart, placeOrder, appointment, networkAvailability } = props
   const [ isloading, setLoading ] = useState(false)
   const { cart_items, cart_total, item_total_price } = cart.values
@@ -27,6 +27,7 @@ function ReviewOrderScreen (props) {
   useEffect(() => {
     if(!orderModel.isloading && orderModel.error) {
       alert(orderModel.error)
+      Sentry.captureException(orderModel.error)
     }
   }, [orderModel.error])
 
@@ -72,61 +73,61 @@ function ReviewOrderScreen (props) {
 
   if(networkAvailability.isOffline) {
     return (
-      <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <MaterialCommunityIcons name="wifi-strength-alert-outline" size={60} color='grey'/>
-        <Layout style={{paddingTop: 30, alignItems: 'center'}}>
-          <Text style={{fontSize: 22, fontFamily: 'roboto-medium'}}>Whoops!</Text>
-          <Text style={{fontFamily: 'roboto-light-italic'}}>No Internet connection</Text>
-        </Layout>
-      </Layout>
+        <View style={{paddingTop: 30, alignItems: 'center'}}>
+          <Text style={{fontSize: 22, fontFamily: 'Roboto-Medium'}}>Whoops!</Text>
+          <Text style={{fontFamily: 'Roboto-LightItalic'}}>No Internet connection</Text>
+        </View>
+      </View>
     )
   } else {
     return (
-      <Layout style={{flex: 1}}>
+      <View style={{flex: 1}}>
         <ImageBackground
           style={styles.infoContainer}
           imageBackgroundStyle={styles.imageBackgroundStyle}
           source={Graphics}>
-          <Layout style={{backgroundColor: 'transparent', justifyContent: 'center', alignItems: 'center', marginHorizontal: 10}}>
+          <View style={{backgroundColor: 'transparent', justifyContent: 'center', alignItems: 'center', marginHorizontal: 10}}>
             <Text style={{color: '#fff', fontSize: 18}}>You can pay us by UPI OR Cash after services</Text>
-          </Layout>
+          </View>
         </ImageBackground>
-        <Layout style={{flex: 4, backgroundColor: "#F7F9FC"}}>
+        <View style={{flex: 4, backgroundColor: "#F7F9FC", borderRadius: 20}}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <Layout style={styles.orderDetailsContainer}>
-              <Layout style={styles.orderDetailsScroller}>
-                <Layout style={{justifyContent: 'center', alignItems: 'center', paddingBottom: 10}}>
+            <View style={styles.orderDetailsContainer}>
+              <View style={[styles.orderDetailsScroller, {borderTopEndRadius: 20}]}>
+                <View style={{justifyContent: 'center', alignItems: 'center', paddingBottom: 10}}>
                   <Text style={{fontSize: 16, fontWeight: 'bold'}}>Appointment Summary</Text>
-                </Layout>
+                </View>
                 {cart_items.map(cartItem => (
                   <ItemView key={cartItem.id} item={cartItem.item} cartItem={cartItem}/>
                 ))}
-                <Layout style={{paddingVertical: 20, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', paddingHorizontal: 10, borderTopWidth: 1, borderColor: '#eee'}}>
+                <View style={{paddingVertical: 20, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', paddingHorizontal: 10, borderTopWidth: 1, borderColor: '#eee'}}>
                   <Text style={{fontSize: 16}}>Total Payable Amount</Text>
                   <Text style={{fontSize: 16}}>{cart_total}</Text>
-                </Layout>
-              </Layout>
-            </Layout>
-            <Layout style={styles.totalSaveContainer}>
+                </View>
+              </View>
+            </View>
+            <View style={styles.totalSaveContainer}>
               <Text style={{color: "#fff", fontWeight: "bold", width: '100%', textAlign: 'center'}}>You saved total Rs. {item_total_price - cart_total}</Text>
-            </Layout>
-            <Layout style={{flexDirection: 'row' ,marginHorizontal: 30, marginVertical: 28, borderWidth: 1, borderColor: '#a9d5de', padding: 10, borderRadius: 5, backgroundColor: '#f8ffff'}}>
-              <Text style={{fontFamily: 'roboto-medium', color: '#0e566c'}}>Note: </Text>
-              <Text style={{fontFamily: 'roboto-regular', fontSize: 14, alignItems: 'center', width: '88%', color: '#276f86', minHeight: 70}}>
+            </View>
+            <View style={{flexDirection: 'row' ,marginHorizontal: 30, marginVertical: 28, borderWidth: 1, borderColor: '#a9d5de', padding: 10, borderRadius: 5, backgroundColor: '#f8ffff'}}>
+              <Text style={{fontFamily: 'Roboto-Medium', color: '#0e566c'}}>Note: </Text>
+              <Text style={{fontFamily: 'Roboto-Regular', fontSize: 14, alignItems: 'center', width: '88%', color: '#276f86', minHeight: 70}}>
                 If any cancellation or reschedule Appointment after the confirmation is mandatory in prior to 2 Hours, Appreciate you cooperation on the same.
               </Text>
-            </Layout>
+            </View>
           </ScrollView>
-        </Layout>
+        </View>
         { isloading ?
-          <TouchableOpacity style={{height: 57, justifyContent: 'center', alignItems: 'center', backgroundColor: brandLightBackdroundColor}} disabled={true}>
+          <TouchableOpacity style={{height: 57, justifyContent: 'center', alignItems: 'center', backgroundColor: brandLightBackdroundColor, marginBottom: insets.bottom}} disabled={true}>
             <Text style={{width: '100%', textAlign: 'center', color: '#fff', fontSize: 16, fontWeight: 'bold'}}>Booking...</Text>
           </TouchableOpacity> :
-          <TouchableOpacity style={{height: 57, justifyContent: 'center', alignItems: 'center', backgroundColor: brandColor}} onPress={() => confirmBooking()}>
+          <TouchableOpacity style={{height: 57, justifyContent: 'center', alignItems: 'center', backgroundColor: brandColor, marginBottom: insets.bottom}} onPress={() => confirmBooking()}>
             <Text style={{width: '100%', textAlign: 'center', color: '#fff', fontSize: 16, fontWeight: 'bold'}}>Book Appointment</Text>
           </TouchableOpacity>
         }
-      </Layout>
+      </View>
     )
   }
 }
@@ -149,7 +150,6 @@ const styles = StyleSheet.create({
   infoContainer: {
     flex: 2,
     // paddingTop: Constants.statusBarHeight,
-    paddingTop: 40,
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -161,7 +161,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingHorizontal: 20,
     paddingVertical: 20,
-    borderRadius: 20 
+    borderRadius: 20,
+    backgroundColor: '#FFFFFF'
   },
   orderDetailsScroller: {
   },

@@ -1,79 +1,79 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, Platform } from 'react-native';
-import Logo from '../assets/images/logo.png';
+import { View, Text, Image, TouchableOpacity, StyleSheet, StatusBar, Linking } from 'react-native';
+import Logo from '../assets/images/logo_rounded.png';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-// import { Linking } from 'expo';
+import { statusBarLightColor } from '../style/customStyles';
+import * as Sentry from '@sentry/react-native';
 
 function ContactScreen(props) {
 
-  const chechAccessibity = (url) => {
-    // Linking.canOpenURL(url)
-    // .then((supported) => {
-    //   if (!supported) {
-    //     alert(url)
-    //   } else {
-    //     return Linking.openURL(url);
-    //   }
-    // })
-    // .catch((err) => console.error('An error occurred', err));
-  }
+  const openLink = async (url) => {
+    try {
+      const supported = await Linking.canOpenURL(url);
+      if (supported) {
+        await Linking.openURL(url);
+      } else {
+        alert(`Not able to open prefered application.`);
+        Sentry.captureException(url)
+      }
+    } catch (e) {
+      Sentry.captureException(e)
+    }
+  };
 
   const openDialScreen = () => {
-    let number = '';
-    if (Platform.OS === 'android') {
-      number = 'tel:${+916366505567}';
-    } else {
-      number = 'telprompt:${+916366505567}';
-    }
-    chechAccessibity(number);
+    let url = 'tel:+916366505567';
+    openLink(url);
   };
   const openMailScreen = () => {
-    let mailAddress = '';
-    mailAddress = 'mailto: care@homswag.com'
-    chechAccessibity(mailAddress);
+    let mailAddress = 'mailto: care@homswag.com';
+    openLink(mailAddress);
   };
 
   return (
-    <View style={{flex: 1, paddingTop: 70, backgroundColor: 'rgba(99, 186, 193, 0.3)'}}>
-      <View style={{flex: 1, justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 40}}>
-        <Image source={Logo} style={{width: 110, height: 120}}/>
-      </View>
-      <View style={{flex: 3, justifyContent: 'flex-start', alignItems: 'center', paddingLeft: 40, paddingRight: 40}}>
-        <Text style={{fontSize: 18, fontWeight: 'bold', width: '100%', textAlign: 'center'}}>About HomSwag</Text>
-        <Text style={{textAlign: 'center', marginTop: 10, fontStyle: 'italic'}}>
-          Homswag, we want to make Beauty and Grooming experience as convenient as possible at your own comfort where we connect you with our Best Beauty Professional to have great salon experience at Home.
-          We are currently serving in Bangalore, connect with us for Hair, Beauty, Waxing, Facial, Manicure, Pedicure,Spa,Hair Texture And Hair Protein Services.
-        </Text>
-        <Text style={{fontSize: 18, fontWeight: 'bold', width: '100%', textAlign: 'center', marginTop: 30}}>Contact details</Text>
-        <View style={{flexDirection: 'row', width: "70%", marginTop: 10}}>
-          <MaterialCommunityIcons name="map-marker-outline" size={16} color="black"/>
-          <Text style={{textAlign: 'left', marginLeft: 10}}>
-            #339 4th Floor 27th main road HSR Layout Sector - 2, Bangalore -560102
+    <View style={{flex: 1, backgroundColor: '#FFFFFF', justifyContent: 'center', alignItems: 'center'}}>
+      <StatusBar barStyle={"dark-content"} backgroundColor={statusBarLightColor} />
+      <View style={{justifyContent: 'center', alignItems: 'center', marginHorizontal: 20, marginVertical: 40, borderRadius: 20}}>
+        <View style={{flex: 1, justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 20}}>
+          <Image source={Logo} style={{width: 100, height: 100}}/>
+        </View>
+        <View style={{flex: 3, justifyContent: 'flex-start', alignItems: 'center', paddingHorizontal: 30}}>
+          <Text style={{fontSize: 18, fontWeight: 'bold', width: '100%', textAlign: 'center'}}>About HomSwag</Text>
+          <Text style={{textAlign: 'center', marginTop: 10, fontStyle: 'italic'}}>
+            Homswag, we want to make Beauty and Grooming experience as convenient as possible at your own comfort where we connect you with our Best Beauty Professional to have great salon experience at Home.
+            We are currently serving in Bangalore, connect with us for Hair, Beauty, Waxing, Facial, Manicure, Pedicure,Spa,Hair Texture And Hair Protein Services.
           </Text>
-        </View>
-        <View style={{flexDirection: 'row', width: "70%", marginTop: 10, alignItems: "center"}}>
-          <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => openDialScreen()}>
-            <FontAwesome name="phone" size={16} color="black" style={{paddingTop: 2}}/>
+          <Text style={{fontSize: 18, fontWeight: 'bold', width: '100%', textAlign: 'center', marginTop: 25}}>Contact details</Text>
+          <View style={{flexDirection: 'row', width: "70%", marginTop: 10}}>
+            <MaterialCommunityIcons name="map-marker-outline" size={16} color="black"/>
             <Text style={{textAlign: 'left', marginLeft: 10}}>
-            +91 6366-505567
+              #339 4th Floor 27th main road HSR Layout Sector - 2, Bangalore -560102
             </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{flexDirection: 'row', width: "70%", marginTop: 10}}>
-          <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => openMailScreen()}>
-            <Feather name="mail" size={16} color="black" style={{paddingTop: 2}}/>
-            <Text style={{textAlign: 'left', marginLeft: 10}}>care@homswag.com</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={styles.backButtonContainer}>
-        <TouchableOpacity onPress={() => props.navigation.toggleDrawer()}>
-          <View style={styles.backButton}>
-            <FontAwesome name="angle-right" size={20} color="white" />
           </View>
-        </TouchableOpacity>
+          <View style={{flexDirection: 'row', width: "70%", marginTop: 10}}>
+            <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => openDialScreen()}>
+              <FontAwesome name="phone" size={16} color="black" style={{paddingTop: 2}}/>
+              <Text style={{textAlign: 'left', marginLeft: 10}}>
+              +91 6366-505567
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{flexDirection: 'row', width: "70%", marginTop: 10}}>
+            <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => openMailScreen()}>
+              <Feather name="mail" size={16} color="black" style={{paddingTop: 2}}/>
+              <Text style={{textAlign: 'left', marginLeft: 10}}>care@homswag.com</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.backButtonContainer}>
+          <TouchableOpacity onPress={() => props.navigation.toggleDrawer()}>
+            <View style={styles.backButton}>
+              <FontAwesome name="angle-right" size={20} color="white" />
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   )

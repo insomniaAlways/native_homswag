@@ -8,7 +8,7 @@ import ItemsList from './itemList';
 const DynamicTabs = (props) => {
   const { category, selectedItems } = props
   const { sub_categories } = category
-  const tabs = [{type: 'all', name: 'All'}, ...sub_categories]
+  const tabs = sub_categories
   const [ selectedTabIndex, setSelectedTabIndex ] = useState(0)
 
   tabs.forEach((tab) => {

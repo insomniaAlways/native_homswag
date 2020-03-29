@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingRight: 15,
     // paddingTop: Constants.statusBarHeight
-    paddingTop: 40
   },
   headerContent: {
 

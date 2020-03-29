@@ -1,56 +1,40 @@
-import React, { useEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { Provider } from 'react-redux';
 import store from './src/store';
 import AppNavigator from './src/navigations';
-// import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
-// import { EvaIconsPack } from '@ui-kitten/eva-icons';
-// import { mapping, light as lightTheme } from '@eva-design/eva';
-import { brandTheme } from './src/style/custom-theme';
 import SplashScreen from 'react-native-splash-screen'
 import moment from 'moment';
 
-// const theme = { ...lightTheme, ...brandTheme };
+import * as Sentry from '@sentry/react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-// XMLHttpRequest = GLOBAL.originalXMLHttpRequest ?
-//     GLOBAL.originalXMLHttpRequest :
-//     GLOBAL.XMLHttpRequest;
+Sentry.init({ 
+  dsn: 'https://16e35b4da8db4096b2298db1fb8049f0@sentry.io/2787983', 
+});
 
-//   // fetch logger
-// global._fetch = fetch;
-// global.fetch = function (uri, options, ...args) {
-//   return global._fetch(uri, options, ...args).then((response) => {
-//     return response;
-//   });
-// };
 
-// const App = () => {
-//   return (
-//     <>
-//       <SafeAreaView>
-//         <Provider store={store}>
-//         <IconRegistry icons={EvaIconsPack} />
-//           <ApplicationProvider mapping={mapping} theme={theme}>
-//             <AppNavigator />
-//           </ApplicationProvider>
-//         </Provider>
-//       </SafeAreaView>
-//     </>
-//   );
-// };
+XMLHttpRequest = GLOBAL.originalXMLHttpRequest ?
+    GLOBAL.originalXMLHttpRequest :
+    GLOBAL.XMLHttpRequest;
+
+  // fetch logger
+global._fetch = fetch;
+global.fetch = function (uri, options, ...args) {
+  return global._fetch(uri, options, ...args).then((response) => {
+    return response;
+  });
+};
 
 const App = () => {
-  console.log('add load', moment().format('mm:ss, SS'))
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     SplashScreen.hide()
   }, [])
 
   return (
     <Provider store={store}>
-      {/* <IconRegistry icons={EvaIconsPack} /> */}
-      {/* <ApplicationProvider mapping={mapping} theme={theme}> */}
+      <SafeAreaProvider>
         <AppNavigator />
-      {/* </ApplicationProvider> */}
+      </SafeAreaProvider>
     </Provider>
   );
 };

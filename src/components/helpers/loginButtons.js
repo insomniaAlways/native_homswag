@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
-// import { Text, Spinner } from '@ui-kitten/components';
+import { StyleSheet, View, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { register, validateToken } from '../../store/actions/authenticationAction';
+import * as Sentry from '@sentry/react-native';
 
 function LoginButtons(props) {
   const { phone,
@@ -31,6 +31,7 @@ function LoginButtons(props) {
         } catch(e) {
           setButtonLoading(false)
           alert(e)
+          Sentry.captureException(e)
         }
       }
     }
@@ -59,8 +60,8 @@ function LoginButtons(props) {
   if(isButtonLoading) {
     return (
       <View style={styles.signInButtonContainer}>
-        <View style={[styles.signInButton, {justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent'}]}>
-          {/* <Spinner status='primary'/> */}
+        <View style={[styles.signInButton, {justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent', paddingVertical: 11}]}>
+          <ActivityIndicator size="small" color="#0000ff" />
         </View>
       </View>
     )

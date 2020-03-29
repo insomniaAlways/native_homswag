@@ -1,18 +1,18 @@
 import React, { useState, useEffect }from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ActivityIndicator, Modal, Text, PermissionsAndroid } from 'react-native';
 import MapView from 'react-native-maps';
 import FloatingInput from '../components/input-helpers.js/floatingInput';
 import { connect } from 'react-redux';
 import { geoCoding, getPlace } from '../store/actions/locationActions';
 import { creatNew, fetchAddress } from '../store/actions/addressActions';
-import { Modal, Spinner, Layout, Text } from '@ui-kitten/components';
 import { KeyboardAvoidingView } from '../components/KeyboardAvoidView'
 import _ from 'lodash';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Label } from 'native-base';
-import * as Permissions from 'expo-permissions';
+import { Permissions } from 'react-native-unimodules';
 import { brandColor, brandLightBackdroundColor } from '../style/customStyles';
 import * as Location from 'expo-location';
+import * as Sentry from '@sentry/react-native';
 
 const initialRegion = {
   latitude: 12.97194,
@@ -70,7 +70,8 @@ function AddressScreen(props) {
           setLoading(false)
         }
       } catch(e) {
-        alert(e, location.error)
+        alert(e)
+        Sentry.captureException(e)
         setLoading(false)
       }
     }
@@ -80,26 +81,32 @@ function AddressScreen(props) {
   useEffect(() => {
     if(location && location.error) {
       alert(error)
+      Sentry.captureException(e)
     }
   }, [location.error])
 
   const debounceCall = _.debounce(onRegionChange, 500);
 
-  useEffect(() => {
-    if(!isCurrentLoactionLoaded) {
-      async function getPemission() {
+
+  async function getPemission() {
+    try {
+      let { status } = await Permissions.getAsync(Permissions.LOCATION);
+      if (status !== 'granted') {
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status !== 'granted') {
           onError()
-        } else {
-          // return navigator.geolocation.getCurrentPosition(
-          //   ({coords}) => debounceCall(coords.latitude, coords.longitude),
-          //   onError, {enableHighAccuracy: true, maximumAge: 0});
         }
       }
+    } catch (e) {
+      alert(e)
+      Sentry.captureException(e)
+    }
+  }
+
+  useEffect(() => {
+    if(!isCurrentLoactionLoaded) {
       getPemission()
     }
-    return () => setLoading(false)
   }, [])
 
   const save = async () => {
@@ -109,22 +116,24 @@ function AddressScreen(props) {
       await addNewAddress({address: {...locationValue, place_id: geoCoding.place_id, place_url: geoCoding.place_url}})
       await getfetchAddress()
       setLoading(false)
-      navigation.navigate(previousScreen)
+      navigation.goBack()
     } catch(e) {
       alert(e)
       setLoading(false)
+      Sentry.captureException(e)
     }
   }
 
   return (
     <KeyboardAvoidingView extraHeight={100} showsVerticalScrollIndicator={false}>
-      <View style={{flex: 1}}>
+      <View style={{flex: 1, backgroundColor: '#FFFFFF'}}>
         <View style={isCurrentLoactionLoaded && coordinates && coordinates.latitude ? styles.padding_b : styles.padding_a}>
           <MapView style={{height: 300}}
             initialRegion={initialRegion}
             onRegionChangeComplete={({latitude, longitude}) => debounceCall(latitude, longitude)}
             showsUserLocation={true}
             loadingEnabled={true}
+            onUserLocationChange={getPemission}
             showsMyLocationButton={true}
             showsCompass={true}
             followsUserLocation={true}/>
@@ -137,11 +146,11 @@ function AddressScreen(props) {
         <View style={{flex: 3, paddingLeft: 30, paddingRight: 30, paddingTop: 5, justifyContent: 'center'}}>
           {locationValue && locationValue.formatedAddress ? 
             <View style={{paddingTop: 10}}>
-              <Text style={{color: 'rgba(0,0,0,0.5)'}}>Current Location</Text>
+              <Text style={{color: 'rgba(0,0,0,0.5)'}}>Location</Text>
               <Text style={{marginTop: 5}}>{locationValue.formatedAddress}</Text>
             </View> :
             <View style={{borderBottomWidth: 1, borderColor: '#eee', marginTop: 30}}>
-              <Label style={{fontSize: 18, color: 'rgba(0,0,0,0.64)'}}>Current Location</Label>
+              <Label style={{fontSize: 18, color: 'rgba(0,0,0,0.64)'}}>Location</Label>
             </View>
           }
           <FloatingInput label="House No/Room no" style={{paddingTop: 10}}
@@ -172,15 +181,15 @@ function AddressScreen(props) {
         animationType="slide"
         transparent={true}
         visible={isLoading}
-        backdropStyle={styles.modal}
-        onBackdropPress={() => {
-          return false
+        presentationStyle={'overFullScreen'}
+        onRequestClose={() => {
+          return false;
         }}>
-          <Layout style={styles.modalContainer}>
-            <Layout style={styles.controlContainer}>
-              <Spinner status='control'/>
-            </Layout>
-          </Layout>
+        <View style={styles.modalContainer}>
+          <View style={styles.controlContainer}>
+            <ActivityIndicator size="small" color="#0000ff" />
+          </View>
+        </View>
       </Modal>
     </KeyboardAvoidingView>
   )
@@ -204,7 +213,8 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.3)'
   },
   modal: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',

@@ -1,10 +1,12 @@
 import React, { useEffect, useLayoutEffect } from 'react';
 import { connect } from 'react-redux';
-import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
+import { View, Text, SafeAreaView, StyleSheet, StatusBar } from 'react-native';
 import { fetchAllOrder } from '../store/actions/orderActions'
 import OrderList from '../components/orderList';
 // import Constants from 'expo-constants';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { statusBarBrandColor } from '../style/customStyles';
+import * as Sentry from '@sentry/react-native';
 
 function OrderHistoryScreen(props) {
   const { orderModel, getOrders, navigation, networkAvailability } = props;
@@ -18,6 +20,7 @@ function OrderHistoryScreen(props) {
   useEffect(() => {
     if(!orderModel.isLoading && orderModel.error) {
       alert(orderModel.error)
+      Sentry.captureException(orderModel.error)
     }
   }, [orderModel.error])
 
@@ -26,8 +29,8 @@ function OrderHistoryScreen(props) {
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <MaterialCommunityIcons name="wifi-strength-alert-outline" size={60} color='grey'/>
         <View style={{paddingTop: 30, alignItems: 'center'}}>
-          <Text style={{fontSize: 22, fontFamily: 'roboto-medium'}}>Whoops!</Text>
-          <Text style={{fontFamily: 'roboto-light-italic'}}>No Internet connection</Text>
+          <Text style={{fontSize: 22, fontFamily: 'Roboto-Medium'}}>Whoops!</Text>
+          <Text style={{fontFamily: 'Roboto-LightItalic'}}>No Internet connection</Text>
         </View>
       </View>
     )
@@ -35,6 +38,7 @@ function OrderHistoryScreen(props) {
     return (
       <View style={{flex: 1}}>
         <SafeAreaView style={{flex: 1}}>
+        <StatusBar barStyle={"light-content"} backgroundColor={statusBarBrandColor}/>
           <View style={{padding: 10, paddingLeft: 20}}><Text style={{fontSize: 16, fontWeight: 'bold'}}>My Appointments: </Text></View>
           {orderModel.isLoading ? 
             <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -51,7 +55,6 @@ function OrderHistoryScreen(props) {
 const styles = StyleSheet.create({
   container: {
     // marginTop: Constants.statusBarHeight,
-    marginTop: 40,
     flex: 1
   }
 })

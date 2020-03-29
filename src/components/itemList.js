@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Dimensions, ImageBackground, View, StyleSheet, Image } from 'react-native';
-import { Card, List, Text } from '@ui-kitten/components';
+import { Dimensions, View, StyleSheet, Image, FlatList, Text } from 'react-native';
 import ItemRow from './ItemRow';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -21,7 +20,7 @@ const ItemsList = (props) => {
   }, [refreshing]);
 
   const renderItemFooter = (info) => (
-    <View>
+    <View style={styles.itemCardFooter}>
       <View style={styles.itemFooter}>
         <Text category='s1' style={{color: 'green'}}>
         <FontAwesome name="rupee" size={12} color="black" /> {info.item.price}
@@ -55,44 +54,52 @@ const ItemsList = (props) => {
   }
 
   const renderProductItem = (info) => (
-    <Card
-      style={styles.productItem}
-      header={() => renderItemHeader(info)}
-      footer={() => renderItemFooter(info)}>
-      <Text category='s1'>
-        {info.item.name}
-      </Text>
-      <Text
-        appearance='hint'
-        category='c1'>
-        {info.item.description}
-      </Text>
-      {info.item.duration && 
-        <Text
-          category='c1'>
-          Duration: {info.item.duration} min
-        </Text>
-      }
-    </Card>
+    <View style={[styles.itemCard, styles.productItem]}>
+      <View style={styles.itemCardHeader}>
+        {renderItemHeader(info)}
+      </View>
+      <View style={styles.itemCardBody}>
+        <View style={{minHeight: 50}}>
+          <Text style={styles.itemNameText}>
+            {info.item.name}
+          </Text>
+        </View>
+        <View>
+          <Text style={styles.itemNameDescription}>
+            {info.item.description}
+          </Text>
+        </View>
+        {info.item.duration && 
+          <Text style={styles.itemNameDescription2}>
+            Duration: {info.item.duration} min
+          </Text>
+        }
+      </View>
+      {renderItemFooter(info)}
+    </View>
   );
 
   return (
-    <List
-      contentContainerStyle={styles.productList}
-      showsVerticalScrollIndicator={false}
+    <FlatList
       data={data}
+      columnWrapperStyle={styles.productList}
       numColumns={2}
+      showsVerticalScrollIndicator={false}
       refreshing={refreshing}
       onRefresh={onRefresh}
       renderItem={renderProductItem}
+      keyExtractor={item => item.id}
     />
   );
 };
+
+export default ItemsList;
 
 const styles = StyleSheet.create({
   productList: {
     paddingHorizontal: 8,
     paddingVertical: 16,
+    backgroundColor: '#F7F9FC'
   },
   productItem: {
     flex: 1,
@@ -107,7 +114,85 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-  }
-});
+  },
+  itemCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#E4E9F2',
+    overflow: 'hidden',
+    justifyContent: 'space-between',
+    flex: 1,
+    margin: 8,
+    maxWidth: Dimensions.get('window').width / 2 - 24,
+    opacity: 1
+  },
+  itemCardHeader: {
+    // backgroundColor: '#FFFFFF',
+    // borderRadius: 10,
+    // borderWidth: 1,
+    // borderColor: '#E4E9F2',
+    // overflow: 'hidden',
+    // justifyContent: 'space-between',
+    // flex: 1,
+    // margin: 8,
+    // maxWidth: Dimensions.get('window').width / 2 - 24,
+    // opacity: 1,
+  },
+  itemCardBody: {
+    backgroundColor: '#FFFFFF',
+    // borderRadius: 10,
+    // borderWidth: 1,
+    // borderColor: 1,
+    // borderColor: '#E4E9F2',
+    overflow: 'hidden',
+    justifyContent: 'space-between',
+    flex: 1,
+    margin: 8,
+    maxWidth: Dimensions.get('window').width / 2 - 24,
+    opacity: 1
+  },
+  itemCardFooter: {
+    backgroundColor: '#FFFFFF',
+    // borderRadius: 10,
+    // borderWidth: 1,
+    // borderColor: '#E4E9F2',
+    overflow: 'hidden',
+    justifyContent: 'space-between',
+    flex: 1,
+    margin: 8,
+    maxWidth: Dimensions.get('window').width / 2 - 24,
+    opacity: 1
+  },
 
-export default ItemsList;
+  itemNameText: {
+    // fontFamily: System,
+    color: '#222B45',
+    fontSize: 15,
+    fontWeight: '600',
+    lineHeight: 24
+  },
+  itemNameDescription: {
+    // fontFamily: System,
+    color: '#8F9BB3',
+    fontSize: 12,
+    fontWeight: '400',
+    lineHeight: 16
+  },
+  itemNameDescription2: {
+    // fontFamily: System,
+    color: '#222B45',
+    fontSize: 12,
+    fontWeight: '400',
+    lineHeight: 16
+  },
+
+  listView: {
+    flexGrow: 1,
+    flexShrink: 1,
+    flexDirection: 'column',
+    overflow: 'scroll',
+    backgroundColor: '#FFFFFF'
+  }
+
+})
