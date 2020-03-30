@@ -780,7 +780,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.capaz.homswag;
+				PRODUCT_BUNDLE_IDENTIFIER = com.capaztech.homswag;
 				PRODUCT_NAME = homswag;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -799,7 +799,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.capaz.homswag;
+				PRODUCT_BUNDLE_IDENTIFIER = com.capaztech.homswag;
 				PRODUCT_NAME = homswag;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
