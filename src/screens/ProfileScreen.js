@@ -88,7 +88,7 @@ function ProfileScreen(props) {
             </View>
             <View style={{justifyContent: 'flex-end', alignItems: 'flex-end', width: 'auto', marginHorizontal: 40}}>
               {isEdit ? 
-                <TouchableOpacity onPress={() => cancelEdit()}>
+                <TouchableOpacity onPress={() => cancelEdit()} disabled={isUploading}>
                   <Text>Cancel</Text>
                 </TouchableOpacity>:
                 <TouchableOpacity onPress={() => setEdit(true)}>

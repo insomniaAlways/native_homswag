@@ -129,31 +129,29 @@ const ImagePickerView = (props) => {
   return (
     <View style={props.styles.profilePicContainer}>
       { image ?
-        <View>
-          <View style={props.styles.profilePic}>
-            <Image style={props.styles.profilePic} source={{uri: image}}/>
-          </View>
-          { isEdit &&
-            <View style={{paddingTop: 5}}>
-            { isUploading ?
-              <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                <Text style={{fontFamily: 'Roboto-LightItalic', fontSize: 12}}>{progress}%</Text>
-                <Text style={{fontFamily: 'Roboto-LightItalic', fontSize: 12}}>Uploading...</Text>
-              </View> :
-              <TouchableOpacity onPress={startModule} style={{justifyContent: 'center', alignItems: 'center'}}>
-                <Text>Change</Text>
-              </TouchableOpacity>
-            }
-            </View> 
-          }
-        </View> :
-        <TouchableOpacity onPress={startModule}>
+        <View style={props.styles.profilePic}>
+          <Image style={props.styles.profilePic} source={{uri: image}}/>
+        </View>:
+        <TouchableOpacity onPress={startModule} disabled={!isEdit || isUploading}>
           <ImageBackground style={styles.profilePicPlaceHolder} source={ProfilePicPlaceholder}>
             <View style={{paddingBottom: 10, paddingRight: 10, backgroundColor: 'transparent'}}>
               <FontAwesome name="camera" size={24} />
             </View>
           </ImageBackground>
         </TouchableOpacity>
+      }
+      { isEdit &&
+        <View style={{paddingTop: 5}}>
+        { isUploading ?
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Text style={{fontFamily: 'Roboto-LightItalic', fontSize: 12}}>{progress}%</Text>
+            <Text style={{fontFamily: 'Roboto-LightItalic', fontSize: 12}}>Uploading...</Text>
+          </View> :
+          <TouchableOpacity onPress={startModule} style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Text>Change</Text>
+          </TouchableOpacity>
+        }
+        </View> 
       }
     </View>
   )
