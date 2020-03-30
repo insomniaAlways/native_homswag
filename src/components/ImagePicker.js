@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Image, TouchableOpacity, ImageBackground, StyleSheet, Text, Platform, PermissionsAndroid } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from 'expo-permissions';
+import { Permissions } from 'react-native-unimodules';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import storage from '@react-native-firebase/storage';
 import ProfilePicPlaceholder from '../assets/images/profile_pic_placeholder.png'

@@ -954,11 +954,6 @@
   dependencies:
     "@types/hammerjs" "^2.0.36"
 
-"@eva-design/eva@^1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@eva-design/eva/-/eva-1.4.0.tgz#2a9f5a19c5a26ed73f6efa98da812abc507e1f6c"
-  integrity sha512-bG+L6oLo0t913ViC1RbJulMGPCCdf1fIMghTLTPA90u/eAZEt1iyfZyY7tmbmn8hZUx5bENgYkwtQP2u/Hk4NA==
-
 "@expo/npm-proofread@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@expo/npm-proofread/-/npm-proofread-1.0.1.tgz#8450f71cea47dd9864d61a1a105931dc7ea2209a"
