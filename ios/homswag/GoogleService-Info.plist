@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>385989703905-g7h0718faeilsbc7t8fn2336euk11632.apps.googleusercontent.com</string>
+	<string>385989703905-2f67lbbv678lobus18ia9iua6l5bbjde.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.385989703905-g7h0718faeilsbc7t8fn2336euk11632</string>
+	<string>com.googleusercontent.apps.385989703905-2f67lbbv678lobus18ia9iua6l5bbjde</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>385989703905-hdedhk367a9fr28olh3l49ebulisj0g5.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -31,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:385989703905:ios:6dfb2fbdcdbacf57e3dfa0</string>
+	<string>1:385989703905:ios:1fb6d1c27f688f3ce3dfa0</string>
 	<key>DATABASE_URL</key>
 	<string>https://homswag.firebaseio.com</string>
 </dict>

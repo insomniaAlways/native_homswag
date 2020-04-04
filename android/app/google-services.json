@@ -8,7 +8,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:385989703905:android:01cd96414cd7f5ffe3dfa0",
+        "mobilesdk_app_id": "1:385989703905:android:d1c70a256ccc2619e3dfa0",
         "android_client_info": {
           "package_name": "com.capaz.homswag"
         }
@@ -29,6 +29,9 @@
       ],
       "api_key": [
         {
+          "current_key": "AIzaSyCYfXrnCHjYYv1J6hVkKAoxVbBzhUhcMDg"
+        },
+        {
           "current_key": "AIzaSyCgz8jG03p1OFzrRAh3fZ45jx3X8j783lQ"
         }
       ],
@@ -40,10 +43,10 @@
               "client_type": 3
             },
             {
-              "client_id": "385989703905-2f67lbbv678lobus18ia9iua6l5bbjde.apps.googleusercontent.com",
+              "client_id": "385989703905-g7h0718faeilsbc7t8fn2336euk11632.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.capaz.homswag"
+                "bundle_id": "com.capaztech.homswag"
               }
             }
           ]
@@ -54,7 +57,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:385989703905:android:df779df2d9f1a4bfe3dfa0",
         "android_client_info": {
-          "package_name": "com.capaz.homswag"
+          "package_name": "com.capaztech.homswag"
         }
       },
       "oauth_client": [
@@ -62,7 +65,7 @@
           "client_id": "385989703905-hdedhk367a9fr28olh3l49ebulisj0g5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.capaz.homswag",
+            "package_name": "com.capaztech.homswag",
             "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
           }
         },
@@ -72,6 +75,9 @@
         }
       ],
       "api_key": [
+        {
+          "current_key": "AIzaSyCYfXrnCHjYYv1J6hVkKAoxVbBzhUhcMDg"
+        },
         {
           "current_key": "AIzaSyCgz8jG03p1OFzrRAh3fZ45jx3X8j783lQ"
         }
@@ -84,10 +90,10 @@
               "client_type": 3
             },
             {
-              "client_id": "385989703905-2f67lbbv678lobus18ia9iua6l5bbjde.apps.googleusercontent.com",
+              "client_id": "385989703905-g7h0718faeilsbc7t8fn2336euk11632.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.capaz.homswag"
+                "bundle_id": "com.capaztech.homswag"
               }
             }
           ]

@@ -105,7 +105,7 @@ function AddressScreen(props) {
     )
   } else {
     return (
-      <SafeAreaView style={{flex: 1}}>
+      <SafeAreaView style={{flex: 1, backgroundColor: "#F7F9FC"}}>
         <StatusBar barStyle={"light-content"} backgroundColor={statusBarBrandColor} />
         <View style={{flex: 1}}>
           {addressModel.isLoading ? (
