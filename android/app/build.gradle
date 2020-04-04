@@ -130,7 +130,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.capaztech.homswag"
+        applicationId "com.capaz.homswag"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 2

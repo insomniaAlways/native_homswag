@@ -1,4 +1,4 @@
-package com.capaztech.homswag;
+package com.capaz.homswag;
 
 import android.app.Application;
 import android.content.Context;
@@ -8,7 +8,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 
-import com.capaztech.homswag.generated.BasePackageList;
+import com.capaz.homswag.generated.BasePackageList;
 import org.unimodules.adapters.react.ModuleRegistryAdapter;
 import org.unimodules.adapters.react.ReactModuleRegistryProvider;
 import org.unimodules.core.interfaces.SingletonModule;

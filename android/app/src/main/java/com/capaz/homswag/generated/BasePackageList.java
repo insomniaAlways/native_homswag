@@ -1,4 +1,4 @@
-package com.capaztech.homswag.generated;
+package com.capaz.homswag.generated;
 
 import java.util.Arrays;
 import java.util.List;

@@ -54,7 +54,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:385989703905:android:df779df2d9f1a4bfe3dfa0",
         "android_client_info": {
-          "package_name": "com.capaztech.homswag"
+          "package_name": "com.capaz.homswag"
         }
       },
       "oauth_client": [
@@ -62,7 +62,7 @@
           "client_id": "385989703905-hdedhk367a9fr28olh3l49ebulisj0g5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.capaztech.homswag",
+            "package_name": "com.capaz.homswag",
             "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
           }
         },

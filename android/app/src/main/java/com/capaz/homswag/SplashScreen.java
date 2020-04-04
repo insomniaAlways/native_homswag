@@ -1,4 +1,4 @@
-package com.capaztech.homswag;
+package com.capaz.homswag;
 
 import android.content.Intent;
 import android.os.Bundle;
