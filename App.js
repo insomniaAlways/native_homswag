@@ -3,13 +3,14 @@ import { Provider } from 'react-redux';
 import store from './src/store';
 import AppNavigator from './src/navigations';
 import SplashScreen from 'react-native-splash-screen'
-import moment from 'moment';
 
 import * as Sentry from '@sentry/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 Sentry.init({ 
-  dsn: 'https://16e35b4da8db4096b2298db1fb8049f0@sentry.io/2787983', 
+  dsn: 'https://16e35b4da8db4096b2298db1fb8049f0@sentry.io/2787983',
+  enableInExpoDevelopment: false,
+  debug: false
 });
 
 
