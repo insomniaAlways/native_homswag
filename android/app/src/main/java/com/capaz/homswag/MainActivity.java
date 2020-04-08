@@ -1,5 +1,6 @@
 package com.capaz.homswag;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
@@ -17,6 +18,7 @@ public class MainActivity extends ReactActivity {
   @Override
     protected void onCreate(Bundle savedInstanceState) {
       SplashScreen.show(this);  // here
+      setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
       super.onCreate(savedInstanceState);
   }
   @Override
