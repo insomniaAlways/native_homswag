@@ -1,9 +1,9 @@
 import React, { useState, useEffect }from 'react';
-import { View, StyleSheet, TouchableOpacity, ActivityIndicator, Modal, Text, PermissionsAndroid } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ActivityIndicator, Modal, Text } from 'react-native';
 import MapView from 'react-native-maps';
 import FloatingInput from '../components/input-helpers.js/floatingInput';
 import { connect } from 'react-redux';
-import { geoCoding, getPlace } from '../store/actions/locationActions';
+import { geoCoding } from '../store/actions/locationActions';
 import { creatNew, fetchAddress } from '../store/actions/addressActions';
 import { KeyboardAvoidingView } from '../components/KeyboardAvoidView'
 import _ from 'lodash';
@@ -31,8 +31,7 @@ const locationValueObject = {
 
 function AddressScreen(props) {
   const [ coordinates, setCoodinates ] = useState()
-  const { location, addNewAddress, getfetchAddress, navigation, networkAvailability, getGeoCoding, getPlaceDetails } = props
-  const previousScreen = navigation.getParam('previousRoute')
+  const { location, addNewAddress, getfetchAddress, navigation, networkAvailability, getGeoCoding } = props
   const [ isCurrentLoactionLoaded, setCoodinatesLoaded ] = useState(false)
   const [ locationValue, setLocationValue ] = useState(locationValueObject)
   const [ isLoading, setLoading ] = useState(false)
@@ -204,7 +203,6 @@ const mapDispatchToProps = dispatch => ({
   getGeoCoding: (latitude, longitude) => dispatch(geoCoding(latitude, longitude)),
   addNewAddress: (locationValue) => dispatch(creatNew(locationValue)),
   getfetchAddress: () => dispatch(fetchAddress()),
-  getPlaceDetails: (place_id) => dispatch(getPlace(place_id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddressScreen);

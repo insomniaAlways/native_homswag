@@ -84,14 +84,14 @@ export function deleteRecord(type, id, payload) {
   return axiosInstance.delete(url)
 }
 
+const mapAPIKey = "AIzaSyCgZ6wWb6oWCEDhA6VRCZ2DZT6LmxxnWng"
+
 export function getLocationDetails(latitude, longitude) {
-  let key = "AIzaSyCgz8jG03p1OFzrRAh3fZ45jx3X8j783lQ"
-  return axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${key}`)
+  return axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${mapAPIKey}`)
 }
 
 export function getPlaceDetails(place_id) {
-  let key = "AIzaSyCgz8jG03p1OFzrRAh3fZ45jx3X8j783lQ"
-  return axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&key=${key}`)
+  return axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&key=${mapAPIKey}`)
 }
 
 export default axiosInstance;
