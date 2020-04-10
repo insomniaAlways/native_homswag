@@ -8,18 +8,18 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:385989703905:android:d1c70a256ccc2619e3dfa0",
+        "mobilesdk_app_id": "1:385989703905:android:952951e6929b0f30e3dfa0",
         "android_client_info": {
           "package_name": "com.capaz.homswag"
         }
       },
       "oauth_client": [
         {
-          "client_id": "385989703905-248dtk9d189diu3drhqls2jgljni3b2g.apps.googleusercontent.com",
+          "client_id": "385989703905-t25275oc730el79q77put84s20uam2of.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.capaz.homswag",
-            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+            "certificate_hash": "c5d6da8d88dd3bc88a1e0fd3a2dfc368858b6eea"
           }
         },
         {
@@ -29,57 +29,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCYfXrnCHjYYv1J6hVkKAoxVbBzhUhcMDg"
-        },
-        {
-          "current_key": "AIzaSyCgz8jG03p1OFzrRAh3fZ45jx3X8j783lQ"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "385989703905-er1pgc3vh7j90g0bq4fajb05d1j2fau9.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "385989703905-g7h0718faeilsbc7t8fn2336euk11632.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.capaztech.homswag"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:385989703905:android:df779df2d9f1a4bfe3dfa0",
-        "android_client_info": {
-          "package_name": "com.capaztech.homswag"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "385989703905-hdedhk367a9fr28olh3l49ebulisj0g5.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.capaztech.homswag",
-            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
-          }
-        },
-        {
-          "client_id": "385989703905-er1pgc3vh7j90g0bq4fajb05d1j2fau9.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCYfXrnCHjYYv1J6hVkKAoxVbBzhUhcMDg"
-        },
-        {
-          "current_key": "AIzaSyCgz8jG03p1OFzrRAh3fZ45jx3X8j783lQ"
+          "current_key": "AIzaSyCpHM8MDNQOV2p_FPpiyNQXw06sMFelreo"
         }
       ],
       "services": {

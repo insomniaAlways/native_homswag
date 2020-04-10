@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>homswag</string>
+	<string>Homswag</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -49,9 +49,9 @@
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Allow Homswag to use your location, such that we can fetch your current location.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Allow Homswag to use your location, such that we can fetch your current location's info for the getting appointment location.</string>
+	<string>Allow Homswag to use your location, such that we can fetch your current location&apos;s info for the getting appointment location.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Allow Homswag to use your location, such that we can fetch your current location's info for the getting appointment location.</string>
+	<string>Allow Homswag to use your location, such that we can fetch your current location&apos;s info for the getting appointment location.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Homswag would like to save photos to your photo gallery that set as profile picture inside the application</string>
 	<key>NSPhotoLibraryUsageDescription</key>
