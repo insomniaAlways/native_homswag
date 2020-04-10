@@ -46,7 +46,7 @@ function CartScreen(props) {
         switch (appointment.defaultValues.slot.type) {
           case 1: {
             if(isAfter) {
-              if(moment().isSameOrAfter(moment().startOf('days').add(17, 'hours'))) {
+              if(moment().isSameOrAfter(moment().startOf('days').add(18, 'hours'))) {
                 alert('Please select a valid time slot.')
               } else {
                 alert('You cannot schedule for the selected time slot.')
@@ -59,14 +59,6 @@ function CartScreen(props) {
           case 2: {
             if(isAfter) {
               alert('You cannot schedule for the selected time slot.')
-              return false
-            } else {
-              return true
-            }
-          }
-          case 3: {
-            if(isAfter) {
-              alert('You cannot schedule for the selected time slot for today')
               return false
             } else {
               return true

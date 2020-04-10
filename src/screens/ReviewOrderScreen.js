@@ -35,16 +35,8 @@ function ReviewOrderScreen (props) {
     setLoading(true)
     let appointmentDetails = appointment.defaultValues
     let from, to;
-    if(appointmentDetails.slot.type == 1) {
-      from = moment(appointmentDetails.from).startOf('days').add(9, 'hours').toISOString()
-      to = moment(appointmentDetails.from).startOf('days').add(12, 'hours').toISOString()
-    } else if (appointmentDetails.slot.type == 2) {
-      from = moment(appointmentDetails.from).startOf('days').add(12, 'hours').toISOString()
-      to = moment(appointmentDetails.from).startOf('days').add(15, 'hours').toISOString()
-    } else {
-      from = moment(appointmentDetails.from).startOf('days').add(15, 'hours').toISOString()
-      to = moment(appointmentDetails.from).startOf('days').add(18, 'hours').toISOString()
-    }
+    from = moment(appointmentDetails.from).startOf('days').add(appointmentDetails.slot.from, 'hours').toISOString()
+    to = moment(appointmentDetails.from).startOf('days').add(appointmentDetails.slot.to, 'hours').toISOString()
     try {
       let order = await placeOrder({
         "payment_method": 1,

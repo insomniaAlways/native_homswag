@@ -8,26 +8,21 @@ function TimeSlotButton (props) {
   const [ isDisabled, setDisabled ] = useState(false)
 
   useEffect(() => {
-    if(timeSlot.type == 1 && moment().isAfter(moment(date).startOf('days').add(11, 'hours'))) {
+    if(timeSlot.type == 1 && moment().isAfter(moment(date).startOf('days').add((timeSlot.to - 1), 'hours'))) {
       setDisabled(true)
     } else if(timeSlot.type == 1) {
       setDisabled(false)
     }
-    if(timeSlot.type == 2 && moment().isAfter(moment(date).startOf('days').add(14, 'hours'))) {
+    if(timeSlot.type == 2 && moment().isAfter(moment(date).startOf('days').add((timeSlot.to - 1), 'hours'))) {
       setDisabled(true)
     } else if(timeSlot.type == 2) {
-      setDisabled(false)
-    }
-    if(timeSlot.type == 3 && moment().isAfter(moment(date).startOf('days').add(17, 'hours'))) {
-      setDisabled(true)
-    } else if(timeSlot.type == 3) {
       setDisabled(false)
     }
   })
 
   useEffect(() => {
     if(isDisabled) {
-      let type = timeSlot.type == 3 ? 1 : timeSlot.type + 1
+      let type = timeSlot.type == 2 ? 1 : timeSlot.type + 1
       let to = _.find(slots, ['type', type])
       setSlot(to)
     }
@@ -35,7 +30,7 @@ function TimeSlotButton (props) {
 
   if(isDisabled) {
     return (
-      <View key={timeSlot.type} style={timeSlot.type == 3 ? styles.isLastButtonContainer : styles.buttonContainer}>
+      <View key={timeSlot.type} style={timeSlot.type == 2 ? styles.isLastButtonContainer : styles.buttonContainer}>
         <View style={[styles.button, styles.disableButton]}>
           <Text style={styles.disableButtonText}>{timeSlot.value}</Text>
         </View>
@@ -46,8 +41,8 @@ function TimeSlotButton (props) {
       <View
         key={timeSlot.type}
         style={selectedSlot.type == timeSlot.type ?
-          (timeSlot.type == 3 ? styles.isSelectedLastButtonContainer : styles.selectedButtonContainer) :
-          (timeSlot.type == 3 ? styles.isLastButtonContainer : styles.buttonContainer)}
+          (timeSlot.type == 2 ? styles.isSelectedLastButtonContainer : styles.selectedButtonContainer) :
+          (timeSlot.type == 2 ? styles.isLastButtonContainer : styles.buttonContainer)}
         >
         <TouchableOpacity style={styles.button} onPress={() => setSlot(timeSlot)} isDisabled={isDisabled}>
           <Text style={selectedSlot.type == timeSlot.type ? {color: 'white'} : {color: 'black'}}>{timeSlot.value}</Text>

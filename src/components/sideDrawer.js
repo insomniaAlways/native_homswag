@@ -1,7 +1,7 @@
 import React from 'react';
 import { SafeAreaView } from 'react-navigation';
 import { DrawerItems } from 'react-navigation-drawer';
-import { StyleSheet, ScrollView, View, Image, Text, ImageBackground, StatusBar } from 'react-native';
+import { StyleSheet, ScrollView, View, Image, Text, ImageBackground } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';

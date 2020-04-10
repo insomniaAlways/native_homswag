@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import OfferCard from './offerCard';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 
 function OfferView(props) {
   const { packages, navigation } = props

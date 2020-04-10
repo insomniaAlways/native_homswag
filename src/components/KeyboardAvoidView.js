@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, ScrollViewProps } from 'react-native';
+import { ScrollView } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 /**

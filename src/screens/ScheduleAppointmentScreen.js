@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, View, TouchableOpacity, ScrollView, StyleSheet, SafeAreaView, Text } from 'react-native';
+import { View, TouchableOpacity, ScrollView, StyleSheet, Text } from 'react-native';
 import SelectDate from '../components/SelectDate';
 import SelectTimeSlot from '../components/selectTimeSlot';
 import BookingDetails from '../components/bookingDetails';
@@ -41,7 +41,7 @@ function ScheduleAppointmentScreen(props) {
         switch (selectedSlot.type) {
           case 1: {
             if(isAfter) {
-              if(moment().isSameOrAfter(moment().startOf('days').add(17, 'hours'))) {
+              if(moment().isSameOrAfter(moment().startOf('days').add(18, 'hours'))) {
                 alert('Please select a time slot.')
               } else {
                 alert('You cannot schedule for the selected time slot.')
@@ -54,14 +54,6 @@ function ScheduleAppointmentScreen(props) {
           case 2: {
             if(isAfter) {
               alert('You cannot schedule for the selected time slot.')
-              return false
-            } else {
-              return true
-            }
-          }
-          case 3: {
-            if(isAfter) {
-              alert('You cannot schedule for the selected time slot for today')
               return false
             } else {
               return true

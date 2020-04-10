@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Item, Input, Label } from 'native-base';
 
 function FloatingInput (props){

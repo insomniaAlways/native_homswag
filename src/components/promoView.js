@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import PromoCard from './promoCard';
 import Promo1 from '../assets/images/promo1.png';
 import Promo2 from '../assets/images/promo2.png';
