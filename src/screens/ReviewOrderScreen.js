@@ -11,6 +11,7 @@ import { brandColor, brandLightBackdroundColor } from '../style/customStyles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Sentry from '@sentry/react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
+import RazorpayCheckout from 'react-native-razorpay';
 
 function ReviewOrderScreen (props) {
   const insets = useSafeArea();
@@ -53,6 +54,33 @@ function ReviewOrderScreen (props) {
     } catch(e) {
       setLoading(false)
     }
+  }
+
+  const triggerRazorPay = () => {
+    let options = {
+      description: 'Total payable amount',
+      image: 'https://i.imgur.com/3g7nmJC.png',
+      currency: 'INR',
+      key: 'rzp_test_5y3uibyAqpYF7u',
+      amount: '5000',
+      name: 'Homswag test',
+      order_id: cart.values.id,//Replace this with an order_id created using Orders API. Learn more at https://razorpay.com/docs/api/orders.
+      prefill: {
+        email: 'gaurav.kumar@example.com',
+        contact: '9191919191',
+        name: 'Gaurav Kumar'
+      },
+      theme: {color: '#53a20e'}
+    }
+    RazorpayCheckout.open(options).then((data) => {
+      // handle success
+      console.log(data)
+      alert(`Success: ${data.razorpay_payment_id}`);
+    }).catch((error) => {
+      // handle failure
+      console.log(error)
+      alert(`Error: ${error.code} | ${error.description}`);
+    });
   }
 
   useEffect(() => {
@@ -115,7 +143,7 @@ function ReviewOrderScreen (props) {
           <TouchableOpacity style={{height: 57, justifyContent: 'center', alignItems: 'center', backgroundColor: brandLightBackdroundColor, marginBottom: insets.bottom}} disabled={true}>
             <Text style={{width: '100%', textAlign: 'center', color: '#fff', fontSize: 16, fontWeight: 'bold'}}>Booking...</Text>
           </TouchableOpacity> :
-          <TouchableOpacity style={{height: 57, justifyContent: 'center', alignItems: 'center', backgroundColor: brandColor, marginBottom: insets.bottom}} onPress={() => confirmBooking()}>
+          <TouchableOpacity style={{height: 57, justifyContent: 'center', alignItems: 'center', backgroundColor: brandColor, marginBottom: insets.bottom}} onPress={() => triggerRazorPay()}>
             <Text style={{width: '100%', textAlign: 'center', color: '#fff', fontSize: 16, fontWeight: 'bold'}}>Book Appointment</Text>
           </TouchableOpacity>
         }

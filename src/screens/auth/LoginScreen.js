@@ -47,14 +47,14 @@ const LoginScreen = (props) => {
   //while application load
   const checkAuthentication = async () => {
     try {
-      Sentry.captureMessage('Token Collection Start on ' + moment().unix() + ' session.isSessionAuthenticated: ' + session.isSessionAuthenticated)
+      // Sentry.captureMessage('Token Collection Start on ' + moment().unix() + ' session.isSessionAuthenticated: ' + session.isSessionAuthenticated)
       if(!session.isSessionAuthenticated) {
         let token = await AsyncStorage.getItem('token')
         if(token) {
           setUserIsNew(false)
           let tokenObject = JSON.parse(token)
           if(tokenObject && tokenObject.authToken && tokenObject.refreshToken) {
-            Sentry.captureMessage('Token Validation Start on ' + moment().unix())
+            // Sentry.captureMessage('Token Validation Start on ' + moment().unix())
             validateCurrentToken(tokenObject.authToken, tokenObject.refreshToken)
           } else {
             startLoginProcess()
@@ -121,7 +121,7 @@ const LoginScreen = (props) => {
 
   useEffect(() => {
     checkAuthentication()
-    Sentry.captureMessage('Login screen load on ' + moment().unix());
+    // Sentry.captureMessage('Login screen load on ' + moment().unix());
   }, [])
 
   //trigger when otp validation succeed
@@ -131,7 +131,7 @@ const LoginScreen = (props) => {
       if(!isNewUser) {
         navigation.navigate('App')
       }
-      Sentry.captureMessage('Session updating Start on ' + moment().unix())
+      // Sentry.captureMessage('Session updating Start on ' + moment().unix())
     } else if(!authModel.isLoading && authModel.error) {
       setButtonLoading(false)
       setLoading(false)
@@ -149,7 +149,7 @@ const LoginScreen = (props) => {
   useEffect(() => {
     if(session.isSessionAuthenticated) {
       getUser()
-      Sentry.captureMessage('Get User Start on ' + moment().unix())
+      // Sentry.captureMessage('Get User Start on ' + moment().unix())
     }
   }, [session.isSessionAuthenticated])
 
@@ -159,7 +159,7 @@ const LoginScreen = (props) => {
     if(session.isSessionAuthenticated && isNewUser) {
       if(!currentUserModel.isLoading && currentUserModel.values && currentUserModel.values.id) {
         redirectTo()
-        Sentry.captureMessage('Redirection initiated no ' + moment().unix())
+        // Sentry.captureMessage('Redirection initiated no ' + moment().unix())
       } else if(!currentUserModel.isLoading && currentUserModel.error) {
         setButtonLoading(false)
         if(currentUserModel.error && currentUserModel.error.message) {

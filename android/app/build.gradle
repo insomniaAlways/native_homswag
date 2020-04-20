@@ -200,6 +200,7 @@ dependencies {
     // implementation "com.google.firebase:firebase-storage:17.0.0"
     // implementation project(path: ':react-native-vector-icons')
     // implementation project(path: ':react-native-svg')
+//    implementation project(':react-native-razorpay')
     addUnimodulesDependencies()
 
     if (enableHermes) {

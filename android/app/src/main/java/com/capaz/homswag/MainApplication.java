@@ -12,6 +12,7 @@ import com.capaz.homswag.generated.BasePackageList;
 import org.unimodules.adapters.react.ModuleRegistryAdapter;
 import org.unimodules.adapters.react.ReactModuleRegistryProvider;
 import org.unimodules.core.interfaces.SingletonModule;
+//import com.razorpay.rn.RazorpayPackage;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -41,6 +42,7 @@ public class MainApplication extends Application implements ReactApplication {
              new ModuleRegistryAdapter(mModuleRegistryProvider)
           );
           packages.addAll(unimodules);
+//          packages.add(new RazorpayPackage());
 
           return packages;
         }
