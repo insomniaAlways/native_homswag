@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import store from './src/store';
 import AppNavigator from './src/navigations';
 import SplashScreen from 'react-native-splash-screen'
+import NetInfo from '@react-native-community/netinfo';
 
 import * as Sentry from '@sentry/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -13,22 +14,17 @@ Sentry.init({
   debug: false
 });
 
-
-// XMLHttpRequest = GLOBAL.originalXMLHttpRequest ?
-//     GLOBAL.originalXMLHttpRequest :
-//     GLOBAL.XMLHttpRequest;
-
-//   // fetch logger
-// global._fetch = fetch;
-// global.fetch = function (uri, options, ...args) {
-//   return global._fetch(uri, options, ...args).then((response) => {
-//     return response;
-//   });
-// };
-
 const App = () => {
   useLayoutEffect(() => {
     SplashScreen.hide()
+    const unsubscribe = NetInfo.addEventListener(state => {
+      if(!state.isConnected) {
+        store.dispatch(onNetworkUnAvailable())
+        alert('Seems like you are not connected to Internet')
+      } else {
+        store.dispatch(onNetworkAvailable())
+      }
+    })
   }, [])
 
   return (

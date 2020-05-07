@@ -11,6 +11,7 @@ import { brandColor, brandLightBackdroundColor } from '../style/customStyles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Sentry from '@sentry/react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
+import * as Device from 'expo-device';
 
 function ReviewOrderScreen (props) {
   const insets = useSafeArea();
@@ -46,7 +47,14 @@ function ReviewOrderScreen (props) {
         "total_paid": 0, //need to change when online payment
         "status": 1,
         "special_instruction": appointmentDetails.special_instruction,
-        "preferred_beautician": appointmentDetails.prefered_beautician
+        "preferred_beautician": appointmentDetails.prefered_beautician,
+        "device": {
+          modelName: Device.modelName,
+          brand: Device.brand,
+          modelId: Device.modelId,
+          osName: Device.osName,
+          deviceName: Device.deviceName
+        }
       })
       setLoading(false)
       props.navigation.navigate('OrderComplete', { order: order.payload.currentValue })

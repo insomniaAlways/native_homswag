@@ -95,7 +95,7 @@ const PackageDetails = (props) => {
   return (
     <View style={{flex: 1}}>
       <ScrollView style={{paddingBottom: 20}} showsVerticalScrollIndicator={false}>
-        <Image source={{uri: packageService.poster_image_source}} style={{width: screenWidth, height: 260}}/>
+        <Image source={{uri: packageService.poster_image_source}} style={{width: screenWidth, height: 260}} resizeMode={"stretch"}/>
         <ItemContainer items={packageService.items} packageService={packageService}/>
       </ScrollView>
       { cartItemModel.isLoading ?
