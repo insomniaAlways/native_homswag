@@ -4,6 +4,7 @@ import store from './src/store';
 import AppNavigator from './src/navigations';
 import SplashScreen from 'react-native-splash-screen'
 import NetInfo from '@react-native-community/netinfo';
+import { onNetworkAvailable, onNetworkUnAvailable } from './src/store/actions/networkActions';
 
 import * as Sentry from '@sentry/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
