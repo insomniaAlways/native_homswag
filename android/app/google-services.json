@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "385989703905",
+    "firebase_url": "https://homswag.firebaseio.com",
+    "project_id": "homswag",
+    "storage_bucket": "homswag.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:385989703905:android:952951e6929b0f30e3dfa0",
+        "android_client_info": {
+          "package_name": "com.capaz.homswag"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "385989703905-t25275oc730el79q77put84s20uam2of.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.capaz.homswag",
+            "certificate_hash": "c5d6da8d88dd3bc88a1e0fd3a2dfc368858b6eea"
+          }
+        },
+        {
+          "client_id": "385989703905-er1pgc3vh7j90g0bq4fajb05d1j2fau9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpHM8MDNQOV2p_FPpiyNQXw06sMFelreo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "385989703905-er1pgc3vh7j90g0bq4fajb05d1j2fau9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "385989703905-g7h0718faeilsbc7t8fn2336euk11632.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.capaztech.homswag"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
