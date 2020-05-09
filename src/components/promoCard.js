@@ -7,6 +7,7 @@ function PromoCard({ style, source }) {
       <Image 
         style={{height: 220, width: 250, borderRadius: 10}}
         source={source}
+        resizeMode={"stretch"}
       />
     </View>
   )
