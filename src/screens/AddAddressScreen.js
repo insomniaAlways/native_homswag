@@ -79,8 +79,8 @@ function AddressScreen(props) {
 
   useEffect(() => {
     if(location && location.error) {
-      alert(error)
-      Sentry.captureException(e)
+      alert(location.error)
+      Sentry.captureException(location.error)
     }
   }, [location.error])
 

@@ -14,7 +14,6 @@ import LoginForm from '../../components/helpers/loginForm';
 import LoginButtons from '../../components/helpers/loginButtons';
 import * as Sentry from '@sentry/react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
-import moment from 'moment';
 
 const LoginScreen = (props) => {
   const insets = useSafeArea();
