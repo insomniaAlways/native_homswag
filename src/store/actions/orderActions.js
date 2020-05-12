@@ -7,7 +7,7 @@ export const fetchAllOrder = () => {
     dispatch(onStart())
     return query('order')
     .then((response) => dispatch(onSuccess(response.data)))
-    .catch((e) => dispatch(onError(e.response.data)))
+    .catch((e) => dispatch(onError(e)))
   }
 }
 
@@ -15,7 +15,7 @@ export const fetchOrder = (order_id) => {
   return function(dispatch) {
     return findRecord('order', order_id)
     .then(res => dispatch(createOrder(res.data)))
-    .catch(e => dispatch(onError(e.response.data)))
+    .catch(e => dispatch(onError(e)))
   }
 }
 
@@ -24,7 +24,7 @@ export const createOrder = (orderDetails) => {
     dispatch(onStart())
     return createRecord('order', orderDetails)
     .then((res) => dispatch(orderCreated(res.data)))
-    .catch((e) => dispatch(onError(e.response.data)))
+    .catch((e) => dispatch(onError(e)))
   }
 }
 
@@ -33,7 +33,7 @@ export const updateOrder = (order_id, order_status) => {
     dispatch(onStart())
     return updateRecord('order', order_id, { status: order_status })
     .then((res) => dispatch(onUpdate(res.data)))
-    .catch((e) => dispatch(onError(e.response.data))) 
+    .catch((e) => dispatch(onError(e))) 
   }
 }
 
@@ -58,9 +58,16 @@ export const onSuccess = (payload) => {
 }
 
 export const onError = (error) => {
-  return {
-    type: ORDER_REQUEST_FAILED,
-    error: error
+  if(error && error.response && error.response.data) {
+    return {
+      type: ORDER_REQUEST_FAILED,
+      error: error.response.data
+    }
+  } else {
+    return {
+      type: ORDER_REQUEST_FAILED,
+      error: error
+    }
   }
 }
 

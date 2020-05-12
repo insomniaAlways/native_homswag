@@ -6,13 +6,9 @@ export const fetchUser = () => {
     try {
       dispatch(onStart())
       let res = await findRecord('me')
-      dispatch(onSuccess(res.data))
+      return dispatch(onSuccess(res.data))
     } catch (e) {
-      if(e && e.response && e.response.data) {
-        dispatch(onError(e.response.data))
-      } else {
-        dispatch(onError(e))
-      }
+      return dispatch(onError(e))
     }
   }
 }
@@ -22,7 +18,7 @@ export const updateUser = (data) => {
     dispatch(onStart())
     return updateRecord('me', null, data)
     .then(res => dispatch(onUserDetailsUpdate(res.data)))
-    .catch(e => dispatch(onError(e.response.data)))
+    .catch(e => dispatch(onError(e)))
   }
 }
 
@@ -46,8 +42,16 @@ export const onSuccess = (payload) => {
 }
 
 export const onError = (error) => {
-  return {
-    type: USER_REQUEST_FAILED,
-    error: error
+  if(error && error.response && error.response.data) {
+    return {
+      type: USER_REQUEST_FAILED,
+      error: error.response.data
+    }
+  } else {
+    return {
+      type: USER_REQUEST_FAILED,
+      error: error
+    }
   }
+
 }

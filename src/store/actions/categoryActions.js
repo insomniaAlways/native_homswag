@@ -6,7 +6,7 @@ export const fetchCategories = () => {
     dispatch(onStart())
     return findAll('category')
     .then((response) => dispatch(onSuccess(response.data)))
-    .catch((e) => dispatch(onError(e.response.data)))
+    .catch((e) => dispatch(onError(e)))
   }
 }
 
@@ -24,8 +24,15 @@ export const onSuccess = (payload) => {
 }
 
 export const onError = (error) => {
-  return {
-    type: CATEGORY_REQUEST_FAILED,
-    payload: error
+  if(error && error.response && error.response.data) {
+    return {
+      type: CATEGORY_REQUEST_FAILED,
+      payload: error.response.data
+    }
+  } else {
+    return {
+      type: CATEGORY_REQUEST_FAILED,
+      payload: error
+    }
   }
 }

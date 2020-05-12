@@ -8,6 +8,7 @@
     <ImageView android:src="@mipmap/logo"
         android:layout_height="220dp"
         android:layout_width="220dp"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:contentDescription="@string/todo" />
 
 </LinearLayout>

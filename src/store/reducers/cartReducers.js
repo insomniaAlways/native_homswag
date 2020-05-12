@@ -20,7 +20,7 @@ const cartReducers = (state = categories, action) => {
       return {
         ...state,
         isLoading: false,
-        error: action.payload
+        error: action.error
       }
     }
     default : return state;

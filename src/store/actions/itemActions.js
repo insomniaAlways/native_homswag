@@ -7,7 +7,7 @@ export const fetchItems = (category_id) => {
     dispatch(onStart())
     return findAll('item', query)
     .then((response) => dispatch(onSuccess(response.data)))
-    .catch((e) => dispatch(e.response.data))
+    .catch((e) => dispatch(onError(e)))
   }
 }
 
@@ -16,7 +16,7 @@ export const fetchAllItems = () => {
     dispatch(onStart())
     return findAll('item')
     .then((response) => dispatch(onSuccess(response.data)))
-    .catch((e) => dispatch(e.response.data))
+    .catch((e) => dispatch(onError(e)))
   }
 }
 
@@ -34,8 +34,15 @@ export const onSuccess = (payload) => {
 }
 
 export const onError = (error) => {
-  return {
-    type: ITEM_REQUEST_FAILED,
-    payload: error
+  if(error && error.response && error.response.data) {
+    return {
+      type: ITEM_REQUEST_FAILED,
+      payload: error.response.data
+    }
+  } else {
+    return {
+      type: ITEM_REQUEST_FAILED,
+      payload: error
+    }
   }
 }

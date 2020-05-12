@@ -7,7 +7,7 @@ export const fetchAddress = () => {
     dispatch(onStart())
     return query('me/address')
     .then((response) => dispatch(onSuccess(response.data)))
-    .catch((e) => dispatch(onError(e.response.data)))
+    .catch((e) => dispatch(onError(e)))
   }
 }
 
@@ -16,7 +16,7 @@ export const creatNew = (address) => {
     dispatch(onStart())
     return createRecord('me/address', address)
     .then(() => dispatch(fetchAddress()))
-    .catch(e => dispatch(onError(e.response.data)))
+    .catch(e => dispatch(onError(e)))
   }
 }
 
@@ -25,7 +25,7 @@ export const deleteAddresss = (address_id) => {
     dispatch(onStart())
     return deleteRecord('me/address', address_id)
     .then(() => dispatch(fetchAddress()))
-    .catch(e => dispatch(onError(e.response.data)))
+    .catch(e => dispatch(onError(e)))
   }
 }
 
@@ -34,7 +34,7 @@ export const updateAddress = (address_id, is_default) => {
     dispatch(onStart())
     return updateRecord('me/address', address_id, { is_default: is_default })
     .then(() => dispatch(fetchAddress()))
-    .catch((e) => dispatch(onError(e.response.data)))
+    .catch((e) => dispatch(onError(e)))
   }
 } 
 
@@ -52,8 +52,15 @@ export const onSuccess = (payload) => {
 }
 
 export const onError = (error) => {
-  return {
-    type: ADDRESS_REQUEST_FAILED,
-    error: error
+  if(error && error.response && error.response.data) {
+    return {
+      type: ADDRESS_REQUEST_FAILED,
+      error: error
+    }
+  } else {
+    return {
+      type: ADDRESS_REQUEST_FAILED,
+      error: error
+    }
   }
 }
