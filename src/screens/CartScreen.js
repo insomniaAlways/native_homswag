@@ -80,6 +80,8 @@ function CartScreen(props) {
       } else {
         return alert('Please select an address')
       }
+    } else if(cartModel.values.cart_total < 499){
+      alert(`Please add values of Rs.${499 - cartModel.values.cart_total} more to continue`)
     } else {
       return alert('Please select a valid timeslot')
     }
@@ -122,9 +124,14 @@ function CartScreen(props) {
             </ScrollView>
           </View>
           <View style={[{height: 55, marginBottom: insets.bottom}, DefaultStyles.brandBackgroundColor]}>
-            <TouchableOpacity style={[styles.button, DefaultStyles.brandColorButton]} onPress={() => goToConfirmPage()}>
-              <Text style={{color:'#fff', fontSize: 18, fontWeight: 'bold', width: '100%', textAlign: 'center'}}>Next</Text>
-            </TouchableOpacity>
+          {(cartModel.values.cart_total > 498) ?
+              <TouchableOpacity style={[styles.button, DefaultStyles.brandColorButton]} onPress={() => goToConfirmPage()} disabled={cartModel.isLoading}>
+                <Text style={{color:'#fff', fontSize: 18, fontWeight: 'bold', width: '100%', textAlign: 'center'}}>Next</Text>
+              </TouchableOpacity>:
+              <View style={[styles.button, {backgroundColor: "#eeeeee"}]}>
+                <Text style={{color:'#000', fontSize: 12, width: '100%', textAlign: 'center'}}>Please add values of Rs.{499 - cartModel.values.cart_total} more to continue</Text>
+              </View>
+             }
           </View>
         </View> ) : (
           <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
