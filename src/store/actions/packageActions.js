@@ -7,7 +7,7 @@ export const fetchPackages = () => {
     dispatch(onStart())
     return findAll('package')
     .then((res) => dispatch(onSuccess(res.data)))
-    .catch((e) => dispatch(onError(e.response.data)))
+    .catch((e) => dispatch(onError(e)))
   }
 }
 
@@ -25,8 +25,15 @@ export const onSuccess = (payload) => {
 }
 
 export const onError = (error) => {
-  return {
-    type: PACKAGE_REQUEST_FAILED,
-    error: error
+  if(error && error.response && error.response.data) {
+    return {
+      type: PACKAGE_REQUEST_FAILED,
+      error: error.response.data
+    }
+  } else {
+    return {
+      type: PACKAGE_REQUEST_FAILED,
+      error: error
+    }
   }
 }

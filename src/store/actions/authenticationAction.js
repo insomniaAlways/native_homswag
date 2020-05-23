@@ -12,7 +12,13 @@ export const register = (phone) => {
     dispatch(loginInitiated())
     return createRecord('login', { phone: phone })
     .then(() => dispatch(onLoginSuccess()))
-    .catch(e => dispatch(onLoginFailed(e.response.data)))
+    .catch(e => {
+      if(e && e.response && e.response.data) {
+        return dispatch(onLoginFailed(e.response.data))
+      } else {
+        return dispatch(onLoginFailed(e))
+      }
+    })
   }
 }
 

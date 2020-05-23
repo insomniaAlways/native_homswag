@@ -15,6 +15,7 @@ const OfferCard = (props) => {
         <Image 
           style={{height: "100%", width: "100%", borderRadius: 10}}
           source={{uri: packageService.poster_image_source}}
+          resizeMode={"stretch"}
         />
       </View>
     </TouchableOpacity>

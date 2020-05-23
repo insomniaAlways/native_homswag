@@ -79,8 +79,8 @@ function AddressScreen(props) {
 
   useEffect(() => {
     if(location && location.error) {
-      alert(error)
-      Sentry.captureException(e)
+      alert(location.error)
+      Sentry.captureException(location.error)
     }
   }, [location.error])
 
@@ -142,7 +142,13 @@ function AddressScreen(props) {
             </View>
           }
         </View>
-        <View style={{flex: 3, paddingLeft: 30, paddingRight: 30, paddingTop: 5, justifyContent: 'center'}}>
+        <View style={{flex: 3, paddingLeft: 30, paddingRight: 30, paddingTop: 10, justifyContent: 'center'}}>
+          <View style={{flexDirection: 'row', borderColor: '#a9d5de', borderRadius: 5, backgroundColor: '#f8ffff', borderWidth: 1, padding: 5}}>
+            <Text style={{paddingRight: 8, paddingTop: 8}}><FontAwesome name="info-circle" /></Text>
+            <Text style={{color: 'rgba(0,0,0,0.5)', fontSize: 12}}>
+              Move Location Markers To Desired Locations To Accurately Point The Address.
+            </Text>
+          </View>
           {locationValue && locationValue.formatedAddress ? 
             <View style={{paddingTop: 10}}>
               <Text style={{color: 'rgba(0,0,0,0.5)'}}>Location</Text>

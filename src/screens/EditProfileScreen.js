@@ -17,7 +17,7 @@ function UpdateProfileScreen(props) {
   const updateProfile = async () => {
     if(networkAvailability.isOffline) {
       alert("Seems like you are not connected to internet")
-    } else if(name && typeof(name) == "string" && name.length.trim() > 0) {
+    } else if(name && typeof(name) == "string" && name.length && name.trim().length > 0) {
       setLoading(true)
       await updateUserDetails({ name: name, image_source: image})
       setLoading(false)

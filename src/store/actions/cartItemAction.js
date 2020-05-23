@@ -14,7 +14,7 @@ export const fetchCartItems = () => {
     dispatch(onStart())
     return query('cart-item')
     .then((response) => dispatch(onSuccess(response.data)))
-    .catch((e) => dispatch(onError(e.response.data)))
+    .catch((e) => dispatch(onError(e)))
   }
 }
 
@@ -31,7 +31,7 @@ export const createCartItem = (item_id, totalPrice, is_package=false) => {
     dispatch(onStart())
     return createRecord('cart-item', cartItem)
     .then((response) => dispatch(onCreateSuccess(response.data)))
-    .catch((error) => dispatch(onError(error.response.data)))
+    .catch((error) => dispatch(onError(error)))
   }
 }
 
@@ -51,7 +51,7 @@ export const updateItem = (cart_item_id, quantity, totalPrice) => {
     }
     return updateRecord('cart-item', cart_item_id, cartItem)
     .then((response) => dispatch(updateCartItem(response.data)))
-    .catch(e => dispatch(onError(e.response.data)))
+    .catch(e => dispatch(onError(e)))
   }
 }
 
@@ -67,7 +67,7 @@ export const deleteItem = (cart_item_id) => {
     dispatch(onStart())
     return deleteRecord('cart-item', cart_item_id)
     .then(() => dispatch(onDeleteCartItem(cart_item_id)))
-    .catch(e => dispatch(onError(e.response.data)))
+    .catch(e => dispatch(onError(e)))
   }
 }
 
@@ -92,9 +92,16 @@ export const onSuccess = (payload) => {
 }
 
 export const onError = (error) => {
-  return {
-    type: CARTITEM_REQUEST_FAILED,
-    payload: error
+  if(error && error.response && error.response.data) {
+    return {
+      type: CARTITEM_REQUEST_FAILED,
+      payload: error.response.data
+    }
+  } else {
+    return {
+      type: CARTITEM_REQUEST_FAILED,
+      payload: error
+    }
   }
 }
 

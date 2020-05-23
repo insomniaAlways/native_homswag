@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Homswag</string>
+    <string name="todo">-</string>
 </resources>
