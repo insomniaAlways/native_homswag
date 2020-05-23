@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect } from 'react';
-import { View, TouchableOpacity, StyleSheet, ScrollView, Image, Text } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, ScrollView, Image, Text, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import CartItemList from '../components/cartItemList';
 import { fetchCart } from '../store/actions/cartAction';
@@ -12,6 +12,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import moment from 'moment'
 import * as Sentry from '@sentry/react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
+import ShowAlert from '../controllers/alert';
 
 function CartScreen(props) {
   const insets = useSafeArea();
@@ -47,9 +48,9 @@ function CartScreen(props) {
           case 1: {
             if(isAfter) {
               if(moment().isSameOrAfter(moment().startOf('days').add(18, 'hours'))) {
-                alert('Please select a valid time slot.')
+                ShowAlert("Invalid Appointment Slot", 'Please select a valid time slot.')
               } else {
-                alert('You cannot schedule for the selected time slot.')
+                ShowAlert("Invalid Appointment Slot", 'You cannot schedule for the selected time slot.')
               }
               return false
             } else {
@@ -58,7 +59,7 @@ function CartScreen(props) {
           }
           case 2: {
             if(isAfter) {
-              alert('You cannot schedule for the selected time slot.')
+              ShowAlert("Invalid Appointment Slot", 'You cannot schedule for the selected time slot.')
               return false
             } else {
               return true
@@ -69,6 +70,7 @@ function CartScreen(props) {
         return true
       }
     } else {
+      ShowAlert("Invalid Appointment Slot", 'Please select a valid time slot.')
       return false
     }
   }
@@ -78,12 +80,10 @@ function CartScreen(props) {
       if(appointment.defaultValues && appointment.defaultValues.selectedAddress && appointment.defaultValues.selectedAddress.id) {
         return navigation.navigate('ConfirmAppointment')
       } else {
-        return alert('Please select an address')
+        return ShowAlert("Oops", 'Please select an address.')
       }
-    } else if(cartModel.values.cart_total < 499){
-      alert(`Please add values of Rs.${499 - cartModel.values.cart_total} more to continue`)
-    } else {
-      return alert('Please select a valid timeslot')
+    } else if(cartModel.values.cart_total < 249){
+      ShowAlert('Minimum Cart Value', `Please add cart value of Rs.${249 - cartModel.values.cart_total} more to continue.`)
     }
   }
 
@@ -124,12 +124,12 @@ function CartScreen(props) {
             </ScrollView>
           </View>
           <View style={[{height: 55, marginBottom: insets.bottom}, DefaultStyles.brandBackgroundColor]}>
-          {(cartModel.values.cart_total > 498) ?
+          {(cartModel.values.cart_total > 248) ?
               <TouchableOpacity style={[styles.button, DefaultStyles.brandColorButton]} onPress={() => goToConfirmPage()} disabled={cartModel.isLoading}>
                 <Text style={{color:'#fff', fontSize: 18, fontWeight: 'bold', width: '100%', textAlign: 'center'}}>Next</Text>
               </TouchableOpacity>:
               <View style={[styles.button, {backgroundColor: "#eeeeee"}]}>
-                <Text style={{color:'#000', fontSize: 12, width: '100%', textAlign: 'center'}}>Please add values of Rs.{499 - cartModel.values.cart_total} more to continue</Text>
+                <Text style={{color:'#000', fontSize: 12, width: '100%', textAlign: 'center'}}>Please add cart value of Rs.{249 - cartModel.values.cart_total} more to continue.</Text>
               </View>
              }
           </View>
