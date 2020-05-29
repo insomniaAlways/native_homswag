@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Homswag</string>
     <string name="todo">-</string>
+    <string name="facebook_app_id">699135967592459</string>
 </resources>

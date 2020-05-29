@@ -133,8 +133,8 @@ android {
         applicationId "com.capaz.homswag"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 14
-        versionName "1.1.4"
+        versionCode 15
+        versionName "1.1.5"
     }
     splits {
         abi {
@@ -202,7 +202,7 @@ dependencies {
     // implementation project(path: ':react-native-vector-icons')
     // implementation project(path: ':react-native-svg')
     addUnimodulesDependencies([exclude: ['expo-updates', 'unimodules-app-loader', 'unimodules-barcode-scanner-interface', 'unimodules-camera-interface', 'unimodules-face-detector-interface', 'unimodules-font-interface', 'unimodules-sensors-interface']])
-
+//    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/"
         debugImplementation files(hermesPath + "hermes-debug.aar")
