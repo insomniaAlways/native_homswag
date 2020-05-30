@@ -13,6 +13,7 @@ import { Permissions } from 'react-native-unimodules';
 import { brandColor, brandLightBackdroundColor } from '../style/customStyles';
 import * as Location from 'expo-location';
 import * as Sentry from '@sentry/react-native';
+import ShowAlert from '../controllers/alert';
 
 const initialRegion = {
   latitude: 12.97194,
@@ -43,7 +44,7 @@ function AddressScreen(props) {
 
   const onError = () => {
     setLoading(false)
-    alert("We need location service permission to fetch your current location")
+    ShowAlert('Permission Required', "We need location service permission to fetch your current location")
   }
 
   const onRegionChange = (latitude, longitude) => {
@@ -57,7 +58,7 @@ function AddressScreen(props) {
       try {
         if(networkAvailability.offline) {
           setLoading(false)
-          alert('Seems like you are not connected to Internet')
+          ShowAlert('Oops!', 'Seems like you are not connected to Internet')
         } else {
           const locationResponse = await Location.reverseGeocodeAsync({latitude, longitude})
           let formatted_address = `${locationResponse[0].name}, ${locationResponse[0].street}, ${locationResponse[0].city}, ${locationResponse[0].postalCode}, ${locationResponse[0].region}, ${locationResponse[0].country}`
@@ -69,7 +70,7 @@ function AddressScreen(props) {
           setLoading(false)
         }
       } catch(e) {
-        alert(e)
+        ShowAlert('Oops!', e)
         Sentry.captureException(e)
         setLoading(false)
       }
@@ -79,7 +80,7 @@ function AddressScreen(props) {
 
   useEffect(() => {
     if(location && location.error) {
-      alert(location.error)
+      ShowAlert('Oops!', location.error)
       Sentry.captureException(location.error)
     }
   }, [location.error])
@@ -97,7 +98,7 @@ function AddressScreen(props) {
         }
       }
     } catch (e) {
-      alert(e)
+      ShowAlert('Oops!', e)
       Sentry.captureException(e)
     }
   }
@@ -117,7 +118,7 @@ function AddressScreen(props) {
       setLoading(false)
       navigation.goBack()
     } catch(e) {
-      alert(e)
+      ShowAlert('Oops!', e)
       setLoading(false)
       Sentry.captureException(e)
     }

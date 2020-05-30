@@ -1,8 +1,9 @@
 import React from "react";
-import { View, TouchableOpacity, Linking, Alert } from 'react-native';
+import { View, TouchableOpacity, Linking } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CartButton from './cartButton';
 import * as Sentry from '@sentry/react-native';
+import ShowAlert from "../controllers/alert";
 
 const HeaderRightView = function (props) {
 
@@ -13,7 +14,7 @@ const HeaderRightView = function (props) {
       if (supported) {
         await Linking.openURL(url);
       } else {
-        alert(`Not able to open WhatsApp. Either application is not avalable in your device or permission is available.`);
+        ShowAlert(`Not able to open WhatsApp`, `Either application is not avalable in your device or permission is available.`);
         Sentry.captureException(url)
       }
     } catch (e) {

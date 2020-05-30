@@ -12,6 +12,7 @@ import { fetchCartItems } from '../store/actions/cartItemAction';
 import { fetchAllItems } from '../store/actions/itemActions';
 import * as Sentry from '@sentry/react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
+import ShowAlert from '../controllers/alert';
 
 function Items(props) {
   const insets = useSafeArea();
@@ -29,7 +30,7 @@ function Items(props) {
 
   useEffect(() => {
     if(!cartItemModel.isLoading && cartItemModel.error) {
-      alert(cartItemModel.error)
+      ShowAlert('Oops!', cartItemModel.error)
       Sentry.captureException(cartItemModel.error)
     }
   }, [cartItemModel.error])

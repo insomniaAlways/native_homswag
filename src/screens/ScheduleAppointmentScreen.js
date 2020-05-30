@@ -13,6 +13,7 @@ import { updateAppointmentState } from '../store/actions/appointmentActions';
 import _ from 'lodash';
 import moment from 'moment';
 import { useSafeArea } from 'react-native-safe-area-context';
+import ShowAlert from '../controllers/alert';
 
 function ScheduleAppointmentScreen(props) {
   const insets = useSafeArea();
@@ -42,9 +43,9 @@ function ScheduleAppointmentScreen(props) {
           case 1: {
             if(isAfter) {
               if(moment().isSameOrAfter(moment().startOf('days').add(18, 'hours'))) {
-                alert('Please select a time slot.')
+                ShowAlert('Oops!', 'Please select a time slot.')
               } else {
-                alert('You cannot schedule for the selected time slot.')
+                ShowAlert('Oops!', 'You cannot schedule for the selected time slot.')
               }
               return false
             } else {
@@ -53,7 +54,7 @@ function ScheduleAppointmentScreen(props) {
           }
           case 2: {
             if(isAfter) {
-              alert('You cannot schedule for the selected time slot.')
+              ShowAlert('Oops!', 'You cannot schedule for the selected time slot.')
               return false
             } else {
               return true
@@ -64,7 +65,7 @@ function ScheduleAppointmentScreen(props) {
         return true
       }
     } else {
-      alert('Please select a timeslot')
+      ShowAlert('Oops!', 'Please select a timeslot')
     }
   }
 

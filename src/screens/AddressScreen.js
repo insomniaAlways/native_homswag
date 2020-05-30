@@ -7,6 +7,7 @@ import { fetchAddress, deleteAddresss, updateAddress } from '../store/actions/ad
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Sentry from '@sentry/react-native';
+import ShowAlert from '../controllers/alert';
 
 function AddressScreen(props) {
   const { addressModel, getAddress, navigation, deleteSelected, setDefault, networkAvailability } = props;
@@ -21,7 +22,7 @@ function AddressScreen(props) {
 
   useEffect(() => {
     if(!addressModel.isLoading && addressModel.error) {
-      alert(addressModel.error)
+      ShowAlert('Oops!', addressModel.error)
       Sentry.captureException(addressModel.error)
     }
   }, [addressModel.error])

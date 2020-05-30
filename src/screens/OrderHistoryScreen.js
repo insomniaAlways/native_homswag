@@ -7,6 +7,7 @@ import OrderList from '../components/orderList';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { statusBarBrandColor } from '../style/customStyles';
 import * as Sentry from '@sentry/react-native';
+import ShowAlert from '../controllers/alert';
 
 function OrderHistoryScreen(props) {
   const { orderModel, getOrders, navigation, networkAvailability } = props;
@@ -19,7 +20,7 @@ function OrderHistoryScreen(props) {
 
   useEffect(() => {
     if(!orderModel.isLoading && orderModel.error) {
-      alert(orderModel.error)
+      ShowAlert('Oops!', orderModel.error)
       Sentry.captureException(orderModel.error)
     }
   }, [orderModel.error])

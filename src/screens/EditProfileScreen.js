@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { brandColor, brandLightBackdroundColor } from '../style/customStyles';
 import { fetchUser, updateUser } from '../store/actions/userActions';
 import ImagePickerView from '../components/ImagePicker';
+import ShowAlert from '../controllers/alert';
 
 function UpdateProfileScreen(props) {
   const { currentUserModel, getUser, updateUserDetails, navigation, networkAvailability } = props
@@ -16,14 +17,14 @@ function UpdateProfileScreen(props) {
 
   const updateProfile = async () => {
     if(networkAvailability.isOffline) {
-      alert("Seems like you are not connected to internet")
+      ShowAlert('Oops!', "Seems like you are not connected to internet")
     } else if(name && typeof(name) == "string" && name.length && name.trim().length > 0) {
       setLoading(true)
       await updateUserDetails({ name: name, image_source: image})
       setLoading(false)
       navigation.navigate('App')
     } else {
-      alert("Please enter your name. Thank You!")
+      ShowAlert('Oops!', "Please enter your name. Thank You!")
     }
   }
 

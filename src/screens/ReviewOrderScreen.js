@@ -12,6 +12,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import * as Sentry from '@sentry/react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
 import * as Device from 'expo-device';
+import ShowAlert from '../controllers/alert';
 
 function ReviewOrderScreen (props) {
   const insets = useSafeArea();
@@ -27,7 +28,7 @@ function ReviewOrderScreen (props) {
 
   useEffect(() => {
     if(!orderModel.isloading && orderModel.error) {
-      alert(orderModel.error)
+      ShowAlert('Oops!', orderModel.error)
       Sentry.captureException(orderModel.error)
     }
   }, [orderModel.error])

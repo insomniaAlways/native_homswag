@@ -8,6 +8,7 @@ import { onNetworkAvailable, onNetworkUnAvailable } from './src/store/actions/ne
 
 import * as Sentry from '@sentry/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import ShowAlert from './src/controllers/alert';
 
 Sentry.init({ 
   dsn: 'https://16e35b4da8db4096b2298db1fb8049f0@sentry.io/2787983',
@@ -21,7 +22,7 @@ const App = () => {
     const unsubscribe = NetInfo.addEventListener(state => {
       if(!state.isConnected) {
         store.dispatch(onNetworkUnAvailable())
-        alert('Seems like you are not connected to Internet')
+        ShowAlert('Oops!', 'Seems like you are not connected to Internet')
       } else {
         store.dispatch(onNetworkAvailable())
       }

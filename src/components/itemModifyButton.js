@@ -5,6 +5,7 @@ import _ from 'lodash';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { fetchCartItems, updateItem, deleteItem } from '../store/actions/cartItemAction';
 import * as Sentry from '@sentry/react-native';
+import ShowAlert from '../controllers/alert';
 
 function ModifyButton(props) {
   const { item, cartItem, updateCartItem, deleteCartItem, isOffline } = props
@@ -41,7 +42,7 @@ function ModifyButton(props) {
           await deleteCartItem(cartItem.id)
           props.removeCartItem(false)
         } catch(e) {
-          alert(e)
+          ShowAlert('Oops!', e)
           setLoading(false)
           Sentry.captureException(e)
         }
@@ -51,7 +52,7 @@ function ModifyButton(props) {
           await updateCartItem(cartItem.id, state.count, totalPrice)
           setLoading(false)
         } catch(e) {
-          alert(e)
+          ShowAlert('Oops!', e)
           setLoading(false)
           Sentry.captureException(e)
         }

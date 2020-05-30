@@ -11,6 +11,7 @@ import { onSigout } from '../store/actions/authenticationAction';
 import { connect } from 'react-redux';
 import { setSessionUnauthenticated } from '../store/actions/sessionActions';
 import * as Sentry from '@sentry/react-native';
+import ShowAlert from '../controllers/alert';
 
 const SideDrawer = props => {
   const { navigation, signOut, currentUserModel, unAuthenticate } = props
@@ -21,7 +22,7 @@ const SideDrawer = props => {
       signOut()
       navigation.navigate('Auth')
     } catch(e) {
-      alert(e)
+      ShowAlert('Oops!', e)
       Sentry.captureException(e)
     }
   }
