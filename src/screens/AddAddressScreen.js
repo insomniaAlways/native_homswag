@@ -1,5 +1,5 @@
 import React, { useState, useEffect }from 'react';
-import { View, StyleSheet, TouchableOpacity, ActivityIndicator, Modal, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ActivityIndicator, Modal, Text, PermissionsAndroid } from 'react-native';
 import MapView from 'react-native-maps';
 import FloatingInput from '../components/input-helpers.js/floatingInput';
 import { connect } from 'react-redux';

@@ -22,6 +22,7 @@ function Dashboard(props) {
   const [ refreshing, setRefreshing ] = useState(false);
   const [ storeUrl, setStoreUrl ] = useState('');
   const [ showModal, toggleModal ] = useState(false)
+  const [ showSaftyModal, toggleSaftyModal ] = useState(false)
 
   const onRefresh = useCallback(() => {
     if(!props.networkAvailability.isOffline) {
@@ -62,6 +63,7 @@ function Dashboard(props) {
           await props.getCart()
           await props.getAllCartItems()
           getLatestAppUpdate()
+          // toggleSaftyModal()
         } catch (e) {
           if(e.message) {
             ShowAlert('Oops!', e.message)
@@ -122,34 +124,34 @@ function Dashboard(props) {
           </Text>
         </View>
       </ScrollView>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={showModal}
-          onRequestClose={() => {
-            toggleModal(false)
-          }}>
-          <View
-            style={styles.backdrop}>
-            <View style={styles.popUpContainer}>
-              <View style={{borderRadius: 20}}>
-                <Image source={{uri: "https://firebasestorage.googleapis.com/v0/b/homswag.appspot.com/o/images%2Fappupdate_rocket.png?alt=media&token=88f518c0-8d03-44a1-bc1a-248904e0bc08"}} style={{height: 114, borderRadius: 10}} resizeMode="stretch" />
-              </View>
-              <View style={{paddingHorizontal: 10, marginTop: 10, width: '70%', justifyContent: 'center'}}>
-                <Text style={{fontFamily: 'Roboto-MediumItalic', fontSize: 18, textAlign: 'center'}}>Update your app</Text>
-                <Text style={{fontFamily: 'Roboto-Regular', fontSize: 14, marginTop: 10, textAlign: 'center'}}>To enjoy seemless appointment booking from your home.</Text>
-                <Text style={{fontFamily: 'Roboto-Regular', fontSize: 14, marginTop: 10, textAlign: 'center'}}>Tab the button below.</Text>
-                <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 20, marginBottom: 20}}>
-                  <TouchableOpacity onPress={() => { toggleModal(false); Linking.openURL(storeUrl)}}>
-                    <View style={{backgroundColor: brandColor, borderRadius: 20, paddingVertical: 10, paddingHorizontal: 20}}>
-                      <Text style={{color: '#fff'}}>Update Now</Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showModal}
+        onRequestClose={() => {
+          toggleModal(false)
+        }}>
+        <View
+          style={styles.backdrop}>
+          <View style={styles.popUpContainer}>
+            <View style={{borderRadius: 20}}>
+              <Image source={{uri: "https://firebasestorage.googleapis.com/v0/b/homswag.appspot.com/o/images%2Fappupdate_rocket.png?alt=media&token=88f518c0-8d03-44a1-bc1a-248904e0bc08"}} style={{height: 114, borderRadius: 10}} resizeMode="stretch" />
+            </View>
+            <View style={{paddingHorizontal: 10, marginTop: 10, width: '70%', justifyContent: 'center'}}>
+              <Text style={{fontFamily: 'Roboto-MediumItalic', fontSize: 18, textAlign: 'center'}}>Update your app</Text>
+              <Text style={{fontFamily: 'Roboto-Regular', fontSize: 14, marginTop: 10, textAlign: 'center'}}>To enjoy seemless appointment booking from your home.</Text>
+              <Text style={{fontFamily: 'Roboto-Regular', fontSize: 14, marginTop: 10, textAlign: 'center'}}>Tab the button below.</Text>
+              <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 20, marginBottom: 20}}>
+                <TouchableOpacity onPress={() => { toggleModal(false); Linking.openURL(storeUrl)}}>
+                  <View style={{backgroundColor: brandColor, borderRadius: 20, paddingVertical: 10, paddingHorizontal: 20}}>
+                    <Text style={{color: '#fff'}}>Update Now</Text>
+                  </View>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
-        </Modal>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }

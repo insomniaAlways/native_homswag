@@ -2,7 +2,6 @@ import React, { useState, useEffect, useLayoutEffect, useCallback } from 'react'
 import { connect } from 'react-redux';
 import { Text, View, SafeAreaView, StyleSheet, TouchableOpacity, ActivityIndicator, FlatList, StatusBar } from 'react-native';
 import DefaultStyles, { statusBarBrandColor } from '../style/customStyles';
-// import Constants from 'expo-constants';
 import { fetchAddress, deleteAddresss, updateAddress } from '../store/actions/addressActions';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { fetchCart } from '../store/actions/cartAction';
 import { createOrder } from '../store/actions/orderActions';
 import Graphics from '../assets/images/order_confirm_background.png'
-import { View, StyleSheet, ScrollView, ImageBackground, Text } from 'react-native';
+import { View, StyleSheet, ScrollView, ImageBackground, Text, Platform } from 'react-native';
 import ItemView from '../components/itemView';
 import { TouchableOpacity } from 'react-native';
 import moment from 'moment';
@@ -11,7 +11,6 @@ import { brandColor, brandLightBackdroundColor } from '../style/customStyles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Sentry from '@sentry/react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
-import * as Device from 'expo-device';
 import ShowAlert from '../controllers/alert';
 
 function ReviewOrderScreen (props) {
@@ -54,11 +53,9 @@ function ReviewOrderScreen (props) {
         "special_instruction": appointmentDetails.special_instruction,
         "preferred_beautician": appointmentDetails.prefered_beautician,
         "device": {
-          modelName: Device.modelName,
-          brand: Device.brand,
-          modelId: Device.modelId,
-          osName: Device.osName,
-          deviceName: Device.deviceName
+          modelName: Platform.constants.Model,
+          Fingerprint: Platform.constants.Fingerprint,
+          osName: Platform.OS,
         }
       })
       setLoading(false)

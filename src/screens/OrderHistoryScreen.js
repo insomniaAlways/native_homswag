@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { View, Text, SafeAreaView, StyleSheet, StatusBar } from 'react-native';
 import { fetchAllOrder } from '../store/actions/orderActions'
 import OrderList from '../components/orderList';
-// import Constants from 'expo-constants';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { statusBarBrandColor } from '../style/customStyles';
 import * as Sentry from '@sentry/react-native';
