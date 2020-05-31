@@ -42,7 +42,11 @@ const OrderDetails = function(props) {
 
   useEffect(() => {
     if(!orderModel.isLoading && orderModel.error) {
-      ShowAlert('Oops!', orderModel.error)
+      if(orderModel.error && orderModel.error.message) {
+        ShowAlert('Oops!', orderModel.error.message)
+      } else {
+        ShowAlert("Oops!", orderModel.error)
+      }
       Sentry.captureException(orderModel.error)
     }
   }, [orderModel.error])

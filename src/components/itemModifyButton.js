@@ -42,7 +42,11 @@ function ModifyButton(props) {
           await deleteCartItem(cartItem.id)
           props.removeCartItem(false)
         } catch(e) {
-          ShowAlert('Oops!', e)
+          if(e.message) {
+            ShowAlert('Oops!', e.message)
+          } else {
+            ShowAlert("Oops!", e)
+          }
           setLoading(false)
           Sentry.captureException(e)
         }
@@ -52,7 +56,11 @@ function ModifyButton(props) {
           await updateCartItem(cartItem.id, state.count, totalPrice)
           setLoading(false)
         } catch(e) {
-          ShowAlert('Oops!', e)
+          if(e.message) {
+            ShowAlert('Oops!', e.message)
+          } else {
+            ShowAlert("Oops!", e)
+          }
           setLoading(false)
           Sentry.captureException(e)
         }

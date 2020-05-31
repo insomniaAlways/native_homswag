@@ -21,8 +21,6 @@ export const KeyboardAvoidingView = (props) => {
       'using fake call',
     ].join('\n');
 
-    console.warn(message);
-
     return React.createElement(ScrollView, defaultProps);
   }
 

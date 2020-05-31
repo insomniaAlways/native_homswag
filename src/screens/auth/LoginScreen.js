@@ -76,7 +76,11 @@ const LoginScreen = (props) => {
       if(typeof(e) == "string" && e.includes('JSON')) {
         ShowAlert('Session expired', 'Please Login again')
       } else {
-        ShowAlert('Opps!', e)
+        if(e && e.message) {
+          ShowAlert('Oops!', e.message)
+        } else {
+          ShowAlert('Oops!', e)
+        }
         Sentry.captureException(e)
       }
       setLoading(false)
@@ -110,7 +114,11 @@ const LoginScreen = (props) => {
           }, 5000);
         } catch(e) {
           setButtonLoading(false)
-          ShowAlert('Oops!', e)
+          if(e && e.message) {
+            ShowAlert('Oops!', e.message)
+          } else {
+            ShowAlert('Oops!', e)
+          }
           Sentry.captureException(e)
         }
       } else {

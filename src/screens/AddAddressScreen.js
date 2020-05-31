@@ -70,7 +70,11 @@ function AddressScreen(props) {
           setLoading(false)
         }
       } catch(e) {
-        ShowAlert('Oops!', e)
+        if(e && e.message) {
+          ShowAlert('Oops!', e.message)
+        } else {
+          ShowAlert('Oops!', e)
+        }
         Sentry.captureException(e)
         setLoading(false)
       }
@@ -98,7 +102,11 @@ function AddressScreen(props) {
         }
       }
     } catch (e) {
-      ShowAlert('Oops!', e)
+      if(e && e.message) {
+        ShowAlert('Oops!', e.message)
+      } else {
+        ShowAlert('Oops!', e)
+      }
       Sentry.captureException(e)
     }
   }
@@ -118,7 +126,11 @@ function AddressScreen(props) {
       setLoading(false)
       navigation.goBack()
     } catch(e) {
-      ShowAlert('Oops!', e)
+      if(e && e.message) {
+        ShowAlert('Oops!', e.message)
+      } else {
+        ShowAlert('Oops!', e)
+      }
       setLoading(false)
       Sentry.captureException(e)
     }

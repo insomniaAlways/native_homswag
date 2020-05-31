@@ -20,7 +20,11 @@ const CartItemRow = (props) => {
           await updateCartItem(cartItem.id, quantity, totalPrice)
           setLoading(false)
         } catch(e) {
-          ShowAlert('Oops', e)
+          if(e && e.message) {
+            ShowAlert('Oops!', e.message)
+          } else {
+            ShowAlert('Oops', e)
+          }
           setLoading(false)
           Sentry.captureException(e)
         }

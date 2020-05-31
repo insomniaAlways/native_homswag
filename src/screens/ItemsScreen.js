@@ -30,7 +30,11 @@ function Items(props) {
 
   useEffect(() => {
     if(!cartItemModel.isLoading && cartItemModel.error) {
-      ShowAlert('Oops!', cartItemModel.error)
+      if(cartItemModel.error && cartItemModel.error.message) {
+        ShowAlert('Oops!', cartItemModel.error.message)
+      } else {
+        ShowAlert("Oops!", cartItemModel.error)
+      }
       Sentry.captureException(cartItemModel.error)
     }
   }, [cartItemModel.error])

@@ -31,7 +31,11 @@ function LoginButtons(props) {
           await validatedOtp(phone, otp)
         } catch(e) {
           setButtonLoading(false)
-          ShowAlert('Oops!', e)
+          if(e && e.message) {
+            ShowAlert('Oops!', e.message)
+          } else {
+            ShowAlert('Oops!', e)
+          }
           Sentry.captureException(e)
         }
       }

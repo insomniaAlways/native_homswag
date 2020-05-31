@@ -22,7 +22,11 @@ function AddressScreen(props) {
 
   useEffect(() => {
     if(!addressModel.isLoading && addressModel.error) {
-      ShowAlert('Oops!', addressModel.error)
+      if(addressModel.error && addressModel.error.messsage) {
+        ShowAlert('Oops!', addressModel.error.messsage)
+      } else {
+        ShowAlert('Oops!', addressModel.error)
+      }
       Sentry.captureException(addressModel.error)
     }
   }, [addressModel.error])

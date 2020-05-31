@@ -27,14 +27,22 @@ function CartScreen(props) {
 
   useEffect(() => {
     if(!cartItemModel.isLoading && cartItemModel.error) {
-      ShowAlert('Oops!', cartItemModel.error)
+      if(cartItemModel.error && cartItemModel.error.message) {
+        ShowAlert('Oops!', cartItemModel.error.message)
+      } else {
+        ShowAlert('Oops!', cartItemModel.error)
+      }
       Sentry.captureException(cartItemModel.error)
     }
   }, [cartItemModel.error])
 
   useEffect(() => {
     if(!cartModel.isLoading && cartModel.error) {
-      ShowAlert('Oops!', cartModel.error)
+      if(cartModel.error && cartModel.error.message) {
+        ShowAlert('Oops!', cartModel.error.message)
+      } else {
+        ShowAlert('Oops!', cartModel.error)
+      }
       Sentry.captureException(cartModel.error)
     }
   }, [cartModel.error])

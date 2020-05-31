@@ -22,7 +22,11 @@ const SideDrawer = props => {
       signOut()
       navigation.navigate('Auth')
     } catch(e) {
-      ShowAlert('Oops!', e)
+      if(e && e.message) {
+        ShowAlert('Oops!', e.message)
+      } else {
+        ShowAlert('Oops!', e)
+      }
       Sentry.captureException(e)
     }
   }
