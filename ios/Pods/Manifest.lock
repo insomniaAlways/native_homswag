@@ -39,6 +39,8 @@ PODS:
     - FBSDKLoginKit/Login (= 7.0.0)
   - FBSDKLoginKit/Login (7.0.0):
     - FBSDKCoreKit (~> 7.0.0)
+  - FBSDKPlacesKit (4.44.1):
+    - FBSDKCoreKit
   - FBSDKShareKit (7.0.0):
     - FBSDKShareKit/Share (= 7.0.0)
   - FBSDKShareKit/Share (7.0.0):
@@ -405,6 +407,10 @@ DEPENDENCIES:
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
+  - FBSDKCoreKit
+  - FBSDKLoginKit
+  - FBSDKPlacesKit
+  - FBSDKShareKit
   - Firebase/Analytics
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
@@ -463,6 +469,7 @@ SPEC REPOS:
     - boost-for-react-native
     - FBSDKCoreKit
     - FBSDKLoginKit
+    - FBSDKPlacesKit
     - FBSDKShareKit
     - Firebase
     - FirebaseAnalytics
@@ -609,6 +616,7 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: 118d0d177724c2d67f08a59136eb29ef5943ec75
   FBSDKCoreKit: 8ad31cd09f793d1d7e84cf20fd6cebfe80ad318d
   FBSDKLoginKit: 5d1e321dc45ab1fa09198b77fc17c32a06f008c0
+  FBSDKPlacesKit: 51ea17fa8c831088177676ce10b740e4497934b0
   FBSDKShareKit: 7ec93bf49516a91513d64863f54121155bbd7f78
   Firebase: 458d109512200d1aca2e1b9b6cf7d68a869a4a46
   FirebaseAnalytics: 45f36d9c429fc91d206283900ab75390cd05ee8a
@@ -674,6 +682,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: cb890c79c63885504ddc0efd7a7d01481760aca2
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 2f085093bb7251e27e1245f2b7789e45608c2027
+PODFILE CHECKSUM: 7ed2a828485acd6baa6e5e9e30843fe7a6f66cae
 
 COCOAPODS: 1.9.2
