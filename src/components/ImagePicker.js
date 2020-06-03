@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, Image, TouchableOpacity, ImageBackground, StyleSheet, Text, Platform, PermissionsAndroid } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
 import { Permissions } from 'react-native-unimodules';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import storage from '@react-native-firebase/storage';
 import ProfilePicPlaceholder from '../assets/images/profile_pic_placeholder.png'
+import ImagePicker from 'react-native-image-crop-picker';
 
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
@@ -107,25 +107,24 @@ const ImagePickerView = (props) => {
     }
   }
 
-  const _pickImage = async () => {
-    try {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 4],
-        quality: 0.5
-      });
-
-      if (!result.cancelled) {
-        setUploding(true)
-        let fileExtention =  result.uri.split('.').pop()
-        uploadImage(result.uri, fileExtention)
+  const _pickImage = () => {
+    ImagePicker.openPicker({
+      width: 400,
+      height: 400,
+      cropping: true
+    }).then(image => {
+      console.log(image);
+      setUploding(true)
+      let fileExtention =  image.path.split('.').pop()
+      uploadImage(image.path, fileExtention)
+    }).catch((e) => {
+      if(e && e.message && e.message != "User cancelled image selection") {
+        ShowAlert('Oops!', e.message)
       }
-    } catch(e) {
-      ShowAlert('Oops!', e)
-      Sentry.captureEvent(error)
-    }
-  };
+      Sentry.captureEvent(e)
+    });
+  }
+
 
   return (
     <View style={props.styles.profilePicContainer}>

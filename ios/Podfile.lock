@@ -11,9 +11,6 @@ PODS:
     - React-Core
     - UMCore
     - UMImageLoaderInterface
-  - EXImagePicker (8.0.2):
-    - UMCore
-    - UMFileSystemInterface
   - EXLocation (8.1.0):
     - UMCore
     - UMPermissionsInterface
@@ -369,6 +366,15 @@ PODS:
     - RNFBApp
   - RNGestureHandler (1.6.1):
     - React
+  - RNImageCropPicker (0.31.1):
+    - React-Core
+    - React-RCTImage
+    - RNImageCropPicker/QBImagePickerController (= 0.31.1)
+    - TOCropViewController
+  - RNImageCropPicker/QBImagePickerController (0.31.1):
+    - React-Core
+    - React-RCTImage
+    - TOCropViewController
   - RNReanimated (1.7.1):
     - React
   - RNScreens (2.4.0):
@@ -383,6 +389,7 @@ PODS:
   - Sentry (4.4.3):
     - Sentry/Core (= 4.4.3)
   - Sentry/Core (4.4.3)
+  - TOCropViewController (2.5.2)
   - UMConstantsInterface (5.1.0)
   - UMCore (5.1.0)
   - UMFileSystemInterface (5.1.0)
@@ -402,7 +409,6 @@ DEPENDENCIES:
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXImageLoader (from `../node_modules/expo-image-loader/ios`)
-  - EXImagePicker (from `../node_modules/expo-image-picker/ios`)
   - EXLocation (from `../node_modules/expo-location/ios`)
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -449,6 +455,7 @@ DEPENDENCIES:
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBStorage (from `../node_modules/@react-native-firebase/storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - "RNSentry (from `../node_modules/@sentry/react-native`)"
@@ -486,6 +493,7 @@ SPEC REPOS:
     - GTMSessionFetcher
     - nanopb
     - Sentry
+    - TOCropViewController
 
 EXTERNAL SOURCES:
   DoubleConversion:
@@ -496,8 +504,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-file-system/ios"
   EXImageLoader:
     :path: "../node_modules/expo-image-loader/ios"
-  EXImagePicker:
-    :path: "../node_modules/expo-image-picker/ios"
   EXLocation:
     :path: "../node_modules/expo-location/ios"
   EXPermissions:
@@ -574,6 +580,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/storage"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNImageCropPicker:
+    :path: "../node_modules/react-native-image-crop-picker"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -609,7 +617,6 @@ SPEC CHECKSUMS:
   EXConstants: 5304709b1bea70a4828f48ba4c7fc3ec3b2d9b17
   EXFileSystem: cf4232ba7c62dc49b78c2d36005f97b6fddf0b01
   EXImageLoader: edbf02910aec4b87dfd637de27181e442468401e
-  EXImagePicker: 43af317c67da8e0208e96da1e5e2be4f8ec807cc
   EXLocation: bbd487fd96a18a3ad9725389bbb94c4a5f78edf3
   EXPermissions: 24b97f734ce9172d245a5be38ad9ccfcb6135964
   FBLazyVector: aaeaf388755e4f29cd74acbc9e3b8da6d807c37f
@@ -666,12 +673,14 @@ SPEC CHECKSUMS:
   RNFBApp: 7d4006751de8bb5cafa2e8d2e7d94ee250df81db
   RNFBStorage: 3628afb1f3dd0b3395fc15c95967b9f080897aec
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
+  RNImageCropPicker: 38865ab4af1b0b2146ad66061196bc0184946855
   RNReanimated: 4e102df74a9674fa943e05f97f3362b6e44d0b48
   RNScreens: b5c0e1b2b04512919e78bd3898e144a157ce2363
   RNSentry: d892cbdee165cc6159d71e2a7954efdb8a361918
   RNSVG: 7e16ddfc6e00d5aa69c9eb83e699bcce5dcb85d4
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Sentry: 14bdd673870e8cf64932b149fad5bbbf39a9b390
+  TOCropViewController: e9da34f484aedd4e5d5a8ab230ba217cfe16c729
   UMConstantsInterface: 64060cf86587bcd90b1dbd804cceb6d377a308c1
   UMCore: d6117852f32c74cde466b863cfdeaa0960186249
   UMFileSystemInterface: c70ea7147198b9807080f3597f26236be49b0165

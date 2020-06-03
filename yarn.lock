@@ -3665,13 +3665,6 @@ expo-image-loader@~1.0.0:
   resolved "https://registry.yarnpkg.com/expo-image-loader/-/expo-image-loader-1.0.0.tgz#c8621c737d032d83339d2a0b10a094654577f867"
   integrity sha512-smdFLoS6rb86qQ/ktZ0gU4yF1Djud8GMpni5FAAL/PGV/5Zglm53+OkLJ0BIccPo2ZPvxQWO6PTcwKGfrV1EMg==
 
-expo-image-picker@^8.0.2:
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/expo-image-picker/-/expo-image-picker-8.0.2.tgz#14139f1d73793ae7fba6fe3cf34e1dc91baf402a"
-  integrity sha512-oa0/JoKIv5mxyadpVqiQ+BXak2s7QS3+Rurj1j/gL5GGFmb3cDJWbGHxvtrEXEccv8812JAp5BfBRqfzlW1gMQ==
-  dependencies:
-    expo-permissions "*"
-
 expo-location@^8.1.0:
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/expo-location/-/expo-location-8.1.0.tgz#6a71ad9a8b78d5f016a30a02013c3b28f46d0b1b"
@@ -3697,7 +3690,7 @@ expo-module-scripts@^1.2.0:
     ts-jest "~24.0.2"
     typescript "^3.7.2"
 
-expo-permissions@*, expo-permissions@~8.1.0:
+expo-permissions@~8.1.0:
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/expo-permissions/-/expo-permissions-8.1.0.tgz#a7f2ee91ba76ce3a467e7b10adaa9ca5201b226f"
   integrity sha512-QBHD+1J9+sGFnhoEGzMRchPweeEE0OJ9ehG/0l1BMRBA7qsLS9vRC1FTJ55NwjI0Kr4RTha9r6ZX1kZHT09f/w==
@@ -7014,6 +7007,11 @@ react-native-get-random-values@^1.3.1:
   integrity sha512-+oli7JzmIGR75KZM2phjFUCBJwv7YEXuGRBq2M1pMqgQOqEUdZRK7qxC8w2luEANPAQ5plykOZiKwN7Aay9HZA==
   dependencies:
     fast-base64-decode "^1.0.0"
+
+react-native-image-crop-picker@^0.31.1:
+  version "0.31.1"
+  resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.31.1.tgz#b56248a9e31d62f1c6e7c2f85d296869c32af4cd"
+  integrity sha512-I5z7DcTKYYASevIalkqKdiw9Fe4CVCKPVMMkLGDVGUYgZZWlbOS9G1+oNWtWwoB5S9e931GkDrZ/HL5UhADG/Q==
 
 react-native-iphone-x-helper@^1.0.3, react-native-iphone-x-helper@^1.2.1:
   version "1.2.1"
