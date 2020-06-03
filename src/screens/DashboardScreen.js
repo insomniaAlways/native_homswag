@@ -14,9 +14,14 @@ import { statusBarBrandColor, brandColor } from '../style/customStyles';
 import * as Animatable from 'react-native-animatable';
 import * as Sentry from '@sentry/react-native';
 import ShowAlert from '../controllers/alert';
+import TemperatureCheck from '../assets/images/temperature-check.png'
 
 import { Linking } from 'react-native';
 import VersionCheck from 'react-native-version-check';
+
+const saftymeasures = [
+  'Temperature Check', 'Face Mask', "Hands Sanitized", 'Face Shield', 'Hand Gloves', 'Singel use Products', 'Disposable Items'
+]
 
 function Dashboard(props) {
   const [ refreshing, setRefreshing ] = useState(false);
@@ -78,14 +83,20 @@ function Dashboard(props) {
   }, [props.navigation.isFocused])
 
   const getLatestAppUpdate = async () => {
-    let latestVersion = await VersionCheck.getLatestVersion()
-    let currentVersion = await VersionCheck.getCurrentVersion()
-    let url = await VersionCheck.getStoreUrl()
-    setStoreUrl(url)
-    latestVersion = latestVersion ? (typeof(latestVersion) == "string" && latestVersion.split('.').join('')) : latestVersion
-    currentVersion = currentVersion ? (typeof(currentVersion) == "string" && currentVersion.split('.').join('')) : currentVersion
-    if(latestVersion && currentVersion && latestVersion > currentVersion) {
-      toggleModal(true)
+    try {
+      let latestVersion = await VersionCheck.getLatestVersion()
+      let currentVersion = await VersionCheck.getCurrentVersion()
+      let url = await VersionCheck.getStoreUrl()
+      setStoreUrl(url)
+      latestVersion = latestVersion ? (typeof(latestVersion) == "string" && latestVersion.split('.').join('')) : latestVersion
+      currentVersion = currentVersion ? (typeof(currentVersion) == "string" && currentVersion.split('.').join('')) : currentVersion
+      if(latestVersion && currentVersion && latestVersion > currentVersion) {
+        toggleModal(true)
+      } else {
+        toggleSaftyModal(true)
+      }
+    } catch (e) {
+      toggleSaftyModal(true)
     }
   }
 
@@ -152,6 +163,33 @@ function Dashboard(props) {
           </View>
         </View>
       </Modal>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showSaftyModal}
+        onRequestClose={() => {
+          toggleSaftyModal(false)
+        }}>
+        <View
+          style={styles.backdrop}>
+          <View style={styles.saftypopUpContainer}>
+            <Text style={{fontSize: 26, fontWeight: 'bold', color: brandColor, textAlign: "center"}}>SAFTY MEASURES</Text>
+            <View style={styles.saftypopUpContent}>
+              <View>
+                {saftymeasures.map((content, index) => (
+                  <View key={index} style={styles.saftyTextContainer}>
+                    <View style={styles.bulletPoint}></View>
+                    <Text style={styles.listContent}>{content}</Text>
+                  </View>
+                ))}
+              </View>
+              <View style={{justifyContent: 'center'}}>
+                <Image source={TemperatureCheck} style={{backgroundColor: 'yellow', width: 135, height: 180}}/>
+              </View>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -186,12 +224,33 @@ const styles = StyleSheet.create({
   },
   popUpContainer: {
     backgroundColor: '#fff',
-    // paddingVertical: 20,
-    // paddingHorizontal: 20,
     borderRadius: 10
   },
-  // topContainer: {
-  //   height: 50,
-  //   width: '100%'
-  // }
+  saftypopUpContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    width: '90%',
+    paddingHorizontal: 20,
+    paddingVertical: 20
+  },
+  saftypopUpContent: {
+    flexDirection: 'row',
+    marginTop: 10
+  },
+  saftyTextContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    paddingVertical: 10
+  },
+  bulletPoint: {
+    width: 8,
+    height: 8,
+    borderRadius: 50,
+    backgroundColor: brandColor
+  },
+  listContent: {
+    fontSize: 20,
+    marginLeft: 10
+  }
 })
