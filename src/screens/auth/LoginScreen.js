@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image, Dimensions, Text, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Image, Dimensions, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { ImageOverlay } from '../../components/imageOverlay';
 import { KeyboardAvoidingView } from '../../components/KeyboardAvoidView';
 import ImageBackground from '../../assets/images/login_background.png'
@@ -14,6 +14,8 @@ import LoginForm from '../../components/helpers/loginForm';
 import LoginButtons from '../../components/helpers/loginButtons';
 import * as Sentry from '@sentry/react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
+import ShowAlert from '../../controllers/alert';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const LoginScreen = (props) => {
   const insets = useSafeArea();
@@ -34,6 +36,7 @@ const LoginScreen = (props) => {
   const [ isButtonLoading, setButtonLoading ] = useState(false)
   const [ isResendEnable, enableResend ] = useState(false)
   const [ isNewUser, setUserIsNew ] = useState(false)
+  const [ showRetry, toggleRetry ] = useState(false)
   let resendTimer;
   //  ------------------ : Methods: ---------------------
 
@@ -52,7 +55,11 @@ const LoginScreen = (props) => {
           setUserIsNew(false)
           let tokenObject = JSON.parse(token)
           if(tokenObject && tokenObject.authToken && tokenObject.refreshToken) {
-            validateCurrentToken(tokenObject.authToken, tokenObject.refreshToken)
+            if(!networkAvailability.isOffline) {
+              validateCurrentToken(tokenObject.authToken, tokenObject.refreshToken)
+            } else {
+              toggleRetry(true)
+            }
           } else {
             startLoginProcess()
           }
@@ -67,9 +74,13 @@ const LoginScreen = (props) => {
       }
     } catch (e) {
       if(typeof(e) == "string" && e.includes('JSON')) {
-        alert('Your session has expired, Please Login again')
+        ShowAlert('Session expired', 'Please Login again')
       } else {
-        alert(e)
+        if(e && e.message) {
+          ShowAlert('Oops!', e.message)
+        } else {
+          ShowAlert('Oops!', e)
+        }
         Sentry.captureException(e)
       }
       setLoading(false)
@@ -89,7 +100,7 @@ const LoginScreen = (props) => {
 
   const registerPhone = async () => {
     if(networkAvailability.isOffline) {
-      alert('Seems like you are not connected to Internet')
+      ShowAlert('Oops!', 'Seems like you are not connected to Internet')
     } else {
       if(phone && phone.length == 10) {
         setButtonLoading(true)
@@ -103,11 +114,15 @@ const LoginScreen = (props) => {
           }, 5000);
         } catch(e) {
           setButtonLoading(false)
-          alert(e)
+          if(e && e.message) {
+            ShowAlert('Oops!', e.message)
+          } else {
+            ShowAlert('Oops!', e)
+          }
           Sentry.captureException(e)
         }
       } else {
-        alert("Please provide a valid phone number")
+        ShowAlert("Invalid data", "Please provide a valid phone number")
       }
     }
   }
@@ -131,14 +146,18 @@ const LoginScreen = (props) => {
       setButtonLoading(false)
       setLoading(false)
       if(authModel.error && authModel.error.message) {
-        alert(authModel.error.message)
+        if(authModel.error.message == "invalid resource") {
+          ShowAlert('Session expired', 'Please Login again')
+        } else {
+          ShowAlert("Oops!", authModel.error.message)
+        }
         Sentry.captureException(authModel.error.message)
       } else {
-        alert(authModel.error)
+        ShowAlert("Oops!", authModel.error)
         Sentry.captureException(authModel.error)
       }
     }
-  }, [authModel])
+  }, [authModel.isLoading])
 
   //trigger after session is authenticated
   useEffect(() => {
@@ -156,10 +175,10 @@ const LoginScreen = (props) => {
       } else if(!currentUserModel.isLoading && currentUserModel.error) {
         setButtonLoading(false)
         if(currentUserModel.error && currentUserModel.error.message) {
-          alert(currentUserModel.error.message)
+          ShowAlert('Oops!', currentUserModel.error.message)
           Sentry.captureException(currentUserModel.error.message)
         } else {
-          alert(currentUserModel.error)
+          ShowAlert('Oops!', currentUserModel.error)
           Sentry.captureException(currentUserModel.error)
         }
       }
@@ -176,6 +195,21 @@ const LoginScreen = (props) => {
         <View style={styles.headerContainer}>
           <Image source={Logo} style={{width: 180, height: 180}}/>
         </View>
+        {showRetry ? 
+          <Animatable.View
+            duration={400}
+            style={[styles.formContainer, {marginBottom: 30, justifyContent: 'space-between'}]}
+            animation={"fadeInUp"}
+          >
+            <View style={{justifyContent: 'center', flexDirection: 'column', alignItems:'center'}}>
+              <MaterialCommunityIcons name="wifi-off" size={50} style={{marginHorizontal: 16, alignItems: 'center', opacity: 0.62, paddingLeft: 3}}/>
+              <Text style={{fontSize: 22}}>No Internet</Text>
+            </View>
+            <TouchableOpacity style={[styles.signInButton]} onPress={() => {toggleRetry(false); checkAuthentication();}}>
+              <Text style={{textAlign: 'center', width: '100%', fontSize: 18}}>Retry</Text>
+            </TouchableOpacity>
+          </Animatable.View> :
+          <React.Fragment>
         {!isLoading?
           <Animatable.View
             duration={400}
@@ -223,6 +257,8 @@ const LoginScreen = (props) => {
             <Text style={{color: '#000', fontSize: 20, fontWeight: 'bold', marginTop: 10}}>Loading...</Text>
           </View>
         }
+        </React.Fragment>
+      }
       </View>
     </ImageOverlay>
   );
@@ -241,6 +277,7 @@ const mapDispatchToProps = dispatch => ({
   unAuthenticate: () => dispatch(setSessionUnauthenticated()),
   authenticate: (token, refreshToken) => dispatch(setSessionAuthenticated(token, refreshToken)),
   validateCurrentToken: (authToken, refreshToken) => dispatch(validatedAuthToken(authToken, refreshToken))
+
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(LoginScreen);

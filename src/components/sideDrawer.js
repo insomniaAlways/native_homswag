@@ -6,11 +6,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ProfileBackground from '../assets/images/blue-wave.jpg';
-// import Constants from 'expo-constants';
 import { onSigout } from '../store/actions/authenticationAction';
 import { connect } from 'react-redux';
 import { setSessionUnauthenticated } from '../store/actions/sessionActions';
 import * as Sentry from '@sentry/react-native';
+import ShowAlert from '../controllers/alert';
 
 const SideDrawer = props => {
   const { navigation, signOut, currentUserModel, unAuthenticate } = props
@@ -21,7 +21,11 @@ const SideDrawer = props => {
       signOut()
       navigation.navigate('Auth')
     } catch(e) {
-      alert(e)
+      if(e && e.message) {
+        ShowAlert('Oops!', e.message)
+      } else {
+        ShowAlert('Oops!', e)
+      }
       Sentry.captureException(e)
     }
   }

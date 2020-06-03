@@ -6,6 +6,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import { statusBarLightColor } from '../style/customStyles';
 import * as Sentry from '@sentry/react-native';
+import ShowAlert from '../controllers/alert';
 
 function ContactScreen(props) {
 
@@ -15,7 +16,7 @@ function ContactScreen(props) {
       if (supported) {
         await Linking.openURL(url);
       } else {
-        alert(`Not able to open prefered application.`);
+        ShowAlert('Oops!', `Not able to open prefered application.`);
         Sentry.captureException(url)
       }
     } catch (e) {

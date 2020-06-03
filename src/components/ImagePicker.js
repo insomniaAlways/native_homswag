@@ -9,6 +9,7 @@ import ProfilePicPlaceholder from '../assets/images/profile_pic_placeholder.png'
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import * as Sentry from '@sentry/react-native';
+import ShowAlert from '../controllers/alert';
 
 const ImagePickerView = (props) => {
   const { image, setImage, user_id, isEdit, isUploading, setUploding, isOffline } = props
@@ -21,7 +22,7 @@ const ImagePickerView = (props) => {
 
   const startModule = () =>{
     if(isOffline) {
-      alert('Seems like you are not connected to Internet')
+      ShowAlert('Oops!', 'Seems like you are not connected to Internet')
     } else {
       getPermissionAsync();
     }
@@ -44,13 +45,13 @@ const ImagePickerView = (props) => {
     reset()
     switch (error.code) {
       case 'storage/unauthorized': {
-        return alert(error.code)
+        return ShowAlert('Oops!', error.code)
       }
       case 'storage/canceled': {
-        return alert(error.code)
+        return ShowAlert('Oops!', error.code)
       }
       case 'storage/unknown': {
-        return alert(error.code)
+        return ShowAlert('Oops!', error.code)
       }
     }
   }
@@ -66,7 +67,7 @@ const ImagePickerView = (props) => {
       () => ref.getDownloadURL()
       .then((url) => setImage(url)))
     } catch (e) {
-      alert(e)
+      ShowAlert('Oops!', e)
       reset()
       Sentry.captureException(error)
     }
@@ -90,18 +91,18 @@ const ImagePickerView = (props) => {
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
           _pickImage()
         } else {
-          alert('Sorry, we need file system permissions to make this work!');
+          ShowAlert('Permission Required', 'Sorry, we need file system permissions to make this work!');
         }
       } else if (Platform.OS === 'ios') {
         const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
         if (status !== 'granted') {
-          alert('Sorry, we need camera roll permissions to make this work!');
+          ShowAlert('Permission Required', 'Sorry, we need camera roll permissions to make this work!');
         } else {
           _pickImage()
         }
       }
     } catch (err) {
-      alert(err)
+      ShowAlert('Oops!', err)
       Sentry.captureException(error)
     }
   }
@@ -121,7 +122,7 @@ const ImagePickerView = (props) => {
         uploadImage(result.uri, fileExtention)
       }
     } catch(e) {
-      alert(e)
+      ShowAlert('Oops!', e)
       Sentry.captureEvent(error)
     }
   };

@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { updateOrder } from '../store/actions/orderActions';
 import moment from 'moment';
 import * as Sentry from '@sentry/react-native';
+import ShowAlert from '../controllers/alert';
 
 const OrderDetails = function(props) {
   const order = props.navigation.getParam('order');
@@ -41,7 +42,11 @@ const OrderDetails = function(props) {
 
   useEffect(() => {
     if(!orderModel.isLoading && orderModel.error) {
-      alert(orderModel.error)
+      if(orderModel.error && orderModel.error.message) {
+        ShowAlert('Oops!', orderModel.error.message)
+      } else {
+        ShowAlert("Oops!", orderModel.error)
+      }
       Sentry.captureException(orderModel.error)
     }
   }, [orderModel.error])

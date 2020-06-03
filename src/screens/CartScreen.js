@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect } from 'react';
-import { View, TouchableOpacity, StyleSheet, ScrollView, Image, Text, Alert } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, ScrollView, Image, Text } from 'react-native';
 import { connect } from 'react-redux';
 import CartItemList from '../components/cartItemList';
 import { fetchCart } from '../store/actions/cartAction';
@@ -27,14 +27,22 @@ function CartScreen(props) {
 
   useEffect(() => {
     if(!cartItemModel.isLoading && cartItemModel.error) {
-      alert(cartItemModel.error)
+      if(cartItemModel.error && cartItemModel.error.message) {
+        ShowAlert('Oops!', cartItemModel.error.message)
+      } else {
+        ShowAlert('Oops!', cartItemModel.error)
+      }
       Sentry.captureException(cartItemModel.error)
     }
   }, [cartItemModel.error])
 
   useEffect(() => {
     if(!cartModel.isLoading && cartModel.error) {
-      alert(cartModel.error)
+      if(cartModel.error && cartModel.error.message) {
+        ShowAlert('Oops!', cartModel.error.message)
+      } else {
+        ShowAlert('Oops!', cartModel.error)
+      }
       Sentry.captureException(cartModel.error)
     }
   }, [cartModel.error])

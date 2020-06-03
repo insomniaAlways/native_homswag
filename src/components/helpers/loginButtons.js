@@ -3,6 +3,7 @@ import { StyleSheet, View, TouchableOpacity, Text, ActivityIndicator } from 'rea
 import { connect } from 'react-redux';
 import { register, validateToken } from '../../store/actions/authenticationAction';
 import * as Sentry from '@sentry/react-native';
+import ShowAlert from '../../controllers/alert';
 
 function LoginButtons(props) {
   const { phone,
@@ -22,7 +23,7 @@ function LoginButtons(props) {
 
   const onSubmit = async () => {
     if(networkAvailability.isOffline) {
-      alert('Seems like you are not connected to Internet')
+      ShowAlert('Oops!', 'Seems like you are not connected to Internet')
     } else {
       if(phone && phone.length == 10 && otp && otp.length) {
         try {
@@ -30,7 +31,11 @@ function LoginButtons(props) {
           await validatedOtp(phone, otp)
         } catch(e) {
           setButtonLoading(false)
-          alert(e)
+          if(e && e.message) {
+            ShowAlert('Oops!', e.message)
+          } else {
+            ShowAlert('Oops!', e)
+          }
           Sentry.captureException(e)
         }
       }
@@ -67,7 +72,7 @@ function LoginButtons(props) {
     )
   } else {
     return (
-      <View style={styles.signInButtonContainer}>            
+      <View style={styles.signInButtonContainer}>        
         { showOtpField ? 
           <TouchableOpacity style={styles.signInButton} onPress={onSubmit} disabled={!isOtpButtonEnable}>
             <Text style={{textAlign: 'center', width: '100%', fontSize: 18}}>Submit</Text>

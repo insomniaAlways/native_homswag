@@ -9,6 +9,7 @@ import { Dimensions } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as Sentry from '@sentry/react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
+import ShowAlert from '../controllers/alert';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 
@@ -64,7 +65,7 @@ const PackageDetails = (props) => {
 
   useEffect(() => {
     if(!cartItemModel.isLoading && cartItemModel.error) {
-      alert(cartItemModel.error)
+      ShowAlert('Oops!', cartItemModel.error)
       Sentry.captureException(cartItemModel.error)
     }
   }, [cartItemModel.error])

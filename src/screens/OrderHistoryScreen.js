@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { View, Text, SafeAreaView, StyleSheet, StatusBar } from 'react-native';
 import { fetchAllOrder } from '../store/actions/orderActions'
 import OrderList from '../components/orderList';
-// import Constants from 'expo-constants';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { statusBarBrandColor } from '../style/customStyles';
 import * as Sentry from '@sentry/react-native';
+import ShowAlert from '../controllers/alert';
 
 function OrderHistoryScreen(props) {
   const { orderModel, getOrders, navigation, networkAvailability } = props;
@@ -19,7 +19,11 @@ function OrderHistoryScreen(props) {
 
   useEffect(() => {
     if(!orderModel.isLoading && orderModel.error) {
-      alert(orderModel.error)
+      if(orderModel.error && orderModel.error.message) {
+        ShowAlert('Oops!', orderModel.error.message)
+      } else {
+        ShowAlert("Oops!", orderModel.error)
+      }
       Sentry.captureException(orderModel.error)
     }
   }, [orderModel.error])

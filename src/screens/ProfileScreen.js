@@ -9,6 +9,7 @@ import _ from 'lodash';
 import ImagePickerView from '../components/ImagePicker';
 import { brandLightBackdroundColor, statusBarLightColor } from '../style/customStyles';
 import * as Sentry from '@sentry/react-native';
+import ShowAlert from '../controllers/alert';
 
 function ProfileScreen(props) {
   const { currentUserModel, getUser, updateUserDetails, networkAvailability } = props
@@ -27,7 +28,7 @@ function ProfileScreen(props) {
         email: currentUserObject.email
       }, _.isNil))
     } else {
-      alert("Please enter your name. Thank You!")
+      ShowAlert('Oops!', "Please enter your name. Thank You!")
     }
   }
 
@@ -49,10 +50,10 @@ function ProfileScreen(props) {
     if(!currentUserModel.isLoading && currentUserModel.error) {
       setLoading(false)
       if(currentUserModel.error.message) {
-        alert(currentUserModel.error.message)
+        ShowAlert('Oops!', currentUserModel.error.message)
         Sentry.captureException(currentUserModel.error)
       } else {
-        alert(currentUserModel.error)
+        ShowAlert('Oops!', currentUserModel.error)
         Sentry.captureException(currentUserModel.error)
       }
     } else if(!currentUserModel.isLoading && _.isNil(currentUserModel.error)){
