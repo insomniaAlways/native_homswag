@@ -67,7 +67,6 @@ function Dashboard(props) {
           await props.getCart()
           await props.getAllCartItems()
           getLatestAppUpdate()
-          // toggleSaftyModal()
         } catch (e) {
           if(e.message) {
             ShowAlert('Oops!', e.message)
@@ -146,6 +145,13 @@ function Dashboard(props) {
           <View style={styles.popUpContainer}>
             <View style={{borderRadius: 20}}>
               <Image source={require('../assets/images/appupdate_rocket.png')} style={{height: 114, borderRadius: 10, width: '100%'}} resizeMode="stretch" />
+              <View style={{position: 'absolute', width: '100%', alignItems: 'flex-end', top: -8, right: -8}}>
+                <TouchableOpacity onPress={() => { toggleModal(false)}}>
+                  <View style={{width: 25, height: 25, backgroundColor: '#fff', borderRadius: 15, alignItems: 'center', justifyContent: 'center'}}>
+                    <Text>X</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
             </View>
             <View style={{paddingHorizontal: 10, marginTop: 10, width: '70%', justifyContent: 'center'}}>
               <Text style={{fontFamily: 'Roboto-MediumItalic', fontSize: 18, textAlign: 'center'}}>Update your app</Text>
@@ -158,13 +164,6 @@ function Dashboard(props) {
                   </View>
                 </TouchableOpacity>
               </View>
-              {/* <View style={{flexDirection: 'row', justifyContent: 'center', marginBottom: 20}}>
-                <TouchableOpacity onPress={() => { toggleModal(false)}}>
-                  <View style={{backgroundColor: brandColor, borderRadius: 20, paddingVertical: 10, paddingHorizontal: 20}}>
-                    <Text style={{color: '#fff'}}>Close</Text>
-                  </View>
-                </TouchableOpacity>
-              </View> */}
             </View>
           </View>
         </View>
