@@ -1,6 +1,5 @@
-platform :ios, '10.0'
+platform :ios, '9.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
-require_relative '../node_modules/react-native-unimodules/cocoapods.rb'
 
 target 'homswag' do
   # Pods for homswag
@@ -49,7 +48,6 @@ target 'homswag' do
   end
 
   use_native_modules!
-  use_unimodules!(exclude: ['expo-updates', 'unimodules-app-loader', 'unimodules-barcode-scanner-interface', 'unimodules-camera-interface', 'unimodules-face-detector-interface', 'unimodules-sensors-interface'])
 end
 
 target 'homswag-tvOS' do

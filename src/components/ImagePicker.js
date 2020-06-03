@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, Image, TouchableOpacity, ImageBackground, StyleSheet, Text, Platform, PermissionsAndroid } from 'react-native';
-import { Permissions } from 'react-native-unimodules';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import storage from '@react-native-firebase/storage';
 import ProfilePicPlaceholder from '../assets/images/profile_pic_placeholder.png'
@@ -94,12 +93,7 @@ const ImagePickerView = (props) => {
           ShowAlert('Permission Required', 'Sorry, we need file system permissions to make this work!');
         }
       } else if (Platform.OS === 'ios') {
-        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-        if (status !== 'granted') {
-          ShowAlert('Permission Required', 'Sorry, we need camera roll permissions to make this work!');
-        } else {
-          _pickImage()
-        }
+        _pickImage()
       }
     } catch (err) {
       ShowAlert('Oops!', err)
@@ -113,7 +107,6 @@ const ImagePickerView = (props) => {
       height: 400,
       cropping: true
     }).then(image => {
-      console.log(image);
       setUploding(true)
       let fileExtention =  image.path.split('.').pop()
       uploadImage(image.path, fileExtention)

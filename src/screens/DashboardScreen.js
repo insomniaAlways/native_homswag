@@ -14,7 +14,6 @@ import { statusBarBrandColor, brandColor } from '../style/customStyles';
 import * as Animatable from 'react-native-animatable';
 import * as Sentry from '@sentry/react-native';
 import ShowAlert from '../controllers/alert';
-import TemperatureCheck from '../assets/images/temperature-check.png'
 
 import { Linking } from 'react-native';
 import VersionCheck from 'react-native-version-check';
@@ -146,7 +145,7 @@ function Dashboard(props) {
           style={styles.backdrop}>
           <View style={styles.popUpContainer}>
             <View style={{borderRadius: 20}}>
-              <Image source={{uri: "https://firebasestorage.googleapis.com/v0/b/homswag.appspot.com/o/images%2Fappupdate_rocket.png?alt=media&token=88f518c0-8d03-44a1-bc1a-248904e0bc08"}} style={{height: 114, borderRadius: 10}} resizeMode="stretch" />
+              <Image source={require('../assets/images/appupdate_rocket.png')} style={{height: 114, borderRadius: 10, width: '100%'}} resizeMode="stretch" />
             </View>
             <View style={{paddingHorizontal: 10, marginTop: 10, width: '70%', justifyContent: 'center'}}>
               <Text style={{fontFamily: 'Roboto-MediumItalic', fontSize: 18, textAlign: 'center'}}>Update your app</Text>
@@ -159,6 +158,13 @@ function Dashboard(props) {
                   </View>
                 </TouchableOpacity>
               </View>
+              {/* <View style={{flexDirection: 'row', justifyContent: 'center', marginBottom: 20}}>
+                <TouchableOpacity onPress={() => { toggleModal(false)}}>
+                  <View style={{backgroundColor: brandColor, borderRadius: 20, paddingVertical: 10, paddingHorizontal: 20}}>
+                    <Text style={{color: '#fff'}}>Close</Text>
+                  </View>
+                </TouchableOpacity>
+              </View> */}
             </View>
           </View>
         </View>
@@ -183,10 +189,17 @@ function Dashboard(props) {
                   </View>
                 ))}
               </View>
-              <View style={{justifyContent: 'center'}}>
-                <Image source={TemperatureCheck} style={{backgroundColor: 'yellow', width: 135, height: 180}}/>
+              <View style={{justifyContent: 'center', borderRadius: 10, paddingBottom: 20}}>
+                <Image source={require('../assets/images/temperature-check.png')} style={{backgroundColor: 'yellow', width: 160, height: 180, position: 'relative', left: -15, borderRadius: 10}} resizeMode={"stretch"}/>
               </View>
             </View>
+          <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 20, marginBottom: 10}}>
+            <TouchableOpacity onPress={() => { toggleSaftyModal(false)}}>
+              <View style={{backgroundColor: brandColor, borderRadius: 20, paddingVertical: 10, paddingHorizontal: 20}}>
+                <Text style={{color: '#fff'}}>Close</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
           </View>
         </View>
       </Modal>
