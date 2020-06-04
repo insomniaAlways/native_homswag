@@ -14,12 +14,13 @@ import { statusBarBrandColor, brandColor } from '../style/customStyles';
 import * as Animatable from 'react-native-animatable';
 import * as Sentry from '@sentry/react-native';
 import ShowAlert from '../controllers/alert';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import { Linking } from 'react-native';
 import VersionCheck from 'react-native-version-check';
 
 const saftymeasures = [
-  'Temperature Check', 'Face Mask', "Hands Sanitized", 'Face Shield', 'Hand Gloves', 'Singel use Products', 'Disposable Items'
+  'Temperature Check', 'Face Mask', "Hands Sanitized", 'Face Shield', 'Hand Gloves', 'Single use Products', 'Disposable Items'
 ]
 
 function Dashboard(props) {
@@ -57,6 +58,10 @@ function Dashboard(props) {
   }, [refreshing]);
 
   useEffect(() => {
+    getLatestAppUpdate()
+  }, [])
+
+  useEffect(() => {
     if(!props.networkAvailability.isOffline) {
       async function fetchData() {
         try {
@@ -66,7 +71,6 @@ function Dashboard(props) {
           props.getPackages()
           await props.getCart()
           await props.getAllCartItems()
-          getLatestAppUpdate()
         } catch (e) {
           if(e.message) {
             ShowAlert('Oops!', e.message)
@@ -91,10 +95,24 @@ function Dashboard(props) {
       if(latestVersion && currentVersion && latestVersion > currentVersion) {
         toggleModal(true)
       } else {
-        toggleSaftyModal(true)
+        showSafty()
       }
     } catch (e) {
-      toggleSaftyModal(true)
+      showSafty()
+      Sentry.captureException(e)
+    }
+  }
+
+  const showSafty = () => {
+    if(showSaftyModal) {
+      toggleSaftyModal(false)
+      AsyncStorage.setItem('showSaftyModal', 'false')
+    } else {
+      AsyncStorage.getItem('showSaftyModal').then((res) => {
+        if(res && res == 'true') {
+          toggleSaftyModal(true)
+        }
+      }).catch((e) => Sentry.captureEvent(e))
     }
   }
 
@@ -147,7 +165,7 @@ function Dashboard(props) {
               <Image source={require('../assets/images/appupdate_rocket.png')} style={{height: 114, borderRadius: 10, width: '100%'}} resizeMode="stretch" />
               <View style={{position: 'absolute', width: '100%', alignItems: 'flex-end', top: -8, right: -8}}>
                 <TouchableOpacity onPress={() => { toggleModal(false)}}>
-                  <View style={{width: 25, height: 25, backgroundColor: '#fff', borderRadius: 15, alignItems: 'center', justifyContent: 'center'}}>
+                  <View style={{width: 30, height: 30, backgroundColor: '#fff', borderRadius: 15, alignItems: 'center', justifyContent: 'center'}}>
                     <Text>X</Text>
                   </View>
                 </TouchableOpacity>
@@ -173,11 +191,18 @@ function Dashboard(props) {
         transparent={true}
         visible={showSaftyModal}
         onRequestClose={() => {
-          toggleSaftyModal(false)
+          showSafty()
         }}>
         <View
           style={styles.backdrop}>
           <View style={styles.saftypopUpContainer}>
+            <View style={{position: 'absolute', width: '100%', alignItems: 'flex-end', top: -8, right: -8}}>
+              <TouchableOpacity onPress={() => { showSafty()}}>
+                <View style={{width: 30, height: 30, backgroundColor: '#eee', borderRadius: 15, alignItems: 'center', justifyContent: 'center'}}>
+                  <Text style={{color: "#000"}}>X</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
             <Text style={{fontSize: 26, fontWeight: 'bold', color: brandColor, textAlign: "center"}}>SAFTY MEASURES</Text>
             <View style={styles.saftypopUpContent}>
               <View>
@@ -189,16 +214,12 @@ function Dashboard(props) {
                 ))}
               </View>
               <View style={{justifyContent: 'center', borderRadius: 10, paddingBottom: 20}}>
-                <Image source={require('../assets/images/temperature-check.png')} style={{backgroundColor: 'yellow', width: 160, height: 180, position: 'relative', left: -15, borderRadius: 10}} resizeMode={"stretch"}/>
+                <Image source={require('../assets/images/temperature-check.png')} style={{width: 170, height: 180, position: 'relative', left: -25, borderRadius: 10}} resizeMode={"stretch"}/>
               </View>
             </View>
-          <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 20, marginBottom: 10}}>
-            <TouchableOpacity onPress={() => { toggleSaftyModal(false)}}>
-              <View style={{backgroundColor: brandColor, borderRadius: 20, paddingVertical: 10, paddingHorizontal: 20}}>
-                <Text style={{color: '#fff'}}>Close</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
+            <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 20}}>
+              <Text style={{fontSize: 26, fontWeight: 'bold', color: brandColor}}>STAY AT HOME STAY SAFE</Text>
+            </View>
           </View>
         </View>
       </Modal>
@@ -243,7 +264,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: '90%',
     paddingHorizontal: 20,
-    paddingVertical: 20
+    paddingVertical: 20,
+    backgroundColor: '#FFE7D1'
   },
   saftypopUpContent: {
     flexDirection: 'row',
