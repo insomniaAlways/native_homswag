@@ -203,7 +203,7 @@ function Dashboard(props) {
                 </View>
               </TouchableOpacity>
             </View>
-            <Text style={{fontSize: 26, fontWeight: 'bold', color: brandColor, textAlign: "center"}}>SAFTY MEASURES</Text>
+            <Text style={{fontSize: 26, fontWeight: 'bold', color: brandColor, textAlign: "center"}}>SAFETY MEASURES</Text>
             <View style={styles.saftypopUpContent}>
               <View>
                 {saftymeasures.map((content, index) => (

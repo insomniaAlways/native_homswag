@@ -9,6 +9,9 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+@import GoogleMaps;
+//@import GooglePlaces;
+#import <GoogleMaps/GoogleMaps.h>
 
 #import <Firebase.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
@@ -48,6 +51,8 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  [GMSServices provideAPIKey:@"AIzaSyCpHM8MDNQOV2p_FPpiyNQXw06sMFelreo"];
+//  [GMSPlacesClient provideAPIKey:@"AIzaSyCpHM8MDNQOV2p_FPpiyNQXw06sMFelreo"];
   return YES;
 }
 

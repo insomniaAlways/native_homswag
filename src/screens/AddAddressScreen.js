@@ -16,8 +16,8 @@ import ShowAlert from '../controllers/alert';
 const initialRegion = {
   latitude: 12.97194,
   longitude: 77.59369,
-  latitudeDelta: 0.1422,
-  longitudeDelta: 0.0401,
+  latitudeDelta: 0.0422,
+  longitudeDelta: 0.0501,
 }
 
 const locationValueObject = {
@@ -149,9 +149,10 @@ function AddressScreen(props) {
             onRegionChangeComplete={({latitude, longitude}) => debounceCall(latitude, longitude)}
             showsUserLocation={true}
             loadingEnabled={true}
+            provider={'google'}
             onUserLocationChange={getPemission}
             showsMyLocationButton={true}
-            showsCompass={true}
+            showsCompass={false}
             followsUserLocation={true}/>
           { isCurrentLoactionLoaded && coordinates && coordinates.latitude && 
             <View style={{position: 'absolute', top: 115, left: '48%', justifyContent: 'center', alignItems: 'center'}}>
