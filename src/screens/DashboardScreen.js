@@ -95,10 +95,10 @@ function Dashboard(props) {
       if(latestVersion && currentVersion && latestVersion > currentVersion) {
         toggleModal(true)
       } else {
-        showSafty()
+        // showSafty()
       }
     } catch (e) {
-      showSafty()
+      // showSafty()
       Sentry.captureException(e)
     }
   }
