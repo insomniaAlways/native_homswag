@@ -1,18 +1,25 @@
 import { LOCATION_REQUEST_INITIATED, LOCATION_REQUEST_SUCCESS, LOCATION_REQUEST_FAILED, PLACE_REQUEST_INITIATED, PLACE_REQUEST_SUCCESS, PLACE_REQUEST_FAILED } from '../actionTypes';
 import _ from 'lodash';
 
-const addressReducers = (state = {}, action) => {
+const initialState = {
+  isLoading: false,
+  error: null,
+  values: {}
+}
+const addressReducers = (state = initialState, action) => {
   switch(action.type) {
     case LOCATION_REQUEST_INITIATED : {
       return {
         ...state,
-        isLoading: true
+        isLoading: true,
+        error: null,
       }
     }
     case LOCATION_REQUEST_SUCCESS : {
       return {
         ...state,
         isLoading: false,
+        error: null,
         values: {
           ...state.values,
           ...action.payload
@@ -29,18 +36,16 @@ const addressReducers = (state = {}, action) => {
     case PLACE_REQUEST_INITIATED: {
       return {
         ...state,
-        isLoading: true
+        isLoading: true,
+        error: null
       }
     }
     case PLACE_REQUEST_SUCCESS: {
       return {
         ...state,
         isLoading: false,
-        values: {
-          ...state.values,
-          place_url: action.place_url,
-          place_id: action.place_id
-        }
+        error: null,
+        values: action.payload
       }
     }
 

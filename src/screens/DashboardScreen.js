@@ -14,9 +14,14 @@ import { statusBarBrandColor, brandColor } from '../style/customStyles';
 import * as Animatable from 'react-native-animatable';
 import * as Sentry from '@sentry/react-native';
 import ShowAlert from '../controllers/alert';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import { Linking } from 'react-native';
 import VersionCheck from 'react-native-version-check';
+
+const saftymeasures = [
+  'Temperature Check', 'Face Mask', "Hands Sanitized", 'Face Shield', 'Hand Gloves', 'Single use Products', 'Disposable Items'
+]
 
 function Dashboard(props) {
   const [ refreshing, setRefreshing ] = useState(false);
@@ -53,6 +58,10 @@ function Dashboard(props) {
   }, [refreshing]);
 
   useEffect(() => {
+    getLatestAppUpdate()
+  }, [])
+
+  useEffect(() => {
     if(!props.networkAvailability.isOffline) {
       async function fetchData() {
         try {
@@ -62,8 +71,6 @@ function Dashboard(props) {
           props.getPackages()
           await props.getCart()
           await props.getAllCartItems()
-          getLatestAppUpdate()
-          // toggleSaftyModal()
         } catch (e) {
           if(e.message) {
             ShowAlert('Oops!', e.message)
@@ -78,14 +85,34 @@ function Dashboard(props) {
   }, [props.navigation.isFocused])
 
   const getLatestAppUpdate = async () => {
-    let latestVersion = await VersionCheck.getLatestVersion()
-    let currentVersion = await VersionCheck.getCurrentVersion()
-    let url = await VersionCheck.getStoreUrl()
-    setStoreUrl(url)
-    latestVersion = latestVersion ? (typeof(latestVersion) == "string" && latestVersion.split('.').join('')) : latestVersion
-    currentVersion = currentVersion ? (typeof(currentVersion) == "string" && currentVersion.split('.').join('')) : currentVersion
-    if(latestVersion && currentVersion && latestVersion > currentVersion) {
-      toggleModal(true)
+    try {
+      let latestVersion = await VersionCheck.getLatestVersion()
+      let currentVersion = await VersionCheck.getCurrentVersion()
+      let url = await VersionCheck.getStoreUrl()
+      setStoreUrl(url)
+      latestVersion = latestVersion ? (typeof(latestVersion) == "string" && latestVersion.split('.').join('')) : latestVersion
+      currentVersion = currentVersion ? (typeof(currentVersion) == "string" && currentVersion.split('.').join('')) : currentVersion
+      if(latestVersion && currentVersion && latestVersion > currentVersion) {
+        toggleModal(true)
+      } else {
+        // showSafty()
+      }
+    } catch (e) {
+      // showSafty()
+      Sentry.captureException(e)
+    }
+  }
+
+  const showSafty = () => {
+    if(showSaftyModal) {
+      toggleSaftyModal(false)
+      AsyncStorage.setItem('showSaftyModal', 'false')
+    } else {
+      AsyncStorage.getItem('showSaftyModal').then((res) => {
+        if(res && res == 'true') {
+          toggleSaftyModal(true)
+        }
+      }).catch((e) => Sentry.captureEvent(e))
     }
   }
 
@@ -135,7 +162,14 @@ function Dashboard(props) {
           style={styles.backdrop}>
           <View style={styles.popUpContainer}>
             <View style={{borderRadius: 20}}>
-              <Image source={{uri: "https://firebasestorage.googleapis.com/v0/b/homswag.appspot.com/o/images%2Fappupdate_rocket.png?alt=media&token=88f518c0-8d03-44a1-bc1a-248904e0bc08"}} style={{height: 114, borderRadius: 10}} resizeMode="stretch" />
+              <Image source={require('../assets/images/appupdate_rocket.png')} style={{height: 114, borderRadius: 10, width: '100%'}} resizeMode="stretch" />
+              <View style={{position: 'absolute', width: '100%', alignItems: 'flex-end', top: -8, right: -8}}>
+                <TouchableOpacity onPress={() => { toggleModal(false)}}>
+                  <View style={{width: 30, height: 30, backgroundColor: '#fff', borderRadius: 15, alignItems: 'center', justifyContent: 'center'}}>
+                    <Text>X</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
             </View>
             <View style={{paddingHorizontal: 10, marginTop: 10, width: '70%', justifyContent: 'center'}}>
               <Text style={{fontFamily: 'Roboto-MediumItalic', fontSize: 18, textAlign: 'center'}}>Update your app</Text>
@@ -148,6 +182,43 @@ function Dashboard(props) {
                   </View>
                 </TouchableOpacity>
               </View>
+            </View>
+          </View>
+        </View>
+      </Modal>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showSaftyModal}
+        onRequestClose={() => {
+          showSafty()
+        }}>
+        <View
+          style={styles.backdrop}>
+          <View style={styles.saftypopUpContainer}>
+            <View style={{position: 'absolute', width: '100%', alignItems: 'flex-end', top: -8, right: -8}}>
+              <TouchableOpacity onPress={() => { showSafty()}}>
+                <View style={{width: 30, height: 30, backgroundColor: '#eee', borderRadius: 15, alignItems: 'center', justifyContent: 'center'}}>
+                  <Text style={{color: "#000"}}>X</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <Text style={{fontSize: 26, fontWeight: 'bold', color: brandColor, textAlign: "center"}}>SAFETY MEASURES</Text>
+            <View style={styles.saftypopUpContent}>
+              <View>
+                {saftymeasures.map((content, index) => (
+                  <View key={index} style={styles.saftyTextContainer}>
+                    <View style={styles.bulletPoint}></View>
+                    <Text style={styles.listContent}>{content}</Text>
+                  </View>
+                ))}
+              </View>
+              <View style={{justifyContent: 'center', borderRadius: 10, paddingBottom: 20}}>
+                <Image source={require('../assets/images/temperature-check.png')} style={{width: 170, height: 180, position: 'relative', left: -25, borderRadius: 10}} resizeMode={"stretch"}/>
+              </View>
+            </View>
+            <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 20}}>
+              <Text style={{fontSize: 26, fontWeight: 'bold', color: brandColor}}>STAY AT HOME STAY SAFE</Text>
             </View>
           </View>
         </View>
@@ -186,12 +257,34 @@ const styles = StyleSheet.create({
   },
   popUpContainer: {
     backgroundColor: '#fff',
-    // paddingVertical: 20,
-    // paddingHorizontal: 20,
     borderRadius: 10
   },
-  // topContainer: {
-  //   height: 50,
-  //   width: '100%'
-  // }
+  saftypopUpContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    width: '90%',
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    backgroundColor: '#FFE7D1'
+  },
+  saftypopUpContent: {
+    flexDirection: 'row',
+    marginTop: 10
+  },
+  saftyTextContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    paddingVertical: 10
+  },
+  bulletPoint: {
+    width: 8,
+    height: 8,
+    borderRadius: 50,
+    backgroundColor: brandColor
+  },
+  listContent: {
+    fontSize: 20,
+    marginLeft: 10
+  }
 })

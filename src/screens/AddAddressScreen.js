@@ -1,5 +1,5 @@
 import React, { useState, useEffect }from 'react';
-import { View, StyleSheet, TouchableOpacity, ActivityIndicator, Modal, Text, PermissionsAndroid } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ActivityIndicator, Modal, Text, PermissionsAndroid, Platform } from 'react-native';
 import MapView from 'react-native-maps';
 import FloatingInput from '../components/input-helpers.js/floatingInput';
 import { connect } from 'react-redux';
@@ -9,22 +9,20 @@ import { KeyboardAvoidingView } from '../components/KeyboardAvoidView'
 import _ from 'lodash';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Label } from 'native-base';
-import { Permissions } from 'react-native-unimodules';
 import { brandColor, brandLightBackdroundColor } from '../style/customStyles';
-import * as Location from 'expo-location';
 import * as Sentry from '@sentry/react-native';
 import ShowAlert from '../controllers/alert';
 
 const initialRegion = {
   latitude: 12.97194,
   longitude: 77.59369,
-  latitudeDelta: 0.1422,
-  longitudeDelta: 0.0401,
+  latitudeDelta: 0.0422,
+  longitudeDelta: 0.0501,
 }
 
 const locationValueObject = {
   formatedAddress: '',
-  geometry: {},
+  coordinate: {},
   place_id: '',
   localAddress: '',
   landmark: '',
@@ -32,16 +30,15 @@ const locationValueObject = {
 
 function AddressScreen(props) {
   const [ coordinates, setCoodinates ] = useState()
-  const { location, addNewAddress, getfetchAddress, navigation, networkAvailability, getGeoCoding } = props
+  const { locationModel, addNewAddress, getfetchAddress, navigation, networkAvailability, getGeoCoding } = props
   const [ isCurrentLoactionLoaded, setCoodinatesLoaded ] = useState(false)
   const [ locationValue, setLocationValue ] = useState(locationValueObject)
   const [ isLoading, setLoading ] = useState(false)
 
-  const setGeocoding = ({formatedAddress, geometry}) => {
-    setLocationValue({...locationValue, formatedAddress: formatedAddress, geometry: geometry})
+  const setGeocoding = ({formatedAddress, coordinate}) => {
+    setLocationValue({...locationValue, formatedAddress: formatedAddress, coordinate: coordinate})
     setLoading(false)
   }
-
   const onError = () => {
     setLoading(false)
     ShowAlert('Permission Required', "We need location service permission to fetch your current location")
@@ -54,60 +51,67 @@ function AddressScreen(props) {
       latitudeDelta: 0.0122,
       longitudeDelta: 0.0101,
     })
-    async function saveData() {
-      try {
-        if(networkAvailability.offline) {
-          setLoading(false)
-          ShowAlert('Oops!', 'Seems like you are not connected to Internet')
-        } else {
-          const locationResponse = await Location.reverseGeocodeAsync({latitude, longitude})
-          let formatted_address = `${locationResponse[0].name}, ${locationResponse[0].street}, ${locationResponse[0].city}, ${locationResponse[0].postalCode}, ${locationResponse[0].region}, ${locationResponse[0].country}`
-          setGeocoding({
-            formatedAddress: formatted_address,
-            geometry: { latitude: latitude, longitude: longitude },
-          })
-          setCoodinatesLoaded(true)
-          setLoading(false)
-        }
-      } catch(e) {
-        if(e && e.message) {
-          ShowAlert('Oops!', e.message)
-        } else {
-          ShowAlert('Oops!', e)
-        }
-        Sentry.captureException(e)
-        setLoading(false)
-      }
-    }
-    saveData()
+    saveData(latitude, longitude)
   }
-
-  useEffect(() => {
-    if(location && location.error) {
-      ShowAlert('Oops!', location.error)
-      Sentry.captureException(location.error)
-    }
-  }, [location.error])
-
-  const debounceCall = _.debounce(onRegionChange, 500);
-
-
-  async function getPemission() {
+  
+  const saveData = async (latitude, longitude) => {
     try {
-      let { status } = await Permissions.getAsync(Permissions.LOCATION);
-      if (status !== 'granted') {
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
-        if (status !== 'granted') {
-          onError()
-        }
+      if(networkAvailability.offline) {
+        setLoading(false)
+        ShowAlert('Oops!', 'Seems like you are not connected to Internet')
+      } else {
+        getGeoCoding(latitude, longitude)
       }
-    } catch (e) {
+    } catch(e) {
       if(e && e.message) {
         ShowAlert('Oops!', e.message)
       } else {
         ShowAlert('Oops!', e)
       }
       Sentry.captureException(e)
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if(!locationModel.isLoading && !locationModel.error && Object.keys(locationModel.values).length) {
+      setGeocoding({
+        formatedAddress: locationModel.values.formatedAddress,
+        coordinate: { latitude: locationModel.values.coordinate.latitude, longitude: locationModel.values.coordinate.longitude },
+      })
+      setCoodinatesLoaded(true)
+      setLoading(false)
+    } else if(!locationModel.isLoading && locationModel.error) {
+      ShowAlert('Oops!', locationModel.error)
+      Sentry.captureException(locationModel.error)
+    }
+  }, [locationModel])
+
+  const debounceCall = _.debounce(onRegionChange, 1000);
+
+  const getPemission = async () => {
+    try {
+      if(Platform.OS === 'android') {
+        const request = await PermissionsAndroid.requestMultiple(
+          [
+            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+            PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
+          ]
+        );
+        if(request["android.permission.ACCESS_COARSE_LOCATION"] !== PermissionsAndroid.RESULTS.GRANTED) {
+          onError()
+        } else if (request["android.permission.ACCESS_FINE_LOCATION"]!== PermissionsAndroid.RESULTS.GRANTED) {
+          onError()
+        }
+      }
+    } catch (err) {
+      console.log(err)
+      if(err && err.message) {
+        ShowAlert('Oops!', err.message)
+      } else {
+        ShowAlert('Oops!', err)
+      }
+      Sentry.captureException(err)
     }
   }
 
@@ -118,10 +122,10 @@ function AddressScreen(props) {
   }, [])
 
   const save = async () => {
+    const { formatedAddress, place_id, place_url, coordinate } = locationModel.values
     setLoading(true)
     try {
-      let geoCoding = await getGeoCoding(locationValue.geometry.latitude, locationValue.geometry.longitude)
-      await addNewAddress({address: {...locationValue, place_id: geoCoding.place_id, place_url: geoCoding.place_url}})
+      await addNewAddress({address: {...locationValue, formatedAddress, place_id, place_url, coordinate}})
       await getfetchAddress()
       setLoading(false)
       navigation.goBack()
@@ -145,9 +149,10 @@ function AddressScreen(props) {
             onRegionChangeComplete={({latitude, longitude}) => debounceCall(latitude, longitude)}
             showsUserLocation={true}
             loadingEnabled={true}
+            provider={'google'}
             onUserLocationChange={getPemission}
             showsMyLocationButton={true}
-            showsCompass={true}
+            showsCompass={false}
             followsUserLocation={true}/>
           { isCurrentLoactionLoaded && coordinates && coordinates.latitude && 
             <View style={{position: 'absolute', top: 115, left: '48%', justifyContent: 'center', alignItems: 'center'}}>
@@ -162,10 +167,10 @@ function AddressScreen(props) {
               Move Location Markers To Desired Locations To Accurately Point The Address.
             </Text>
           </View>
-          {locationValue && locationValue.formatedAddress ? 
+          {locationModel && locationModel.values && locationModel.values.formatedAddress ? 
             <View style={{paddingTop: 10}}>
               <Text style={{color: 'rgba(0,0,0,0.5)'}}>Location</Text>
-              <Text style={{marginTop: 5}}>{locationValue.formatedAddress}</Text>
+              <Text style={{marginTop: 5}}>{locationModel.values.formatedAddress}</Text>
             </View> :
             <View style={{borderBottomWidth: 1, borderColor: '#eee', marginTop: 30}}>
               <Label style={{fontSize: 18, color: 'rgba(0,0,0,0.64)'}}>Location</Label>
@@ -214,7 +219,7 @@ function AddressScreen(props) {
 }
 
 const mapStateToProps = state => ({
-  location : state.location,
+  locationModel : state.location,
   networkAvailability: state.networkAvailability
 })
 

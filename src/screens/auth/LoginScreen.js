@@ -51,6 +51,7 @@ const LoginScreen = (props) => {
     try {
       if(!session.isSessionAuthenticated) {
         let token = await AsyncStorage.getItem('token')
+        AsyncStorage.setItem('showSaftyModal', 'true')
         if(token) {
           setUserIsNew(false)
           let tokenObject = JSON.parse(token)

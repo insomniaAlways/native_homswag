@@ -133,8 +133,9 @@ android {
         applicationId "com.capaz.homswag"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 16
-        versionName "1.1.6"
+        versionCode 17
+        versionName "1.1.7"
+        vectorDrawables.useSupportLibrary = true
     }
     splits {
         abi {
@@ -188,7 +189,6 @@ android {
         }
     }
 }
-apply from: file('../../node_modules/react-native-unimodules/gradle.groovy')
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
@@ -198,10 +198,7 @@ dependencies {
     implementation project(path: ':react-native-gesture-handler')
     implementation "com.google.firebase:firebase-analytics:17.2.2"
     implementation 'com.google.android.play:core:1.6.4'
-    addUnimodulesDependencies([exclude: ['expo-updates', 'unimodules-app-loader', 'unimodules-barcode-scanner-interface',
-       'unimodules-camera-interface', 'unimodules-face-detector-interface', 'unimodules-font-interface', 'unimodules-sensors-interface',
-       'unimodules-image-loader-interface', 'unimodules-constants-interface', 'expo-constants', 'expo-image-loader',
-        'unimodules-file-system-interface', 'unimodules-task-manager-interface', 'expo-file-system']])
+
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/"
         debugImplementation files(hermesPath + "hermes-debug.aar")

@@ -12,7 +12,6 @@ import ShowAlert from './src/controllers/alert';
 
 Sentry.init({ 
   dsn: 'https://16e35b4da8db4096b2298db1fb8049f0@sentry.io/2787983',
-  enableInExpoDevelopment: false,
   debug: false
 });
 

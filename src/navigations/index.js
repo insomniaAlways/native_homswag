@@ -2,7 +2,6 @@ import React from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
-import { Image, Platform } from 'react-native';
 
 // screens
 import DashboardScreen from '../screens/DashboardScreen';
@@ -32,14 +31,6 @@ import LoginScreen from '../screens/auth/LoginScreen';
 import ReviewOrderScreen from '../screens/ReviewOrderScreen';
 import AppointmentPlaced from '../screens/AppointmentPlaced';
 import OrderDetails from '../screens/OrderDetailsScreen';
-
-const BackIcon = () => {
-  if(Platform.OS == "ios") {
-    return <Image source={require('../assets/icons/back-icon-ios@1.5.png')} style={{marginLeft: 15, width: 15, height: 15, tintColor: '#FFFFFF'}}/>
-  } else {
-    return <Image source={require('../assets/icons/back-icon@1.5.png')} style={{width: 30, height: 30, tintColor: '#FFFFFF'}}/>
-  }
-}
 
 const AppNavigator = createStackNavigator({
     Dashboard: {
@@ -97,7 +88,6 @@ const AppNavigator = createStackNavigator({
       title: navigation.state.routeName,
       headerStyle: DefaultStyles.brandBackgroundColor,
       headerTintColor: '#FFFFFF',
-      headerBackImage: BackIcon,
       headerBackAllowFontScaling: true,
       headerTitleStyle: {
         fontWeight: 'bold',
@@ -126,7 +116,6 @@ const OrderStackNavigator = createStackNavigator({
   defaultNavigationOptions: ({ navigation }) => ({
     headerStyle: DefaultStyles.brandBackgroundColor,
     headerTintColor: '#FFFFFF',
-    headerBackImage: BackIcon,
     headerBackAllowFontScaling: true,
     headerTitleStyle: {
       fontWeight: 'bold',
@@ -154,7 +143,6 @@ const AddressStack = createStackNavigator({
   defaultNavigationOptions: ({ navigation }) => ({
     headerStyle: DefaultStyles.brandBackgroundColor,
     headerTintColor: '#FFFFFF',
-    headerBackImage: BackIcon,
     headerBackAllowFontScaling: true,
     headerTitleStyle: {
       fontWeight: 'bold',

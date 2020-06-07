@@ -21,7 +21,9 @@ function UpdateProfileScreen(props) {
       setLoading(true)
       await updateUserDetails({ name: name, image_source: image})
       setLoading(false)
-      navigation.navigate('App')
+      navigation.navigate('App', {
+        showSaftyModal: true
+      })
     } else {
       ShowAlert('Oops!', "Please enter your name. Thank You!")
     }
