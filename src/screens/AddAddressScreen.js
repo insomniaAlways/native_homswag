@@ -12,12 +12,13 @@ import { Label } from 'native-base';
 import { brandColor, brandLightBackdroundColor } from '../style/customStyles';
 import * as Sentry from '@sentry/react-native';
 import ShowAlert from '../controllers/alert';
+import RNLocation from 'react-native-location';
 
 const initialRegion = {
   latitude: 12.97194,
   longitude: 77.59369,
-  latitudeDelta: 0.0422,
-  longitudeDelta: 0.0501,
+  latitudeDelta: 0.0022,
+  longitudeDelta: 0.0001,
 }
 
 const locationValueObject = {
@@ -29,7 +30,7 @@ const locationValueObject = {
 }
 
 function AddressScreen(props) {
-  const [ coordinates, setCoodinates ] = useState()
+  const [ coordinates, setCoodinates ] = useState({...initialRegion})
   const { locationModel, addNewAddress, getfetchAddress, navigation, networkAvailability, getGeoCoding } = props
   const [ isCurrentLoactionLoaded, setCoodinatesLoaded ] = useState(false)
   const [ locationValue, setLocationValue ] = useState(locationValueObject)
@@ -48,8 +49,8 @@ function AddressScreen(props) {
     setCoodinates({
       latitude: latitude,
       longitude: longitude,
-      latitudeDelta: 0.0122,
-      longitudeDelta: 0.0101,
+      latitudeDelta: 0.0001,
+      longitudeDelta: 0.001,
     })
     saveData(latitude, longitude)
   }
@@ -102,10 +103,18 @@ function AddressScreen(props) {
           onError()
         } else if (request["android.permission.ACCESS_FINE_LOCATION"]!== PermissionsAndroid.RESULTS.GRANTED) {
           onError()
+        } else {
+          RNLocation.getLatestLocation({ timeout: 60000 })
+          .then(({latitude, longitude}) => {
+            onRegionChange(latitude, longitude)
+          })
         }
       }
+      RNLocation.getLatestLocation({ timeout: 60000 })
+      .then(({latitude, longitude}) => {
+        onRegionChange(latitude, longitude)
+      })
     } catch (err) {
-      console.log(err)
       if(err && err.message) {
         ShowAlert('Oops!', err.message)
       } else {
@@ -145,12 +154,12 @@ function AddressScreen(props) {
       <View style={{flex: 1, backgroundColor: '#FFFFFF'}}>
         <View style={isCurrentLoactionLoaded && coordinates && coordinates.latitude ? styles.padding_b : styles.padding_a}>
           <MapView style={{height: 300}}
-            initialRegion={initialRegion}
+            initialRegion={coordinates}
             onRegionChangeComplete={({latitude, longitude}) => debounceCall(latitude, longitude)}
             showsUserLocation={true}
             loadingEnabled={true}
             provider={'google'}
-            onUserLocationChange={getPemission}
+            followsUserLocation={true}
             showsMyLocationButton={true}
             showsCompass={false}
             followsUserLocation={true}/>

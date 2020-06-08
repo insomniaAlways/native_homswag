@@ -205,6 +205,7 @@ function ProfileScreen(props) {
           }
         </View>
       </View>
+      
     </KeyboardAvoidingView>
   )
 }
