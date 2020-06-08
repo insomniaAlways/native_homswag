@@ -162,7 +162,7 @@ function AddressScreen(props) {
             followsUserLocation={true}
             showsMyLocationButton={true}
             showsCompass={false}
-            followsUserLocation={true}/>
+          />
           { isCurrentLoactionLoaded && coordinates && coordinates.latitude && 
             <View style={{position: 'absolute', top: 115, left: '48%', justifyContent: 'center', alignItems: 'center'}}>
               <FontAwesome name="map-marker" size={40} color="red" />
