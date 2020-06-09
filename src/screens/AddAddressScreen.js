@@ -1,4 +1,4 @@
-import React, { useState, useEffect }from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity, ActivityIndicator, Modal, Text, PermissionsAndroid, Platform } from 'react-native';
 import MapView from 'react-native-maps';
 import FloatingInput from '../components/input-helpers.js/floatingInput';
@@ -6,13 +6,13 @@ import { connect } from 'react-redux';
 import { geoCoding } from '../store/actions/locationActions';
 import { creatNew, fetchAddress } from '../store/actions/addressActions';
 import { KeyboardAvoidingView } from '../components/KeyboardAvoidView'
-import _ from 'lodash';
+import { debounce, isNil } from 'lodash';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Label } from 'native-base';
 import { brandColor, brandLightBackdroundColor } from '../style/customStyles';
 import * as Sentry from '@sentry/react-native';
 import ShowAlert from '../controllers/alert';
-import RNLocation from 'react-native-location';
+import Geolocation from 'react-native-geolocation-service';
 
 const initialRegion = {
   latitude: 12.97194,
@@ -30,7 +30,7 @@ const locationValueObject = {
 }
 
 function AddressScreen(props) {
-  const [ coordinates, setCoodinates ] = useState({...initialRegion})
+  const [ coordinates, setCoodinates ] = useState(initialRegion)
   const { locationModel, addNewAddress, getfetchAddress, navigation, networkAvailability, getGeoCoding } = props
   const [ isCurrentLoactionLoaded, setCoodinatesLoaded ] = useState(false)
   const [ locationValue, setLocationValue ] = useState(locationValueObject)
@@ -46,6 +46,7 @@ function AddressScreen(props) {
   }
 
   const onRegionChange = (latitude, longitude) => {
+    setCoodinatesLoaded(false)
     setCoodinates({
       latitude: latitude,
       longitude: longitude,
@@ -83,12 +84,16 @@ function AddressScreen(props) {
       setCoodinatesLoaded(true)
       setLoading(false)
     } else if(!locationModel.isLoading && locationModel.error) {
-      ShowAlert('Oops!', locationModel.error)
+      if(locationModel.error && locationModel.error.message) {
+        ShowAlert('Oops!', locationModel.error.message)
+      } else {
+        ShowAlert('Oops!', locationModel.error)
+      }
       Sentry.captureException(locationModel.error)
     }
   }, [locationModel])
 
-  const debounceCall = _.debounce(onRegionChange, 1000);
+  const debounceCall = debounce(onRegionChange, 1000);
 
   const getPemission = async () => {
     try {
@@ -104,16 +109,9 @@ function AddressScreen(props) {
         } else if (request["android.permission.ACCESS_FINE_LOCATION"]!== PermissionsAndroid.RESULTS.GRANTED) {
           onError()
         } else {
-          RNLocation.getLatestLocation({ timeout: 60000 })
-          .then(({latitude, longitude}) => {
-            onRegionChange(latitude, longitude)
-          })
+          getCurrentPosition()
         }
       }
-      RNLocation.getLatestLocation({ timeout: 60000 })
-      .then(({latitude, longitude}) => {
-        onRegionChange(latitude, longitude)
-      })
     } catch (err) {
       if(err && err.message) {
         ShowAlert('Oops!', err.message)
@@ -124,9 +122,54 @@ function AddressScreen(props) {
     }
   }
 
-  useEffect(() => {
-    if(!isCurrentLoactionLoaded) {
+  const requestAuthorization = async () => {
+    //Todo for IOS
+    const request = Geolocation.requestAuthorization()
+  }
+
+  const onPositionSuccess = ({latitude, longitude}) => {
+    if(!isNil(latitude) && !isNil(longitude)) {
+      onRegionChange(latitude, longitude)
+    }
+  }
+
+  const onPositionError = (error) => {
+    setCoodinatesLoaded(true)
+    switch (error.code) {
+      case 1: {
+        if(Platform.OS == 'android') {
+          return getPemission()
+        } else {
+          return requestAuthorization()
+        }
+      }
+      case 2: {
+        return ShowAlert('Oops!', "Location provider not available")
+      }
+      case 3: {
+        return ShowAlert('Oops!', "We are not able to fetch your current location.")
+      }
+      case 5: {
+        return ShowAlert('Location service is disabled', 'Please turn on your location service.')
+      }
+      default:
+        if(error && error.message) {
+          ShowAlert('Oops!', error.message)
+        } else {
+          ShowAlert('Oops!', error)
+        }
+    }
+  }
+
+  const getCurrentPosition = () => {
+    Geolocation.getCurrentPosition(onPositionSuccess, onPositionError, {enableHighAccuracy: true, showLocationDialog: true})
+  }
+
+  useLayoutEffect(() => {
+    if(Platform.OS == 'android') {
       getPemission()
+    } else {
+      requestAuthorization()
     }
   }, [])
 
@@ -163,7 +206,7 @@ function AddressScreen(props) {
             showsMyLocationButton={true}
             showsCompass={false}
           />
-          { isCurrentLoactionLoaded && coordinates && coordinates.latitude && 
+          { coordinates && coordinates.latitude && 
             <View style={{position: 'absolute', top: 115, left: '48%', justifyContent: 'center', alignItems: 'center'}}>
               <FontAwesome name="map-marker" size={40} color="red" />
             </View>
