@@ -14,16 +14,18 @@ import _ from 'lodash';
 import moment from 'moment';
 import { useSafeArea } from 'react-native-safe-area-context';
 import ShowAlert from '../controllers/alert';
+import { updateUser } from '../store/actions/userActions';
 
 function ScheduleAppointmentScreen(props) {
   const insets = useSafeArea();
-  const { appointmentModel, addresses, getAddress, currentUserModel, updateAppointment } = props
+  const { appointmentModel, addresses, getAddress, currentUserModel, updateAppointment, updateUserDetails } = props
   const [ openAddressModal, setModal ] = useState(false)
   const [ scrollOffset, setScrollOffset ] = useState(0)
   const [ date, setDate ] = useState(new Date())
   const [ selectedAddress, setSelectedAddress ] = useState()
   const [ specialInstruction, setInstruction ] = useState()
   const [ preferedBeautician, setBeautician ] = useState()
+  const [ hasUserName, setUserName ] = useState(currentUserModel.values.name)
   
   let scrollViewRef;
   const { defaultValues, slots } = appointmentModel
@@ -69,8 +71,15 @@ function ScheduleAppointmentScreen(props) {
     }
   }
 
-  const save = () => {
+  const save = async () => {
     if(isValidateSlot()) {
+      if(!currentUserModel.values.name) {
+        if(hasUserName) {
+          await updateUserDetails({ name: '' })
+        } else {
+          return ShowAlert('Opps!', 'Please provide your name. Thank you')
+        }
+      }
       updateAppointment({
         ...appointmentModel.defaultValues,
         appointment_for: currentUserModel.values.name,
@@ -128,6 +137,8 @@ function ScheduleAppointmentScreen(props) {
           <Text style={{fontSize: 16, fontWeight: 'bold'}}>Fill Details:</Text>
           <BookingDetails
             selectedAddress={selectedAddress}
+            hasUserName={hasUserName}
+            setUserName={setUserName}
             setModal={setModal}
             isAddressLoading={addresses.isLoading}
             goToAddAddress={goToAddAddress}
@@ -197,7 +208,8 @@ const mapPropsToState = state => ({
 const mapDispatchToProps = dispatch => {
   return {
     getAddress: () => dispatch(fetchAddress()),
-    updateAppointment: (appointment) => dispatch(updateAppointmentState(appointment))
+    updateAppointment: (appointment) => dispatch(updateAppointmentState(appointment)),
+    updateUserDetails: (data) => dispatch(updateUser(data)),
   }
 }
 

@@ -13,12 +13,14 @@ function BookingDetails(props) {
     setInstruction,
     preferedBeautician,
     setBeautician,
-    currentUser } = props
+    currentUser,
+    hasUserName,
+    setUserName } = props
   let address = selectedAddress && selectedAddress.address ? selectedAddress.address.formatedAddress : selectedAddress
 
   return (
     <View style={{padding: 10}}>
-      <PlaceHolderTextInput placeholder="Name" styles={{margin: 10}} value={currentUser.name} disabled={true}/>
+      <PlaceHolderTextInput placeholder="Name" styles={{margin: 10}} value={hasUserName} disabled={currentUser.name} setValue={setUserName}/>
       <PlaceHolderTextInput placeholder="Phone Number" styles={{margin: 10}} value={currentUser.phone} disabled={true}/>
         { isAddressLoading ? 
           <View style={styles.addressContainer}>

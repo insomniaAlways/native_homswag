@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { View, StyleSheet, TouchableOpacity, ActivityIndicator, Modal, Text, PermissionsAndroid, Platform } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ActivityIndicator, Modal, Text, PermissionsAndroid, Platform, Linking, Alert } from 'react-native';
 import MapView from 'react-native-maps';
 import FloatingInput from '../components/input-helpers.js/floatingInput';
 import { connect } from 'react-redux';
@@ -39,10 +39,6 @@ function AddressScreen(props) {
   const setGeocoding = ({formatedAddress, coordinate}) => {
     setLocationValue({...locationValue, formatedAddress: formatedAddress, coordinate: coordinate})
     setLoading(false)
-  }
-  const onError = () => {
-    setLoading(false)
-    ShowAlert('Permission Required', "We need location service permission to fetch your current location")
   }
 
   const onRegionChange = (latitude, longitude) => {
@@ -95,22 +91,103 @@ function AddressScreen(props) {
 
   const debounceCall = debounce(onRegionChange, 1000);
 
+  const onError = (text) => {
+    setLoading(false)
+    let message = text || "We need location service permission to fetch your current location"
+    ShowAlert('Permission Required', message)
+    Sentry.captureEvent(text)
+  }
+
+  const hasLocationPermissionIOS = async () => {
+    try {
+      const openSetting = () => {
+        Linking.openSettings().catch(() => {
+          ShowAlert('Unable to open settings');
+        });
+      };
+      const status = await Geolocation.requestAuthorization('whenInUse');
+  
+      if (status === 'granted') {
+        return true;
+      }
+  
+      if (status === 'denied') {
+        onError();
+      }
+  
+      if (status === 'disabled') {
+        Alert.alert(
+          `Turn on Location Services to allow "Homeswag" to determine your location.`,
+          '',
+          [
+            { text: 'Go to Settings', onPress: openSetting },
+            { text: "Don't Use Location", onPress: onError },
+          ],
+        );
+      }
+  
+      return false;
+    } catch (err) {
+      if(err && err.message) {
+        ShowAlert('Oops!', err.message)
+      } else {
+        ShowAlert('Oops!', err)
+      }
+      Sentry.captureException(err)
+      return false
+    }
+  };
+
+  const hasLocationPermission = async () => {
+    try {
+      if (Platform.OS === 'ios') {
+        const hasPermission = await hasLocationPermissionIOS();
+        return hasPermission;
+      }
+  
+      if (Platform.OS === 'android' && Platform.Version < 23) {
+        return true;
+      }
+  
+      const hasPermission = await PermissionsAndroid.check(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      );
+  
+      if (hasPermission) {
+        return true;
+      }
+  
+      const status = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      );
+  
+      if (status === PermissionsAndroid.RESULTS.GRANTED) {
+        return true;
+      }
+  
+      if (status === PermissionsAndroid.RESULTS.DENIED) {
+        onError('Location permission denied by user.')
+      } else if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+        onError('Location permission revoked by user.')
+      }
+  
+      return false;
+    } catch (err) {
+      if(err && err.message) {
+        ShowAlert('Oops!', err.message)
+      } else {
+        ShowAlert('Oops!', err)
+      }
+      Sentry.captureException(err)
+      return false
+    }
+  };
+
   const getPemission = async () => {
     try {
-      if(Platform.OS === 'android') {
-        const request = await PermissionsAndroid.requestMultiple(
-          [
-            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-            PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
-          ]
-        );
-        if(request["android.permission.ACCESS_COARSE_LOCATION"] !== PermissionsAndroid.RESULTS.GRANTED) {
-          onError()
-        } else if (request["android.permission.ACCESS_FINE_LOCATION"]!== PermissionsAndroid.RESULTS.GRANTED) {
-          onError()
-        } else {
-          getCurrentPosition()
-        }
+      const hasLocationPermission = await this.hasLocationPermission();
+      if(hasLocationPermission) {
+        getCurrentPosition()
       }
     } catch (err) {
       if(err && err.message) {
@@ -120,11 +197,6 @@ function AddressScreen(props) {
       }
       Sentry.captureException(err)
     }
-  }
-
-  const requestAuthorization = async () => {
-    //Todo for IOS
-    const request = Geolocation.requestAuthorization()
   }
 
   const onPositionSuccess = ({latitude, longitude}) => {
@@ -166,11 +238,7 @@ function AddressScreen(props) {
   }
 
   useLayoutEffect(() => {
-    if(Platform.OS == 'android') {
-      getPemission()
-    } else {
-      requestAuthorization()
-    }
+    hasLocationPermission()
   }, [])
 
   const save = async () => {
@@ -200,6 +268,7 @@ function AddressScreen(props) {
             initialRegion={coordinates}
             onRegionChangeComplete={({latitude, longitude}) => debounceCall(latitude, longitude)}
             showsUserLocation={true}
+            animateCamera={() => {{center: coordinates}}}
             loadingEnabled={true}
             provider={'google'}
             followsUserLocation={true}
