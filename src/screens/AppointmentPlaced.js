@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import { fetchOrder } from '../store/actions/orderActions';
 import { View, StyleSheet, BackHandler, Image, Text, StatusBar } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import Tick from '../assets/images/tick.png'
@@ -57,14 +56,6 @@ const AppointmentPlacedScreen = (props) => {
     </View>
   )
 }
-
-const mapStateToProps = state => ({
-  order: state.order
-})
-
-const mapDispatchToProps = dispatch => ({
-  getCurrentOrder: (order_id) => dispatch(fetchOrder(order_id))
-})
 
 const styles = StyleSheet.create({
   content : {

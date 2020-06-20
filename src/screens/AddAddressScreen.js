@@ -1,23 +1,24 @@
-import React, { useState, useEffect }from 'react';
-import { View, StyleSheet, TouchableOpacity, ActivityIndicator, Modal, Text, PermissionsAndroid, Platform } from 'react-native';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
+import { View, StyleSheet, TouchableOpacity, ActivityIndicator, Modal, Text, PermissionsAndroid, Platform, Linking, Alert } from 'react-native';
 import MapView from 'react-native-maps';
 import FloatingInput from '../components/input-helpers.js/floatingInput';
 import { connect } from 'react-redux';
 import { geoCoding } from '../store/actions/locationActions';
 import { creatNew, fetchAddress } from '../store/actions/addressActions';
 import { KeyboardAvoidingView } from '../components/KeyboardAvoidView'
-import _ from 'lodash';
+import { debounce, isNil } from 'lodash';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Label } from 'native-base';
 import { brandColor, brandLightBackdroundColor } from '../style/customStyles';
 import * as Sentry from '@sentry/react-native';
 import ShowAlert from '../controllers/alert';
+import Geolocation from 'react-native-geolocation-service';
 
 const initialRegion = {
   latitude: 12.97194,
   longitude: 77.59369,
-  latitudeDelta: 0.0422,
-  longitudeDelta: 0.0501,
+  latitudeDelta: 0.0022,
+  longitudeDelta: 0.0001,
 }
 
 const locationValueObject = {
@@ -29,7 +30,7 @@ const locationValueObject = {
 }
 
 function AddressScreen(props) {
-  const [ coordinates, setCoodinates ] = useState()
+  const [ coordinates, setCoodinates ] = useState(initialRegion)
   const { locationModel, addNewAddress, getfetchAddress, navigation, networkAvailability, getGeoCoding } = props
   const [ isCurrentLoactionLoaded, setCoodinatesLoaded ] = useState(false)
   const [ locationValue, setLocationValue ] = useState(locationValueObject)
@@ -39,17 +40,14 @@ function AddressScreen(props) {
     setLocationValue({...locationValue, formatedAddress: formatedAddress, coordinate: coordinate})
     setLoading(false)
   }
-  const onError = () => {
-    setLoading(false)
-    ShowAlert('Permission Required', "We need location service permission to fetch your current location")
-  }
 
   const onRegionChange = (latitude, longitude) => {
+    setCoodinatesLoaded(false)
     setCoodinates({
       latitude: latitude,
       longitude: longitude,
-      latitudeDelta: 0.0122,
-      longitudeDelta: 0.0101,
+      latitudeDelta: 0.0001,
+      longitudeDelta: 0.001,
     })
     saveData(latitude, longitude)
   }
@@ -82,30 +80,116 @@ function AddressScreen(props) {
       setCoodinatesLoaded(true)
       setLoading(false)
     } else if(!locationModel.isLoading && locationModel.error) {
-      ShowAlert('Oops!', locationModel.error)
+      if(locationModel.error && locationModel.error.message) {
+        ShowAlert('Oops!', locationModel.error.message)
+      } else {
+        ShowAlert('Oops!', locationModel.error)
+      }
       Sentry.captureException(locationModel.error)
     }
   }, [locationModel])
 
-  const debounceCall = _.debounce(onRegionChange, 1000);
+  const debounceCall = debounce(onRegionChange, 1000);
+
+  const onError = (text) => {
+    setLoading(false)
+    let message = text || "We need location service permission to fetch your current location"
+    ShowAlert('Permission Required', message)
+    Sentry.captureEvent(text)
+  }
+
+  const hasLocationPermissionIOS = async () => {
+    try {
+      const openSetting = () => {
+        Linking.openSettings().catch(() => {
+          ShowAlert('Unable to open settings');
+        });
+      };
+      const status = await Geolocation.requestAuthorization('whenInUse');
+  
+      if (status === 'granted') {
+        return true;
+      }
+  
+      if (status === 'denied') {
+        onError();
+      }
+  
+      if (status === 'disabled') {
+        Alert.alert(
+          `Turn on Location Services to allow "Homeswag" to determine your location.`,
+          '',
+          [
+            { text: 'Go to Settings', onPress: openSetting },
+            { text: "Don't Use Location", onPress: onError },
+          ],
+        );
+      }
+  
+      return false;
+    } catch (err) {
+      if(err && err.message) {
+        ShowAlert('Oops!', err.message)
+      } else {
+        ShowAlert('Oops!', err)
+      }
+      Sentry.captureException(err)
+      return false
+    }
+  };
+
+  const hasLocationPermission = async () => {
+    try {
+      if (Platform.OS === 'ios') {
+        const hasPermission = await hasLocationPermissionIOS();
+        return hasPermission;
+      }
+  
+      if (Platform.OS === 'android' && Platform.Version < 23) {
+        return true;
+      }
+  
+      const hasPermission = await PermissionsAndroid.check(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      );
+  
+      if (hasPermission) {
+        return true;
+      }
+  
+      const status = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      );
+  
+      if (status === PermissionsAndroid.RESULTS.GRANTED) {
+        return true;
+      }
+  
+      if (status === PermissionsAndroid.RESULTS.DENIED) {
+        onError('Location permission denied by user.')
+      } else if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+        onError('Location permission revoked by user.')
+      }
+  
+      return false;
+    } catch (err) {
+      if(err && err.message) {
+        ShowAlert('Oops!', err.message)
+      } else {
+        ShowAlert('Oops!', err)
+      }
+      Sentry.captureException(err)
+      return false
+    }
+  };
 
   const getPemission = async () => {
     try {
-      if(Platform.OS === 'android') {
-        const request = await PermissionsAndroid.requestMultiple(
-          [
-            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-            PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
-          ]
-        );
-        if(request["android.permission.ACCESS_COARSE_LOCATION"] !== PermissionsAndroid.RESULTS.GRANTED) {
-          onError()
-        } else if (request["android.permission.ACCESS_FINE_LOCATION"]!== PermissionsAndroid.RESULTS.GRANTED) {
-          onError()
-        }
+      const hasLocationPermission = await this.hasLocationPermission();
+      if(hasLocationPermission) {
+        getCurrentPosition()
       }
     } catch (err) {
-      console.log(err)
       if(err && err.message) {
         ShowAlert('Oops!', err.message)
       } else {
@@ -115,10 +199,46 @@ function AddressScreen(props) {
     }
   }
 
-  useEffect(() => {
-    if(!isCurrentLoactionLoaded) {
-      getPemission()
+  const onPositionSuccess = ({latitude, longitude}) => {
+    if(!isNil(latitude) && !isNil(longitude)) {
+      onRegionChange(latitude, longitude)
     }
+  }
+
+  const onPositionError = (error) => {
+    setCoodinatesLoaded(true)
+    switch (error.code) {
+      case 1: {
+        if(Platform.OS == 'android') {
+          return getPemission()
+        } else {
+          return requestAuthorization()
+        }
+      }
+      case 2: {
+        return ShowAlert('Oops!', "Location provider not available")
+      }
+      case 3: {
+        return ShowAlert('Oops!', "We are not able to fetch your current location.")
+      }
+      case 5: {
+        return ShowAlert('Location service is disabled', 'Please turn on your location service.')
+      }
+      default:
+        if(error && error.message) {
+          ShowAlert('Oops!', error.message)
+        } else {
+          ShowAlert('Oops!', error)
+        }
+    }
+  }
+
+  const getCurrentPosition = () => {
+    Geolocation.getCurrentPosition(onPositionSuccess, onPositionError, {enableHighAccuracy: true, showLocationDialog: true})
+  }
+
+  useLayoutEffect(() => {
+    hasLocationPermission()
   }, [])
 
   const save = async () => {
@@ -145,16 +265,17 @@ function AddressScreen(props) {
       <View style={{flex: 1, backgroundColor: '#FFFFFF'}}>
         <View style={isCurrentLoactionLoaded && coordinates && coordinates.latitude ? styles.padding_b : styles.padding_a}>
           <MapView style={{height: 300}}
-            initialRegion={initialRegion}
+            initialRegion={coordinates}
             onRegionChangeComplete={({latitude, longitude}) => debounceCall(latitude, longitude)}
             showsUserLocation={true}
+            animateCamera={() => {{center: coordinates}}}
             loadingEnabled={true}
             provider={'google'}
-            onUserLocationChange={getPemission}
+            followsUserLocation={true}
             showsMyLocationButton={true}
             showsCompass={false}
-            followsUserLocation={true}/>
-          { isCurrentLoactionLoaded && coordinates && coordinates.latitude && 
+          />
+          { coordinates && coordinates.latitude && 
             <View style={{position: 'absolute', top: 115, left: '48%', justifyContent: 'center', alignItems: 'center'}}>
               <FontAwesome name="map-marker" size={40} color="red" />
             </View>
