@@ -12,18 +12,60 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import * as Sentry from '@sentry/react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
 import ShowAlert from '../controllers/alert';
+import { CheckBox } from 'react-native-elements';
+
+const rewardsRules = [
+  { min: 249, max: 599, maxApplicable: 1000, valueOf: 100 },
+  { min: 600, max: 1599, maxApplicable: 2000, valueOf: 200 },
+  { min: 1600, max: 2999, maxApplicable: 5000, valueOf: 500 },
+  { min: 3000, max: 1000000, maxApplicable: 7500, valueOf: 750 }
+]
 
 function ReviewOrderScreen (props) {
   const insets = useSafeArea();
-  const { cart, orderModel, getCart, placeOrder, appointment, networkAvailability } = props
+  const { cart, orderModel, getCart, placeOrder, appointment, networkAvailability, currentUserModel } = props
   const [ isloading, setLoading ] = useState(false)
   const { cart_items, cart_total, item_total_price } = cart.values
+  const [ useRewards, setUseRewards ] = useState(false)
+  const [ selectedRewardsRule, setRewarRule ] = useState({})
+  const [ appliedReward, setAppliedReward ] = useState({})
+
+  const applyRewards = () => {
+
+  }
 
   useLayoutEffect(() => {
     if(!networkAvailability.isOffline) {
       getCart()
     }
   }, [])
+
+  useEffect(() => {
+    rewardsRules.forEach((rule) => {
+      if(cart_total >= rule.min && cart_total <= rule.max ) {
+        setRewarRule(rule)
+      }
+    })
+  }, [cart_total])
+
+  useEffect(() => {
+    if(selectedRewardsRule && Object.keys(selectedRewardsRule).length) {
+      if(currentUserModel && currentUserModel.values && currentUserModel.values.user_meta) {
+        const { reward_points } = currentUserModel.values.user_meta
+        if(reward_points >= selectedRewardsRule.maxApplicable) {
+          setAppliedReward({
+            usedReward: selectedRewardsRule.maxApplicable,
+            valueOf: selectedRewardsRule.valueOf
+          })
+        } else {
+          setAppliedReward({
+            usedReward: reward_points,
+            valueOf: reward_points/10
+          })
+        }
+      }
+    } 
+  }, [selectedRewardsRule])
 
   useEffect(() => {
     if(!orderModel.isloading && orderModel.error) {
@@ -96,6 +138,26 @@ function ReviewOrderScreen (props) {
         </ImageBackground>
         <View style={{flex: 4, backgroundColor: "#F7F9FC", borderRadius: 20}}>
           <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.rewardContainer}>
+              <View style={{justifyContent: 'flex-start', alignItems: 'flex-start', paddingHorizontal: 15, paddingVertical: 10}}>
+                <CheckBox
+                  title='Use Reward Points'
+                  checked={useRewards}
+                  containerStyle={{borderWidth: 0, backgroundColor: 'transparent', paddingVertical: 0, paddingHorizontal: 0}}
+                  onPress={() => setUseRewards(!useRewards)}
+                />
+                <View style={{paddingHorizontal: 15}}>
+                  <View style={{flexDirection: 'row'}}>
+                    <Text style={{color: "#43484d"}}>Applicable Reward Points: </Text>
+                    <Text style={{paddingLeft: 5}}>{appliedReward && appliedReward.usedReward}</Text>
+                  </View>
+                  <View style={{flexDirection: 'row'}}>
+                    <Text style={{color: "#43484d"}}>Total Available Reward Points: </Text>
+                    <Text style={{paddingLeft: 5}}>{currentUserModel.values.user_meta.reward_points}</Text>
+                  </View>
+                </View>
+              </View>
+            </View>
             <View style={styles.orderDetailsContainer}>
               <View style={[styles.orderDetailsScroller, {borderTopEndRadius: 20}]}>
                 <View style={{justifyContent: 'center', alignItems: 'center', paddingBottom: 10}}>
@@ -104,16 +166,31 @@ function ReviewOrderScreen (props) {
                 {cart_items.map(cartItem => (
                   <ItemView key={cartItem.id} item={cartItem.item} cartItem={cartItem}/>
                 ))}
-                <View style={{paddingVertical: 20, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', paddingHorizontal: 10, borderTopWidth: 1, borderColor: '#eee'}}>
-                  <Text style={{fontSize: 16}}>Total Payable Amount</Text>
-                  <Text style={{fontSize: 16}}>{cart_total}</Text>
-                </View>
+                {useRewards && (
+                  <View style={{paddingVertical: 10, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', paddingHorizontal: 10, borderTopWidth: 1, borderColor: '#eee'}}>
+                    <Text style={{fontSize: 14}}>Reward</Text>
+                    <Text style={{fontSize: 14, color: 'green'}}>-{appliedReward && appliedReward.valueOf}</Text>
+                  </View>
+                )}
+                {useRewards ? 
+                  (
+                    <View style={{paddingVertical: 20, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', paddingHorizontal: 10, borderTopWidth: 1, borderColor: '#eee'}}>
+                      <Text style={{fontSize: 16}}>Total Payable Amount</Text>
+                      <Text style={{fontSize: 16}}>{cart_total + (appliedReward && appliedReward.valueOf)}</Text>
+                    </View>
+                  ): (
+                    <View style={{paddingVertical: 20, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', paddingHorizontal: 10, borderTopWidth: 1, borderColor: '#eee'}}>
+                      <Text style={{fontSize: 16}}>Total Payable Amount</Text>
+                      <Text style={{fontSize: 16}}>{cart_total}</Text>
+                    </View>
+                  )
+                }
               </View>
             </View>
             <View style={styles.totalSaveContainer}>
-              <Text style={{color: "#fff", fontWeight: "bold", width: '100%', textAlign: 'center'}}>You saved total Rs. {item_total_price - cart_total}</Text>
+              <Text style={{color: "#fff", fontWeight: "bold", width: '100%', textAlign: 'center'}}>You saved total Rs. {useRewards ? (item_total_price - cart_total - (appliedReward && appliedReward.valueOf)) : (item_total_price - cart_total)}</Text>
             </View>
-            <View style={{flexDirection: 'row' ,marginHorizontal: 30, marginVertical: 28, borderWidth: 1, borderColor: '#a9d5de', padding: 10, borderRadius: 5, backgroundColor: '#f8ffff'}}>
+            <View style={{flexDirection: 'row', marginHorizontal: 30, marginVertical: 28, borderWidth: 1, borderColor: '#a9d5de', padding: 10, borderRadius: 5, backgroundColor: '#f8ffff'}}>
               <Text style={{fontFamily: 'Roboto-Medium', color: '#0e566c'}}>Note: </Text>
               <Text style={{fontFamily: 'Roboto-Regular', fontSize: 14, alignItems: 'center', width: '88%', color: '#276f86', minHeight: 70}}>
                 If any cancellation or reschedule Appointment after the confirmation is mandatory in prior to 2 Hours, Appreciate you cooperation on the same.
@@ -138,6 +215,7 @@ const mapStateToProps = state => ({
   cart: state.cart,
   orderModel: state.orders,
   appointment: state.appointment,
+  currentUserModel: state.currentUser,
   networkAvailability: state.networkAvailability
 })
 
@@ -163,6 +241,15 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingHorizontal: 20,
     paddingVertical: 20,
+    borderRadius: 20,
+    backgroundColor: '#FFFFFF'
+  },
+  rewardContainer: {
+    marginHorizontal: 20,
+    marginVertical: 20,
+    borderRadius: 20,
+    // paddingHorizontal: 10,
+    // paddingVertical: 10,
     borderRadius: 20,
     backgroundColor: '#FFFFFF'
   },
