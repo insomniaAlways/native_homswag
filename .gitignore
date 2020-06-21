@@ -56,44 +56,44 @@ buck-out/
 *.jsbundle
 
 # CocoaPods
-/ios/Pods/
+ios/Pods/
 
 # Xcode
  #
  # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
  
  ## Build generated
- build/
- DerivedData/
+ ios/build/
+ ios/DerivedData/
  
  # Ignore Mac DS_Store files
- .DS_Store
+ ios/.DS_Store
  
  ## Various settings
- *.pbxuser
- !default.pbxuser
- *.mode1v3
- !default.mode1v3
- *.mode2v3
- !default.mode2v3
- *.perspectivev3
- !default.perspectivev3
- xcuserdata/
+ ios/*.pbxuser
+ ios/!default.pbxuser
+ ios/*.mode1v3
+ ios/!default.mode1v3
+ ios/*.mode2v3
+ ios/!default.mode2v3
+ ios/*.perspectivev3
+ ios/!default.perspectivev3
+ ios/xcuserdata/
  
  ## Other
- *.moved-aside
- *.xccheckout
- *.xcscmblueprint
+ ios/*.moved-aside
+ ios/*.xccheckout
+ ios/*.xcscmblueprint
  
  ## Obj-C/Swift specific
- *.hmap
- *.ipa
- *.dSYM.zip
- *.dSYM
+ ios/*.hmap
+ ios/*.ipa
+ ios/*.dSYM.zip
+ ios/*.dSYM
  
  ## Playgrounds
- timeline.xctimeline
- playground.xcworkspace
+ ios/timeline.xctimeline
+ ios/playground.xcworkspace
  
  # Swift Package Manager
  #
@@ -101,7 +101,7 @@ buck-out/
  # Packages/
  # Package.pins
  # Package.resolved
- .build/
+ ios/.build/
  
  # CocoaPods
  #
@@ -109,7 +109,7 @@ buck-out/
  # you should judge for yourself, the pros and cons are mentioned at:
  # https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
  #
- # Pods/
+ios/Pods/
  #
  # Add this line if you want to avoid checking in source code from the Xcode workspace
  # *.xcworkspace
@@ -143,37 +143,37 @@ buck-out/
  # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
  
  ## Build generated
- build/
- DerivedData/
+ ios/build/
+ ios/DerivedData/
  
  # Ignore Mac DS_Store files
- .DS_Store
+ ios/.DS_Store
  
  ## Various settings
- *.pbxuser
+ ios/*.pbxuser
  !default.pbxuser
- *.mode1v3
+ ios/*.mode1v3
  !default.mode1v3
- *.mode2v3
+ ios/*.mode2v3
  !default.mode2v3
- *.perspectivev3
+ ios/*.perspectivev3
  !default.perspectivev3
- xcuserdata/
+ ios/xcuserdata/
  
  ## Other
- *.moved-aside
- *.xccheckout
- *.xcscmblueprint
+ ios/*.moved-aside
+ ios/*.xccheckout
+ ios/*.xcscmblueprint
  
  ## Obj-C/Swift specific
- *.hmap
- *.ipa
- *.dSYM.zip
- *.dSYM
+ ios/*.hmap
+ ios/*.ipa
+ ios/*.dSYM.zip
+ ios/*.dSYM
  
  ## Playgrounds
- timeline.xctimeline
- playground.xcworkspace
+ ios/timeline.xctimeline
+ ios/playground.xcworkspace
  
  # Swift Package Manager
  #
@@ -181,7 +181,7 @@ buck-out/
  # Packages/
  # Package.pins
  # Package.resolved
- .build/
+ ios/.build/
  
  # CocoaPods
  #
@@ -189,7 +189,7 @@ buck-out/
  # you should judge for yourself, the pros and cons are mentioned at:
  # https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
  #
- # Pods/
+ ios/Pods/
  #
  # Add this line if you want to avoid checking in source code from the Xcode workspace
  # *.xcworkspace
@@ -218,4 +218,4 @@ buck-out/
  # After new code Injection tools there's a generated folder /iOSInjectionProject
  # https://github.com/johnno1962/injectionforxcode
  
- iOSInjectionProject/
+ ios/iOSInjectionProject/

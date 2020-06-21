@@ -281,9 +281,9 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				A7A810F2F9FF2C41F80C24C6 /* [CP-User] [RNFB] Core Configuration */,
 				10D96D6D67C9D6C7D256E40E /* [CP] Copy Pods Resources */,
 				D5E1D1837CE147A58D0AE569 /* Upload Debug Symbols to Sentry */,
+				D209E36D4E21D8DE20F05BCB /* [CP-User] [RNFB] Core Configuration */,
 			);
 			buildRules = (
 			);
@@ -349,6 +349,7 @@
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = XZUZ3S4WJ6;
 						LastSwiftMigration = 1150;
+						ProvisioningStyle = Automatic;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -606,7 +607,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A7A810F2F9FF2C41F80C24C6 /* [CP-User] [RNFB] Core Configuration */ = {
+		D209E36D4E21D8DE20F05BCB /* [CP-User] [RNFB] Core Configuration */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -785,7 +786,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = XZUZ3S4WJ6;
 				INFOPLIST_FILE = homswag/Info.plist;
@@ -795,8 +798,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.capaz.homswag;
+				PRODUCT_BUNDLE_IDENTIFIER = com.capaztech.homswag;
 				PRODUCT_NAME = homswag;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "homswag-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -810,7 +814,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = XZUZ3S4WJ6;
 				INFOPLIST_FILE = homswag/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -819,8 +825,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.capaz.homswag;
+				PRODUCT_BUNDLE_IDENTIFIER = com.capaztech.homswag;
 				PRODUCT_NAME = homswag;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "homswag-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
