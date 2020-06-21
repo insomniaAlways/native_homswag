@@ -4,7 +4,6 @@ import PlaceHolderTextInput from '../components/placeHolderTextInput';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { fetchUser, updateUser } from '../store/actions/userActions';
-import { KeyboardAvoidingView } from '../components/KeyboardAvoidView';
 import _ from 'lodash';
 import ImagePickerView from '../components/ImagePicker';
 import { brandLightBackdroundColor, statusBarLightColor } from '../style/customStyles';
@@ -70,10 +69,9 @@ function ProfileScreen(props) {
   }
 
   return (
-    <KeyboardAvoidingView>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#F7F9FC"}}>
       <StatusBar backgroundColor={statusBarLightColor} barStyle={"dark-content"} />
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#F7F9FC"}}>
-        <View style={{backgroundColor: "#F7F9FC", justifyContent: 'center', alignItems: 'center'}}>
+        <View style={{flex: 14, justifyContent: 'center', alignItems: 'center'}}>
           <View style={styles.container}>
             <View style={styles.profilePicContainer}>
               <ImagePickerView
@@ -89,7 +87,7 @@ function ProfileScreen(props) {
             </View>
             <View style={{justifyContent: 'flex-end', alignItems: 'flex-end', width: 'auto', marginHorizontal: 40}}>
               {isEdit ? 
-                <TouchableOpacity onPress={() => cancelEdit()} disabled={isUploading}>
+                <TouchableOpacity onPress={() => cancelEdit()} disabled={isUploading || currentUserModel.isLoading}>
                   <Text>Cancel</Text>
                 </TouchableOpacity>:
                 <TouchableOpacity onPress={() => setEdit(true)}>
@@ -204,16 +202,12 @@ function ProfileScreen(props) {
             </View>
           }
         </View>
-      </View>
-      
-    </KeyboardAvoidingView>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    // paddingTop: Constants.statusBarHeight,
-    // borderWidth: 1,
     justifyContent: 'center',
     marginHorizontal: 20,
     borderRadius: 20,
@@ -228,7 +222,6 @@ const styles = StyleSheet.create({
   },
   profilePicContainer: {
     height: 180,
-    // borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -238,10 +231,9 @@ const styles = StyleSheet.create({
     borderRadius: 70
   },
   detialsContainer: {
-    minHeight: 250,
+    height: 250,
     paddingHorizontal: 10,
     alignItems: 'center',
-    // marginHorizontal: 20
   },
   item: {
     flex: 1,
@@ -265,8 +257,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10
   },
   backButtonContainer: {
-    position: 'absolute',
-    bottom: 30
+    flex: 1
   },
 
   backButton: {

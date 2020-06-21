@@ -133,7 +133,7 @@ const ImagePickerView = (props) => {
           </ImageBackground>
         </TouchableOpacity>
       }
-      { isEdit &&
+      { isEdit ?
         <View style={{paddingTop: 5}}>
         { isUploading ?
           <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -144,7 +144,8 @@ const ImagePickerView = (props) => {
             <Text>Change</Text>
           </TouchableOpacity>
         }
-        </View> 
+        </View> :
+        <View style={{height: 24}}></View>
       }
     </View>
   )
