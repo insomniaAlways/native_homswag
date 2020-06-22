@@ -66,9 +66,9 @@ function Dashboard(props) {
       async function fetchData() {
         try {
           props.getAllCategories()
-          await props.getUser()
-          props.getAllItems()
           props.getPackages()
+          props.getAllItems()
+          await props.getUser()
           await props.getCart()
           await props.getAllCartItems()
         } catch (e) {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image, Dimensions, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Image, Dimensions, Text, ActivityIndicator, TouchableOpacity, Keyboard } from 'react-native';
 import { ImageOverlay } from '../../components/imageOverlay';
 import ImageBackground from '../../assets/images/login_background.png'
 import Logo from '../../assets/images/logo_rounded_512*512.png'
@@ -99,6 +99,7 @@ const LoginScreen = (props) => {
   }
 
   const registerPhone = async () => {
+    Keyboard.dismiss()
     if(networkAvailability.isOffline) {
       ShowAlert('Oops!', 'Seems like you are not connected to Internet')
     } else {
