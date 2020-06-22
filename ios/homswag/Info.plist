@@ -68,6 +68,8 @@
 	<string>Homswag would like to use your current location to ensure accurate address and provide hassle free service  in your location.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Homswag would like to use your current location to ensure accurate address and provide hassle free service  in your location.</string>
+	<key>NSMainNibFile</key>
+	<string>LaunchScreen</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Homswag would like to save photos to your photo gallery that set as profile picture inside the application using camera.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
