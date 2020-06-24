@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, ScrollView, SafeAreaView, RefreshControl, ActivityIndicator, StatusBar, Modal, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, ScrollView, SafeAreaView, RefreshControl, ActivityIndicator, StatusBar, Modal, StyleSheet, TouchableOpacity, Image, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { fetchCategories } from '../store/actions/index';
 import CategoryList from '../components/categoryList';
@@ -86,13 +86,20 @@ function Dashboard(props) {
 
   const getLatestAppUpdate = async () => {
     try {
-      let latestVersion = await VersionCheck.getLatestVersion()
-      let currentVersion = await VersionCheck.getCurrentVersion()
-      let url = await VersionCheck.getStoreUrl()
+      let latestVersion, currentVersion, url
+      if(Platform.OS === 'ios') {
+        latestVersion = await VersionCheck.getLatestVersion({country:'in'})
+        currentVersion = await VersionCheck.getCurrentVersion()
+        url = await VersionCheck.getAppStoreUrl({appID: 1519588025})
+      } else {
+        latestVersion = await VersionCheck.getLatestVersion()
+        currentVersion = await VersionCheck.getCurrentVersion()
+        url = await VersionCheck.getStoreUrl()
+      }
       setStoreUrl(url)
       latestVersion = latestVersion ? (typeof(latestVersion) == "string" && latestVersion.split('.').join('')) : latestVersion
       currentVersion = currentVersion ? (typeof(currentVersion) == "string" && currentVersion.split('.').join('')) : currentVersion
-      if(latestVersion && currentVersion && latestVersion > currentVersion) {
+      if(latestVersion && currentVersion && parseInt(latestVersion) > parseInt(currentVersion)) {
         toggleModal(true)
       } else {
         // showSafty()
