@@ -117,6 +117,12 @@ export const networkAvailability = {
   isOffline: false,
 }
 
+export const rewards = {
+  isLoading: false,
+  error: null,
+  values: {}
+}
+
 export const initialState = {
   items: items,
   categories: categories,
@@ -128,5 +134,6 @@ export const initialState = {
   appointment: appointment,
   session: session,
   currentUser: currentUser,
-  networkAvailability: networkAvailability
+  networkAvailability: networkAvailability,
+  rewards: rewards
 }

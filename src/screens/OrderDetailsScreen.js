@@ -125,9 +125,19 @@ const OrderDetails = function(props) {
       </View>
       <View style={{padding: 10}}>
         <View style={{flexDirection: "row", justifyContent: 'space-between'}}>
-          <Text style={{fontFamily: 'Roboto-Medium'}}>Total Amount</Text>
+          <Text style={{fontFamily: 'Roboto-Medium'}}>Order Total</Text>
           <Text><FontAwesome name="rupee" size={12} color="black" /> {order.order_total}</Text>
         </View>
+        <View style={{flexDirection: "row", justifyContent: 'space-between'}}>
+          <Text>Discount applied:</Text>
+          <Text style={{color: 'green'}}><FontAwesome name="rupee" size={12} color="black" /> {(order.order_meta && order.order_meta.reward_applied && order.order_meta.discount_amount)? order.order_meta.discount_amount : 0}</Text>
+        </View>
+        <View style={{width: '100%', borderTopColor: '#eee', borderTopWidth: 2, marginVertical: 5}}></View>
+        <View style={{flexDirection: "row", justifyContent: 'space-between'}}>
+          <Text style={{fontFamily: 'Roboto-Medium'}}>Total Amount:</Text>
+          <Text><FontAwesome name="rupee" size={12} color="black" /> {(order.order_meta && order.order_meta.reward_applied && order.order_meta.discount_amount) ? (order.order_total - order.order_meta.discount_amount) : order.order_total}</Text>
+        </View>
+        <View style={{width: '100%', borderTopColor: '#eee', borderTopWidth: 2, marginVertical: 5}}></View>
         <View style={{flexDirection: "row", justifyContent: 'space-between'}}>
           <Text style={{fontFamily: 'Roboto-Medium'}}>Total Paid</Text>
           <Text><FontAwesome name="rupee" size={12} color="black" /> {order.total_paid}</Text>

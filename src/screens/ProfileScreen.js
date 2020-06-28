@@ -166,6 +166,10 @@ function ProfileScreen(props) {
                     <Text style={[styles.placeholderInput, styles.field, styles.textFontFamilyLightItalic]}>Not Available</Text>
                   }
                 </View>
+                <View style={styles.item}>
+                  <Text style={styles.label}>Rewards :</Text>
+                  <Text style={[styles.placeholderInput, styles.field]}>{currentUserObject.user_meta && currentUserObject.user_meta.reward_points}</Text>
+                </View>
               </View>
             }
           </View>

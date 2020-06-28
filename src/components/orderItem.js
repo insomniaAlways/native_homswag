@@ -23,7 +23,6 @@ const OrderItem = function(props) {
       return <Text>Item no found</Text>
     }
   }
-  
   return (
     <TouchableOpacity onPress={() => props.navigation.navigate('OrderDetails', {order: order})}>
       <View style={{paddingLeft: 10, paddingRight: 10, borderWidth: 1, borderColor: "#eee", margin: 10, borderBottomWidth: 3, borderRadius: 20}}>
@@ -50,8 +49,16 @@ const OrderItem = function(props) {
         </View>
         <View style={{padding: 10}}>
           <View style={{flexDirection: "row", justifyContent: 'space-between'}}>
-            <Text>Total amount:</Text>
+            <Text>Order amount:</Text>
             <Text><FontAwesome name="rupee" size={12} color="black" /> {order.order_total}</Text>
+          </View>
+          <View style={{flexDirection: "row", justifyContent: 'space-between'}}>
+            <Text>Discount applied:</Text>
+            <Text style={{color: 'green'}}><FontAwesome name="rupee" size={12} color="black" /> {(order.order_meta && order.order_meta.reward_applied && order.order_meta.discount_amount)? order.order_meta.discount_amount : 0}</Text>
+          </View>
+          <View style={{flexDirection: "row", justifyContent: 'space-between'}}>
+            <Text>Total Amount:</Text>
+            <Text><FontAwesome name="rupee" size={12} color="black" /> {(order.order_meta && order.order_meta.reward_applied && order.order_meta.discount_amount) ? (order.order_total - order.order_meta.discount_amount) : order.order_total}</Text>
           </View>
           <View style={{flexDirection: "row", justifyContent: 'space-between'}}>
             <Text>Total paid:</Text>
