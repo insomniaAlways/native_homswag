@@ -13,59 +13,38 @@ import * as Sentry from '@sentry/react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
 import ShowAlert from '../controllers/alert';
 import { CheckBox } from 'react-native-elements';
-
-const rewardsRules = [
-  { min: 249, max: 599, maxApplicable: 1000, valueOf: 100 },
-  { min: 600, max: 1599, maxApplicable: 2000, valueOf: 200 },
-  { min: 1600, max: 2999, maxApplicable: 5000, valueOf: 500 },
-  { min: 3000, max: 1000000, maxApplicable: 7500, valueOf: 750 }
-]
+import { applyReward } from '../store/actions/reward.action';
 
 function ReviewOrderScreen (props) {
   const insets = useSafeArea();
-  const { cart, orderModel, getCart, placeOrder, appointment, networkAvailability, currentUserModel } = props
+  const { cart, orderModel, getCart, placeOrder, appointment, networkAvailability, currentUserModel, applyRewardPoints, rewardModel } = props
   const [ isloading, setLoading ] = useState(false)
   const { cart_items, cart_total, item_total_price } = cart.values
   const [ useRewards, setUseRewards ] = useState(false)
-  const [ selectedRewardsRule, setRewarRule ] = useState({})
   const [ appliedReward, setAppliedReward ] = useState({})
-
-  const applyRewards = () => {
-
-  }
 
   useLayoutEffect(() => {
     if(!networkAvailability.isOffline) {
+      setLoading(true)
       getCart()
+      applyRewardPoints()
     }
   }, [])
 
   useEffect(() => {
-    rewardsRules.forEach((rule) => {
-      if(cart_total >= rule.min && cart_total <= rule.max ) {
-        setRewarRule(rule)
+    if(!rewardModel.isloading && !rewardModel.error && Object.keys(rewardModel.values).length) {
+      setLoading(false)
+     setAppliedReward(rewardModel.values)
+    } else if(rewardModel.error) {
+      setLoading(false)
+      if(rewardModel.error.message) {
+        ShowAlert('Opps!', rewardModel.error.message)
+      } else {
+        ShowAlert('Opps!', "Something went wrong")
       }
-    })
-  }, [cart_total])
-
-  useEffect(() => {
-    if(selectedRewardsRule && Object.keys(selectedRewardsRule).length) {
-      if(currentUserModel && currentUserModel.values && currentUserModel.values.user_meta) {
-        const { reward_points } = currentUserModel.values.user_meta
-        if(reward_points >= selectedRewardsRule.maxApplicable) {
-          setAppliedReward({
-            usedReward: selectedRewardsRule.maxApplicable,
-            valueOf: selectedRewardsRule.valueOf
-          })
-        } else {
-          setAppliedReward({
-            usedReward: reward_points,
-            valueOf: reward_points/10
-          })
-        }
-      }
-    } 
-  }, [selectedRewardsRule])
+      Sentry.captureEvent(error)
+    }
+  }, [cart_total, rewardModel])
 
   useEffect(() => {
     if(!orderModel.isloading && orderModel.error) {
@@ -87,6 +66,8 @@ function ReviewOrderScreen (props) {
     try {
       let order = await placeOrder({
         "payment_method": 1,
+        "reward_applied": useRewards,
+        "deduction_amount": useRewards ? appliedReward.deduction_amount : null,
         "from": from,
         "to": to,
         "address_id": appointmentDetails.selectedAddress.id,
@@ -145,15 +126,16 @@ function ReviewOrderScreen (props) {
                   checked={useRewards}
                   containerStyle={{borderWidth: 0, backgroundColor: 'transparent', paddingVertical: 0, paddingHorizontal: 0}}
                   onPress={() => setUseRewards(!useRewards)}
+                  disabled={isloading}
                 />
                 <View style={{paddingHorizontal: 15}}>
                   <View style={{flexDirection: 'row'}}>
                     <Text style={{color: "#43484d"}}>Applicable Reward Points: </Text>
-                    <Text style={{paddingLeft: 5}}>{appliedReward && appliedReward.usedReward}</Text>
+                    <Text style={{paddingLeft: 5}}>{appliedReward && appliedReward.applicable_reward_points}</Text>
                   </View>
                   <View style={{flexDirection: 'row'}}>
                     <Text style={{color: "#43484d"}}>Total Available Reward Points: </Text>
-                    <Text style={{paddingLeft: 5}}>{currentUserModel.values.user_meta.reward_points}</Text>
+                    <Text style={{paddingLeft: 5}}>{appliedReward && appliedReward.available_points}</Text>
                   </View>
                 </View>
               </View>
@@ -169,14 +151,14 @@ function ReviewOrderScreen (props) {
                 {useRewards && (
                   <View style={{paddingVertical: 10, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', paddingHorizontal: 10, borderTopWidth: 1, borderColor: '#eee'}}>
                     <Text style={{fontSize: 14}}>Reward</Text>
-                    <Text style={{fontSize: 14, color: 'green'}}>-{appliedReward && appliedReward.valueOf}</Text>
+                    <Text style={{fontSize: 14, color: 'green'}}>-{appliedReward && appliedReward.deduction_amount}</Text>
                   </View>
                 )}
                 {useRewards ? 
                   (
                     <View style={{paddingVertical: 20, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', paddingHorizontal: 10, borderTopWidth: 1, borderColor: '#eee'}}>
                       <Text style={{fontSize: 16}}>Total Payable Amount</Text>
-                      <Text style={{fontSize: 16}}>{cart_total + (appliedReward && appliedReward.valueOf)}</Text>
+                      <Text style={{fontSize: 16}}>{cart_total + (appliedReward && appliedReward.deduction_amount)}</Text>
                     </View>
                   ): (
                     <View style={{paddingVertical: 20, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', paddingHorizontal: 10, borderTopWidth: 1, borderColor: '#eee'}}>
@@ -188,7 +170,7 @@ function ReviewOrderScreen (props) {
               </View>
             </View>
             <View style={styles.totalSaveContainer}>
-              <Text style={{color: "#fff", fontWeight: "bold", width: '100%', textAlign: 'center'}}>You saved total Rs. {useRewards ? (item_total_price - cart_total - (appliedReward && appliedReward.valueOf)) : (item_total_price - cart_total)}</Text>
+              <Text style={{color: "#fff", fontWeight: "bold", width: '100%', textAlign: 'center'}}>You saved total Rs. {useRewards ? (item_total_price - cart_total - (appliedReward && appliedReward.deduction_amount)) : (item_total_price - cart_total)}</Text>
             </View>
             <View style={{flexDirection: 'row', marginHorizontal: 30, marginVertical: 28, borderWidth: 1, borderColor: '#a9d5de', padding: 10, borderRadius: 5, backgroundColor: '#f8ffff'}}>
               <Text style={{fontFamily: 'Roboto-Medium', color: '#0e566c'}}>Note: </Text>
@@ -216,12 +198,14 @@ const mapStateToProps = state => ({
   orderModel: state.orders,
   appointment: state.appointment,
   currentUserModel: state.currentUser,
-  networkAvailability: state.networkAvailability
+  networkAvailability: state.networkAvailability,
+  rewardModel: state.rewards
 })
 
 const mapDispatchToProps = dispatch => ({
   getCart: () => dispatch(fetchCart()),
-  placeOrder: (orderDetails) => dispatch(createOrder(orderDetails))
+  placeOrder: (orderDetails) => dispatch(createOrder(orderDetails)),
+  applyRewardPoints: () => dispatch(applyReward())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReviewOrderScreen);
