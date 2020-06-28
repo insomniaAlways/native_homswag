@@ -67,7 +67,7 @@ function ReviewOrderScreen (props) {
       let order = await placeOrder({
         "payment_method": 1,
         "reward_applied": useRewards,
-        "deduction_amount": useRewards ? appliedReward.deduction_amount : null,
+        "discount_details": appliedReward,
         "from": from,
         "to": to,
         "address_id": appointmentDetails.selectedAddress.id,
@@ -120,10 +120,10 @@ function ReviewOrderScreen (props) {
         <View style={{flex: 4, backgroundColor: "#F7F9FC", borderRadius: 20}}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.rewardContainer}>
-              {appliedReward && !(appliedReward.available_points > 0) && (
+              {appliedReward && !(appliedReward.available_points >= 500) && (
                 <View style={{justifyContent: 'center', alignItems: 'center', width: '100%', marginTop: 10}}>
                   <Text style={{fontSize: 10}}>Not applicable</Text>
-                  <Text style={{fontSize: 10}}>Reward Points Not Available</Text>
+                  <Text style={{fontSize: 10}}>Minimum of 500 Reward Points Not Available</Text>
                 </View>
               )}
               <View style={{justifyContent: 'flex-start', alignItems: 'flex-start', paddingHorizontal: 15, paddingVertical: 10}}>
@@ -132,7 +132,7 @@ function ReviewOrderScreen (props) {
                   checked={useRewards}
                   containerStyle={{borderWidth: 0, backgroundColor: 'transparent', paddingVertical: 0, paddingHorizontal: 0}}
                   onPress={() => setUseRewards(!useRewards)}
-                  disabled={isloading ||!(appliedReward.available_points > 0)}
+                  disabled={isloading ||!(appliedReward.available_points >= 500)}
                 />
                 <View style={{paddingHorizontal: 15}}>
                   <View style={{flexDirection: 'row'}}>
@@ -159,15 +159,15 @@ function ReviewOrderScreen (props) {
                 ))}
                 {useRewards && (
                   <View style={{paddingVertical: 10, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', paddingHorizontal: 10, borderTopWidth: 1, borderColor: '#eee'}}>
-                    <Text style={{fontSize: 14}}>Reward</Text>
-                    <Text style={{fontSize: 14, color: 'green'}}>-{appliedReward && appliedReward.deduction_amount}</Text>
+                    <Text style={{fontSize: 14}}>Discount</Text>
+                    <Text style={{fontSize: 14, color: 'green'}}>- {appliedReward && appliedReward.discount_amount}</Text>
                   </View>
                 )}
                 {useRewards ? 
                   (
                     <View style={{paddingVertical: 20, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', paddingHorizontal: 10, borderTopWidth: 1, borderColor: '#eee'}}>
                       <Text style={{fontSize: 16}}>Total Payable Amount</Text>
-                      <Text style={{fontSize: 16}}>{cart_total + (appliedReward && appliedReward.deduction_amount)}</Text>
+                      <Text style={{fontSize: 16}}>{cart_total - (appliedReward && appliedReward.discount_amount)}</Text>
                     </View>
                   ): (
                     <View style={{paddingVertical: 20, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', paddingHorizontal: 10, borderTopWidth: 1, borderColor: '#eee'}}>
@@ -179,7 +179,7 @@ function ReviewOrderScreen (props) {
               </View>
             </View>
             <View style={styles.totalSaveContainer}>
-              <Text style={{color: "#fff", fontWeight: "bold", width: '100%', textAlign: 'center'}}>You saved total Rs. {useRewards ? (item_total_price - cart_total - (appliedReward && appliedReward.deduction_amount)) : (item_total_price - cart_total)}</Text>
+              <Text style={{color: "#fff", fontWeight: "bold", width: '100%', textAlign: 'center'}}>You saved total Rs. {useRewards ? (item_total_price - (cart_total - (appliedReward && appliedReward.discount_amount))) : (item_total_price - cart_total)}</Text>
             </View>
             <View style={{flexDirection: 'row', marginHorizontal: 30, marginVertical: 28, borderWidth: 1, borderColor: '#a9d5de', padding: 10, borderRadius: 5, backgroundColor: '#f8ffff'}}>
               <Text style={{fontFamily: 'Roboto-Medium', color: '#0e566c'}}>Note: </Text>
