@@ -34,7 +34,7 @@ function ReviewOrderScreen (props) {
   useEffect(() => {
     if(!rewardModel.isloading && !rewardModel.error && Object.keys(rewardModel.values).length) {
       setLoading(false)
-     setAppliedReward(rewardModel.values)
+      setAppliedReward(rewardModel.values)
     } else if(rewardModel.error) {
       setLoading(false)
       if(rewardModel.error.message) {
@@ -120,23 +120,32 @@ function ReviewOrderScreen (props) {
         <View style={{flex: 4, backgroundColor: "#F7F9FC", borderRadius: 20}}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.rewardContainer}>
+              {appliedReward && !(appliedReward.available_points > 0) && (
+                <View style={{justifyContent: 'center', alignItems: 'center', width: '100%', marginTop: 10}}>
+                  <Text style={{fontSize: 10}}>Not applicable</Text>
+                  <Text style={{fontSize: 10}}>Reward Points Not Available</Text>
+                </View>
+              )}
               <View style={{justifyContent: 'flex-start', alignItems: 'flex-start', paddingHorizontal: 15, paddingVertical: 10}}>
                 <CheckBox
                   title='Use Reward Points'
                   checked={useRewards}
                   containerStyle={{borderWidth: 0, backgroundColor: 'transparent', paddingVertical: 0, paddingHorizontal: 0}}
                   onPress={() => setUseRewards(!useRewards)}
-                  disabled={isloading}
+                  disabled={isloading ||!(appliedReward.available_points > 0)}
                 />
                 <View style={{paddingHorizontal: 15}}>
                   <View style={{flexDirection: 'row'}}>
-                    <Text style={{color: "#43484d"}}>Applicable Reward Points: </Text>
+                    <Text style={{color: "#43484d"}}>*Applicable Reward Points: </Text>
                     <Text style={{paddingLeft: 5}}>{appliedReward && appliedReward.applicable_reward_points}</Text>
                   </View>
                   <View style={{flexDirection: 'row'}}>
                     <Text style={{color: "#43484d"}}>Total Available Reward Points: </Text>
                     <Text style={{paddingLeft: 5}}>{appliedReward && appliedReward.available_points}</Text>
                   </View>
+                </View>
+                <View style={{justifyContent: 'center', alignItems: 'center', width: '100%', marginTop: 10}}>
+                  <Text style={{fontSize: 10}}>*T&C apply</Text>
                 </View>
               </View>
             </View>
