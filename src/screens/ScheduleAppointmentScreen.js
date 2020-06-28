@@ -75,7 +75,7 @@ function ScheduleAppointmentScreen(props) {
     if(isValidateSlot()) {
       if(!currentUserModel.values.name) {
         if(hasUserName) {
-          await updateUserDetails({ name: '' })
+          await updateUserDetails({ name: hasUserName })
         } else {
           return ShowAlert('Opps!', 'Please provide your name. Thank you')
         }
@@ -159,7 +159,7 @@ function ScheduleAppointmentScreen(props) {
         </View>
       </View>
       <View style={[{height: 55, marginBottom: insets.bottom, justifyContent: 'center'}, DefaultStyles.brandBackgroundColor]}>
-        <TouchableOpacity onPress={() => save()} style={{alignItems: 'center', width: '100%', justifyContent: 'center'}}>
+        <TouchableOpacity onPress={() => save()} style={{alignItems: 'center', width: '100%', justifyContent: 'center', height: '100%'}}>
           <Text style={{color: '#fff', fontSize: 16}}>Save & Continue</Text>
         </TouchableOpacity>
       </View>
