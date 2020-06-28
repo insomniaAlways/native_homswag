@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, ActivityIndicator, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 import { register, validateToken } from '../../store/actions/authenticationAction';
 import * as Sentry from '@sentry/react-native';
@@ -22,6 +22,7 @@ function LoginButtons(props) {
   const [ isOtpButtonEnable, setOtpEnable ] = useState(false)
 
   const onSubmit = async () => {
+    Keyboard.dismiss()
     if(networkAvailability.isOffline) {
       ShowAlert('Oops!', 'Seems like you are not connected to Internet')
     } else {

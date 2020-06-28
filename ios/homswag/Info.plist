@@ -17,16 +17,30 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb699135967592459</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>FacebookAppID</key>
+	<string>699135967592459</string>
+	<key>FacebookDisplayName</key>
+	<string>Homswag</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>tel</string>
-		<string>telprompt</string>
-		<string>mailto</string>
+		<string>googlechromes</string>
+		<string>comgooglemaps</string>
 		<string>whatsapp</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
@@ -44,18 +58,22 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to use your bluetooth to improved the accuracy of the current location.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Homswag would like to use your camera to set profile picture inside the application</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Allow Homswag to use your location, such that we can fetch your current location.</string>
+	<string>Homswag would like to use your current location to ensure accurate address and provide hassle free service in your location.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Allow Homswag to use your location, such that we can fetch your current location&apos;s info for the getting appointment location.</string>
+	<string>Homswag would like to use your current location to ensure accurate address and provide hassle free service  in your location.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Allow Homswag to use your location, such that we can fetch your current location&apos;s info for the getting appointment location.</string>
+	<string>Homswag would like to use your current location to ensure accurate address and provide hassle free service  in your location.</string>
+	<key>NSMainNibFile</key>
+	<string>LaunchScreen</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Homswag would like to save photos to your photo gallery that set as profile picture inside the application</string>
+	<string>Homswag would like to save photos to your photo gallery that set as profile picture inside the application using camera.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Homswag would like access to your photo gallery to set profile picture inside the application</string>
+	<string>Homswag would like access to your photo gallery to set profile picture inside the application.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string></string>
@@ -82,41 +100,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-  <key>CFBundleURLTypes</key>
-  <array>
-    <dict>
-    <key>CFBundleURLSchemes</key>
-    <array>
-      <string>fb699135967592459</string>
-    </array>
-    </dict>
-  </array>
-  <key>FacebookAppID</key>
-  <string>699135967592459</string>
-  <key>FacebookDisplayName</key>
-  <string>Homswag</string>
-  <key>LSApplicationQueriesSchemes</key>
-  <array>
-    <string>fbapi</string>
-    <string>fbapi20130214</string>
-    <string>fbapi20130410</string>
-    <string>fbapi20130702</string>
-    <string>fbapi20131010</string>
-    <string>fbapi20131219</string>
-    <string>fbapi20140410</string>
-    <string>fbapi20140116</string>
-    <string>fbapi20150313</string>
-    <string>fbapi20150629</string>
-    <string>fbapi20160328</string>
-    <string>fbauth</string>
-    <string>fb-messenger-share-api</string>
-    <string>fbauth2</string>
-    <string>fbshareextension</string>
-  </array>
-  <key>LSApplicationQueriesSchemes</key>
-  <array>
-    <string>googlechromes</string>
-    <string>comgooglemaps</string>
-  </array>
 </dict>
 </plist>

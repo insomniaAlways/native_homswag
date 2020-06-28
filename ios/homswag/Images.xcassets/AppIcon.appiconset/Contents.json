@@ -31,13 +31,13 @@
       "size" : "40x40"
     },
     {
-      "filename" : "app_icon_120120@3x-1.png",
+      "filename" : "app_icon_120120@3x.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "40x40"
     },
     {
-      "filename" : "app_icon_120120@3x.png",
+      "filename" : "app_icon_120120@3x-1.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "60x60"
@@ -49,7 +49,7 @@
       "size" : "60x60"
     },
     {
-      "filename" : "app_icon@3x.png",
+      "filename" : "app_icon_10241024@3x.png",
       "idiom" : "ios-marketing",
       "scale" : "1x",
       "size" : "1024x1024"

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image, Dimensions, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Image, Dimensions, Text, ActivityIndicator, TouchableOpacity, Keyboard } from 'react-native';
 import { ImageOverlay } from '../../components/imageOverlay';
-import { KeyboardAvoidingView } from '../../components/KeyboardAvoidView';
 import ImageBackground from '../../assets/images/login_background.png'
 import Logo from '../../assets/images/logo_rounded_512*512.png'
 import { connect } from 'react-redux';
@@ -100,6 +99,7 @@ const LoginScreen = (props) => {
   }
 
   const registerPhone = async () => {
+    Keyboard.dismiss()
     if(networkAvailability.isOffline) {
       ShowAlert('Oops!', 'Seems like you are not connected to Internet')
     } else {
@@ -194,72 +194,72 @@ const LoginScreen = (props) => {
       source={ImageBackground}>
       <View style={{flex: 1, paddingTop: insets.top}}>
         <View style={styles.headerContainer}>
-          <Image source={Logo} style={{width: 180, height: 180}}/>
+          <Image source={Logo} style={{width: 180, height: 180, maxWidth: 180, maxHeight: 180}}/>
         </View>
         {showRetry ? 
           <Animatable.View
             duration={400}
-            style={[styles.formContainer, {marginBottom: 30, justifyContent: 'space-between'}]}
+            style={[styles.formContainer]}
             animation={"fadeInUp"}
           >
-            <View style={{justifyContent: 'center', flexDirection: 'column', alignItems:'center'}}>
-              <MaterialCommunityIcons name="wifi-off" size={50} style={{marginHorizontal: 16, alignItems: 'center', opacity: 0.62, paddingLeft: 3}}/>
-              <Text style={{fontSize: 22}}>No Internet</Text>
+            <View style={{height: '60%', justifyContent: 'space-between', marginBottom: 40}}>
+              <View style={{justifyContent: 'center', flexDirection: 'column', alignItems:'center'}}>
+                <MaterialCommunityIcons name="wifi-off" size={50} style={{marginHorizontal: 16, alignItems: 'center', opacity: 0.62, paddingLeft: 3}}/>
+                <Text style={{fontSize: 22}}>No Internet</Text>
+              </View>
+              <TouchableOpacity style={[styles.signInButton]} onPress={() => {toggleRetry(false); checkAuthentication();}}>
+                <Text style={{textAlign: 'center', width: '100%', fontSize: 18}}>Retry</Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity style={[styles.signInButton]} onPress={() => {toggleRetry(false); checkAuthentication();}}>
-              <Text style={{textAlign: 'center', width: '100%', fontSize: 18}}>Retry</Text>
-            </TouchableOpacity>
           </Animatable.View> :
           <React.Fragment>
-        {!isLoading?
-          <Animatable.View
-            duration={400}
-            style={styles.formContainer}
-            animation={"fadeInUp"}
-          >
-            <View style={styles.formContent}>
-              <KeyboardAvoidingView>
-                <LoginForm
-                  phone={phone}
-                  setPhone={setPhone}
-                  otp={otp}
-                  setOtp={setOtp}
-                  showOtpField={showOtpField}
-                  registerPhone={registerPhone}
-                  setShowOtpField={setShowOtpField}
-                  isResendEnable={isResendEnable}
-                  enableResend={enableResend}
-                />
-                { isLoading ? 
-                  <View style={styles.signInButtonContainer}>
-                    <View style={[styles.signInButton, {justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent'}]}>
-                      <ActivityIndicator size="small" color="#0000ff" />
-                    </View>
-                  </View> :
-                  <LoginButtons
+            {!isLoading?
+              <Animatable.View
+                duration={400}
+                style={styles.formContainer}
+                animation={"fadeInUp"}
+              >
+                <View style={styles.formContent}>
+                  <LoginForm
                     phone={phone}
+                    setPhone={setPhone}
                     otp={otp}
-                    resendTimer={resendTimer}
-                    networkAvailability={networkAvailability}
-                    showOtpField={showOtpField}
-                    isButtonLoading={isButtonLoading}
-                    setButtonLoading={setButtonLoading}
-                    enableResend={enableResend}
                     setOtp={setOtp}
+                    showOtpField={showOtpField}
                     registerPhone={registerPhone}
                     setShowOtpField={setShowOtpField}
+                    isResendEnable={isResendEnable}
+                    enableResend={enableResend}
                   />
-                }
-              </KeyboardAvoidingView>
-            </View>
-          </Animatable.View> : 
-          <View style={[{top: '39%', alignItems: 'center', position: 'absolute'}, styles.container]}>
-            <ActivityIndicator size="large" color="#0000ff" />
-            <Text style={{color: '#000', fontSize: 20, fontWeight: 'bold', marginTop: 10}}>Loading...</Text>
-          </View>
+                  { isLoading ? 
+                    <View style={styles.signInButtonContainer}>
+                      <View style={[styles.signInButton, {justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent'}]}>
+                        <ActivityIndicator size="small" color="#0000ff" />
+                      </View>
+                    </View> :
+                    <LoginButtons
+                      phone={phone}
+                      otp={otp}
+                      resendTimer={resendTimer}
+                      networkAvailability={networkAvailability}
+                      showOtpField={showOtpField}
+                      isButtonLoading={isButtonLoading}
+                      setButtonLoading={setButtonLoading}
+                      enableResend={enableResend}
+                      setOtp={setOtp}
+                      registerPhone={registerPhone}
+                      setShowOtpField={setShowOtpField}
+                    />
+                  }
+                </View>
+              </Animatable.View> : 
+              <View style={[styles.formContainer, {justifyContent: 'center'}]}>
+                <ActivityIndicator size="large" color="#0000ff" />
+                <Text style={{color: '#000', fontSize: 20, fontWeight: 'bold', marginTop: 10}}>Loading...</Text>
+              </View>
+            }
+          </React.Fragment>
         }
-        </React.Fragment>
-      }
       </View>
     </ImageOverlay>
   );
@@ -285,14 +285,17 @@ export default connect(mapStateToProps,mapDispatchToProps)(LoginScreen);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 3,
+    justifyContent:'flex-end',
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
   },
   headerContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: 216,
+    position: 'absolute',
+    marginTop: 40,
+    height: '100%',
+    width: '100%',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
   },
   formContainer: {
     flex: 1,
@@ -302,12 +305,10 @@ const styles = StyleSheet.create({
     paddingTop:40
   },
   formContent: {
-    // flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
+    flex: 1,
     width: '100%',
-    height: '100%',
     paddingHorizontal: 16,
+    maxHeight: '60%',
     backgroundColor: 'rgba(0,0,0,0.2)',
     borderTopEndRadius: 40,
     borderTopStartRadius: 40,
