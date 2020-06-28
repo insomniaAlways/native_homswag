@@ -79,7 +79,8 @@ const AppNavigator = createStackNavigator({
       screen: AppointmentPlaced,
       headerMode: 'none',
       navigationOptions: {
-        headerShown: false
+        headerShown: false,
+        gestureEnabled: false
       }
     }
   },

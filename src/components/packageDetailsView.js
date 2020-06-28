@@ -100,7 +100,7 @@ const PackageDetails = (props) => {
         <ItemContainer items={packageService.items} packageService={packageService}/>
       </ScrollView>
       { cartItemModel.isLoading ?
-        <View style={[styles.button, {height: 55, backgroundColor: 'grey'}]}>
+        <View style={[styles.button, {height: 55, backgroundColor: 'grey', marginBottom: insets.bottom}]}>
           <Text style={{color:'#fff', fontSize: 18, fontWeight: 'bold', width: '100%', textAlign: 'center'}}>Loading..</Text>
         </View> :
         <View>
@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     color:'#fff',
-    height: 55
+    height: 55,
+    width: '100%'
   }
 })
