@@ -15,6 +15,7 @@ import networkReducers from './reducers/networkReducers';
 
 import thunk from 'redux-thunk';
 import rewardReducers from './reducers/reward.reducer';
+import referralReducers from './reducers/referral.reducer';
 
 const rootReducer = combineReducers({
   items: itemReducers,
@@ -30,7 +31,8 @@ const rootReducer = combineReducers({
   currentUser: userReducers,
   networkAvailability: networkReducers,
   session: sessionReducers,
-  rewards: rewardReducers
+  rewards: rewardReducers,
+  referral: referralReducers
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

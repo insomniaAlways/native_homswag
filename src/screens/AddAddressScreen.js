@@ -185,7 +185,7 @@ function AddressScreen(props) {
 
   const getPemission = async () => {
     try {
-      const hasLocationPermission = await this.hasLocationPermission();
+      const hasLocationPermission = await hasLocationPermission();
       if(hasLocationPermission) {
         getCurrentPosition()
       }
@@ -209,11 +209,7 @@ function AddressScreen(props) {
     setCoodinatesLoaded(true)
     switch (error.code) {
       case 1: {
-        if(Platform.OS == 'android') {
-          return getPemission()
-        } else {
-          return requestAuthorization()
-        }
+        return hasLocationPermission()
       }
       case 2: {
         return ShowAlert('Oops!', "Location provider not available")
@@ -268,7 +264,7 @@ function AddressScreen(props) {
             initialRegion={coordinates}
             onRegionChangeComplete={({latitude, longitude}) => debounceCall(latitude, longitude)}
             showsUserLocation={true}
-            animateCamera={() => {{center: coordinates}}}
+            animateCamera={() => ({"center": coordinates})}
             loadingEnabled={true}
             provider={'google'}
             followsUserLocation={true}

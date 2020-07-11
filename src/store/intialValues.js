@@ -123,6 +123,12 @@ export const rewards = {
   values: {}
 }
 
+export const referral = {
+  isLoading: false,
+  error: null,
+  values: {}
+}
+
 export const initialState = {
   items: items,
   categories: categories,

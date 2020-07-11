@@ -1,5 +1,4 @@
 import { REWARD_REQUEST_INITIATED, REWARD_REQUEST_SUCCEED, REWARD_REQUEST_FAILED } from '../actionTypes';
-import _ from 'lodash';
 import { rewards } from '../intialValues';
 
 const rewardReducers = (state = rewards, action) => {
