@@ -45,7 +45,7 @@ const SideDrawer = props => {
           </View>
           <View style={styles.rewardContainer}>
             <Text style={styles.reward}>Available Reward Points: 
-              <Text style={{fontFamily: "Roboto-Medium", fontSize: 18}}> {currentUserModel.values.user_meta && currentUserModel.values.user_meta.reward_points}</Text>
+              <Text style={{fontFamily: "Roboto-Medium", fontSize: 18}}> {currentUserModel && currentUserModel.values && currentUserModel.values.user_meta && currentUserModel.values.user_meta.reward_points}</Text>
             </Text>
           </View>
         </SafeAreaView>

@@ -18,7 +18,6 @@ const ReferralScreen = (props)  => {
 *Use this Referral code*
 And get instant 325 rewards points from *Homswag* after completing your first Order, they are Safe and hygienic salon services provider at Home, For Men and Women.
 You will even get rewards on every orders you complete with them, *They follow all safety measures*.
-This coupon expires in next 45 Days.
 Referral Code: *${user_meta.referral_code}*.
 Android: https://play.google.com/store/apps/details?id=com.capaz.homswag,
 iOS: https://apps.apple.com/in/app/homswag/id1519588025`,
