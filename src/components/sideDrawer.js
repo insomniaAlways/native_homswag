@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import { setSessionUnauthenticated } from '../store/actions/sessionActions';
 import * as Sentry from '@sentry/react-native';
 import ShowAlert from '../controllers/alert';
+import { brandColor } from '../style/customStyles';
 
 const SideDrawer = props => {
   const { navigation, signOut, currentUserModel, unAuthenticate } = props
@@ -42,6 +43,11 @@ const SideDrawer = props => {
           </View>
           <View style={styles.nameContainer}>
             <Text style={styles.name}>Hello, {currentUserModel.values.name}</Text>
+          </View>
+          <View style={styles.rewardContainer}>
+            <Text style={styles.reward}>Available Reward Points: 
+              <Text style={{fontFamily: "Roboto-Medium", fontSize: 18}}> {currentUserModel.values.user_meta && currentUserModel.values.user_meta.reward_points}</Text>
+            </Text>
           </View>
         </SafeAreaView>
       </ImageBackground>
@@ -94,11 +100,25 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'center'
   },
+  rewardContainer: {
+    marginTop: 10,
+    width: '100%',
+    paddingLeft: 5,
+    // borderWidth: 1,
+    alignItems: 'flex-start',
+    justifyContent: 'center'
+  },
   name: {
     fontWeight: 'bold',
     width: '100%',
     fontSize: 16,
     color: 'white'
+  },
+  reward: {
+    fontWeight: 'bold',
+    width: '100%',
+    fontSize: 14,
+    color: "white"
   },
   logout: {
     backgroundColor: "transparent",

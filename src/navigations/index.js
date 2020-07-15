@@ -14,7 +14,6 @@ import DefaultStyles from '../style/customStyles';
 import ProfileScreen from '../screens/ProfileScreen';
 import AddAddressScreen from '../screens/AddAddressScreen';
 import OrderHistoryScreen from '../screens/OrderHistoryScreen';
-import ContactScreen from '../screens/ContactScreen';
 import AboutScreen from '../screens/AboutScreen';
 import SideDrawer from '../components/sideDrawer';
 import AddressScreen from '../screens/AddressScreen';
@@ -188,14 +187,15 @@ const DrawerNavigation = createDrawerNavigator({
       }
     }
   },
-  // Referral: { 
-  //   screen: ReferralScreen,
-  //   navigationOptions: ({tintColor}) => {
-  //     return {
-  //       drawerIcon: <FontAwesome name="slideshare" size={18} color={tintColor}/>
-  //     }
-  //   }
-  // },
+  Referral: { 
+    screen: ReferralScreen,
+    navigationOptions: ({tintColor}) => {
+      return {
+        title: "Refer and Earn rewards",
+        drawerIcon: <FontAwesome name="slideshare" size={18} color={tintColor}/>
+      }
+    }
+  },
   About: {
     screen: AboutScreen,
     navigationOptions: ({tintColor}) => ({

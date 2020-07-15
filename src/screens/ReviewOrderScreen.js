@@ -79,7 +79,7 @@ function ReviewOrderScreen(props) {
       } else {
         ShowAlert("Opps!", "Something went wrong");
       }
-      Sentry.captureEvent(error);
+      Sentry.captureEvent(rewardModel.error);
     }
   }, [cart_total, rewardModel]);
 
@@ -149,7 +149,7 @@ function ReviewOrderScreen(props) {
       if(referralModel.error && referralModel.error.message) {
         ShowAlert('Opps!', referralModel.error.message)
       } else {
-        ShowAlert('Opps!', "Something went wrong.")
+        ShowAlert('Opps!', referralModel.error)
       }
       Sentry.captureEvent(referralModel.error)
     }
@@ -276,23 +276,28 @@ function ReviewOrderScreen(props) {
               {showReferralBlock && (
                 <View
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    paddingHorizontal: 25
+                    paddingVertical: 20,
+                    borderTopColor: '#eee',
+                    borderTopWidth: 1,
+                    marginLeft: 20,
+                    marginRight: 20,
+                    justifyContent: 'center',
+                    alignItems: 'center'
                   }}
                 >
                   <View>
                     <Text
                       style={{ fontSize: 16, fontFamily: "Roboto-MediumItalic" }}
                     >
-                      Has Referral?
+                      Has Referral ?
                     </Text>
                   </View>
                   {referralModel.isLoading ? (
                     <View 
                       style={{
                         justifyContent: "center",
-                        alignItems: "center"
+                        alignItems: "center",
+                        marginTop: 10
                       }}
                     >
                       <ActivityIndicator size="small" color="#0000ff"/>
@@ -303,7 +308,8 @@ function ReviewOrderScreen(props) {
                         <View
                           style={{
                             justifyContent: "center",
-                            alignItems: "center"
+                            alignItems: "center",
+                            marginTop: 10
                           }}
                         >
                           <Text style={{ color: brandColor }}>Applied</Text>
@@ -313,10 +319,11 @@ function ReviewOrderScreen(props) {
                           <View
                             style={{
                               justifyContent: "center",
-                              alignItems: "center"
+                              alignItems: "center",
+                              marginTop: 10
                             }}
                           >
-                            <Text style={{ color: brandColor }}>Apply here</Text>
+                            <Text style={{ color: brandColor, fontSize: 16 }}>Apply here</Text>
                           </View>
                         </TouchableOpacity>
                       )}
