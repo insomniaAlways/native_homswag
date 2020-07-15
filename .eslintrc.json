@@ -29,6 +29,7 @@
     "react/display-name": "off",
     "react-hooks/exhaustive-deps": "warn",
     "no-useless-catch": "warn",
-    "array-bracket-spacing": "off"
+    "array-bracket-spacing": "off",
+    "no-inner-declarations": "off"
   }
 }
