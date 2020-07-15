@@ -11,7 +11,6 @@ import { connect } from 'react-redux';
 import { setSessionUnauthenticated } from '../store/actions/sessionActions';
 import * as Sentry from '@sentry/react-native';
 import ShowAlert from '../controllers/alert';
-import { brandColor } from '../style/customStyles';
 
 const SideDrawer = props => {
   const { navigation, signOut, currentUserModel, unAuthenticate } = props
