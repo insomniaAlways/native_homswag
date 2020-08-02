@@ -9,13 +9,15 @@ import * as Sentry from '@sentry/react-native';
 import ShowAlert from '../controllers/alert';
 
 function AddressScreen(props) {
-  const { addressModel, getAddress, navigation, deleteSelected, setDefault, networkAvailability } = props;
+  const { addressModel, getAddress, navigation, deleteSelected, setDefault, networkAvailability, session } = props;
   const addresses = addressModel.values
   const [ refreshing, setRefreshing ] = useState(false);
 
   useLayoutEffect(() => {
     if(!networkAvailability.isOffline) {
-      getAddress()
+      if(session.isSessionAuthenticated) {
+        getAddress()
+      }
     }
   }, [])
 
@@ -188,14 +190,15 @@ const styles = StyleSheet.create({
   }
 })
 
-mapStateToProps = state => {
+const mapStateToProps = state => {
   return {
     addressModel: state.addresses,
-    networkAvailability: state.networkAvailability
+    networkAvailability: state.networkAvailability,
+    session: state.session
   }
 }
 
-mapDispatchToProps = dispatch => {
+const mapDispatchToProps = dispatch => {
   return {
     getAddress: () => dispatch(fetchAddress()),
     deleteSelected: (address_id) => dispatch(deleteAddresss(address_id)),

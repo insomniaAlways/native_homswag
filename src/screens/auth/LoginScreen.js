@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image, Dimensions, Text, ActivityIndicator, TouchableOpacity, Keyboard } from 'react-native';
+import { StyleSheet, View, Image, Dimensions, Text, ActivityIndicator, TouchableOpacity, Keyboard, Platform } from 'react-native';
 import { ImageOverlay } from '../../components/imageOverlay';
 import ImageBackground from '../../assets/images/login_background.png'
 import Logo from '../../assets/images/logo_rounded_512*512.png'
@@ -36,6 +36,8 @@ const LoginScreen = (props) => {
   const [ isResendEnable, enableResend ] = useState(false)
   const [ isNewUser, setUserIsNew ] = useState(false)
   const [ showRetry, toggleRetry ] = useState(false)
+  const [ showSkipButton, setShowSkipButton ] = useState(false)
+
   let resendTimer;
   //  ------------------ : Methods: ---------------------
 
@@ -65,6 +67,9 @@ const LoginScreen = (props) => {
           }
         } else {
           setUserIsNew(true)
+          // if(Platform.OS == "ios") {
+            setShowSkipButton(true)
+          // }
           startLoginProcess()
         }
       } else {
@@ -96,6 +101,13 @@ const LoginScreen = (props) => {
     }
     setButtonLoading(false)
     setLoading(false)
+  }
+
+  const skip = async () => {
+    setLoading(true)
+    await AsyncStorage.setItem('isLoginSkip', 'true')
+    setLoading(true)
+    navigation.navigate('App')
   }
 
   const registerPhone = async () => {
@@ -247,6 +259,7 @@ const LoginScreen = (props) => {
                       setButtonLoading={setButtonLoading}
                       enableResend={enableResend}
                       setOtp={setOtp}
+                      skip={skip}
                       registerPhone={registerPhone}
                       setShowOtpField={setShowOtpField}
                     />

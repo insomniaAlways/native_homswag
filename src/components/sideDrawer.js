@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-navigation';
 import { DrawerItems } from 'react-navigation-drawer';
 import { StyleSheet, ScrollView, View, Image, Text, ImageBackground } from 'react-native';
@@ -13,7 +13,16 @@ import * as Sentry from '@sentry/react-native';
 import ShowAlert from '../controllers/alert';
 
 const SideDrawer = props => {
-  const { navigation, signOut, currentUserModel, unAuthenticate } = props
+  const { navigation, signOut, currentUserModel, unAuthenticate, session } = props
+  const [ isUserLoaded, setUserLoaded ] = useState(true)
+  
+  useEffect(() => {
+    if(!session.isSessionAuthenticated && !Object.keys(currentUserModel.values).length) {
+      setUserLoaded(false)
+    } else {
+      setUserLoaded(true)
+    }
+  }, [session, currentUserModel])
 
   const logOut = async () => {
     try {
@@ -35,19 +44,35 @@ const SideDrawer = props => {
     <View style={{flex: 1}}>
       <ImageBackground source={ProfileBackground} style={styles.profilePicContainer}>
         <SafeAreaView>
-          <View style={styles.profilePic}>
-            {currentUserModel.values.image_source ?
-            <Image style={styles.profilePic} source={{uri: currentUserModel.values.image_source}}/> :
-            <View style={styles.profilePic}></View> }
-          </View>
-          <View style={styles.nameContainer}>
-            <Text style={styles.name}>Hello, {currentUserModel.values.name}</Text>
-          </View>
-          <View style={styles.rewardContainer}>
-            <Text style={styles.reward}>Available Reward Points: 
-              <Text style={{fontFamily: "Roboto-Medium", fontSize: 18}}> {currentUserModel && currentUserModel.values && currentUserModel.values.user_meta && currentUserModel.values.user_meta.reward_points}</Text>
-            </Text>
-          </View>
+          <>
+            {isUserLoaded? (
+              <>
+                <View style={styles.profilePic}>
+                  {currentUserModel.values.image_source ?
+                  <Image style={styles.profilePic} source={{uri: currentUserModel.values.image_source}}/> :
+                  <View style={styles.profilePic}></View> }
+                </View>
+                <View style={styles.nameContainer}>
+                  <Text style={styles.name}>Hello, {currentUserModel.values.name}</Text>
+                </View>
+                <View style={styles.rewardContainer}>
+                  <Text style={styles.reward}>Available Reward Points: 
+                    <Text style={{fontFamily: "Roboto-Medium", fontSize: 18}}> {currentUserModel && currentUserModel.values && currentUserModel.values.user_meta && currentUserModel.values.user_meta.reward_points}</Text>
+                  </Text>
+                </View>
+              </>
+            ) : (
+              <>
+                <View style={styles.profilePic}>
+                  <View style={styles.profilePic}></View>
+                </View>
+                <View style={styles.nameContainer}>
+                  <Text style={styles.name}>Hello,</Text>
+                </View>
+              </>
+            )}
+          </>
+          
         </SafeAreaView>
       </ImageBackground>
       <SafeAreaView>
@@ -152,6 +177,7 @@ const styles = StyleSheet.create({
 
 const mapStatetoProps = state => ({
   auth: state.auth,
+  session: state.session,
   currentUserModel: state.currentUser
 })
 const mapDispatchToProps = dispatch => ({

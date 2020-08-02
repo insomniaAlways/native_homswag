@@ -9,11 +9,13 @@ import * as Sentry from '@sentry/react-native';
 import ShowAlert from '../controllers/alert';
 
 function OrderHistoryScreen(props) {
-  const { orderModel, getOrders, navigation, networkAvailability } = props;
+  const { orderModel, getOrders, navigation, networkAvailability, session } = props;
 
   useLayoutEffect(() => {
     if(!networkAvailability.isOffline) {
-      getOrders()
+      if(session.isSessionAuthenticated) {
+        getOrders()
+      }
     }
   }, [])
 
@@ -56,21 +58,22 @@ function OrderHistoryScreen(props) {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    // marginTop: Constants.statusBarHeight,
-    flex: 1
-  }
-})
+// const styles = StyleSheet.create({
+//   container: {
+//     // marginTop: Constants.statusBarHeight,
+//     flex: 1
+//   }
+// })
 
-mapStateToProps = state => {
+const mapStateToProps = state => {
   return {
     orderModel: state.orders,
-    networkAvailability: state.networkAvailability
+    networkAvailability: state.networkAvailability,
+    session: state.session
   }
 }
 
-mapDispatchToProps = dispatch => {
+const mapDispatchToProps = dispatch => {
   return {
     getOrders: () => dispatch(fetchAllOrder())
   }

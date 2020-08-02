@@ -23,7 +23,7 @@ const HeaderRightView = function (props) {
   };
 
   return (
-    <View style={{flexDirection: 'row', flexDirection: 'row', justifyContent: 'space-around', width: 120, alignItems: 'center', paddingRight: 10}}>
+    <View style={{flexDirection: 'row', justifyContent: 'space-around', width: 120, alignItems: 'center', paddingRight: 10}}>
       <TouchableOpacity onPress={() => openWhatsApp()}>
         <FontAwesome name="whatsapp" size={30} color="#fff"/>
       </TouchableOpacity>

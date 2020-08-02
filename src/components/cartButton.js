@@ -5,7 +5,7 @@ import Feather from 'react-native-vector-icons/Feather';
 
 function CartButton(props) {
   const { navigate } = props.navigation
-  const { cartItemModel } = props
+  const { cartItemModel, session } = props
   let totalCartItem = 0
   if(cartItemModel && !cartItemModel.isLoading  && cartItemModel.values && Array.isArray(cartItemModel.values)) {
     totalCartItem = cartItemModel.values.length
@@ -18,7 +18,7 @@ function CartButton(props) {
   }, [cartItemModel.isLoading, cartItemModel.values.length])
   
   return (
-    <TouchableOpacity onPress={() => navigate('Cart')}>
+    <TouchableOpacity onPress={() => navigate('Cart')} disabled={!session.isSessionAuthenticated}>
       <Feather name='shopping-cart' size={32} color={'#FFF'} />
       <View style={styles.badge}>
         <Text style={styles.badgeText}>{totalCartItem}</Text>
@@ -27,11 +27,10 @@ function CartButton(props) {
   )
 }
 
-mapStateToProps = state => {
-  return {
-    cartItemModel: state.cartItems
-  }
-}
+const mapStateToProps = state => ({
+  cartItemModel: state.cartItems,
+  session: state.session
+})
 
 export default connect(mapStateToProps)(CartButton);
 

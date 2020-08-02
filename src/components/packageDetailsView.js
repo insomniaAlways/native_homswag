@@ -10,6 +10,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as Sentry from '@sentry/react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
 import ShowAlert from '../controllers/alert';
+import { requestLogin } from "../store/actions/authenticationAction";
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 
@@ -56,11 +57,15 @@ const ItemContainer = ({items, packageService}) => {
 
 const PackageDetails = (props) => {
   const insets = useSafeArea();
-  const { tab: packageService, cartItemModel, addItemToCart, deletePackage, networkAvailability } = props
+  const { tab: packageService, cartItemModel, addItemToCart, deletePackage, networkAvailability, loginRequired, session } = props
   const [ isAdded, setIsAdded ] = useState(false)
 
   const addPackageToCart = () => {
-    addItemToCart(packageService.id, packageService.price, true)
+    if(session.isSessionAuthenticated) {
+      addItemToCart(packageService.id, packageService.price, true)
+    } else {
+      loginRequired()
+    }
   }
 
   useEffect(() => {
@@ -127,12 +132,14 @@ const PackageDetails = (props) => {
 }
 
 const mapStateToProps = state => ({
-  networkAvailability: state.networkAvailability
+  networkAvailability: state.networkAvailability,
+  session: state.session
 })
 
 const mapDispatchToProps = dispatch => ({
   addItemToCart: (package_id, package_price, is_package) => dispatch(createCartItem(package_id, package_price, is_package)),
-  deletePackage: (cart_item_id) => dispatch(deleteItem(cart_item_id))
+  deletePackage: (cart_item_id) => dispatch(deleteItem(cart_item_id)),
+  loginRequired: () => dispatch(requestLogin())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PackageDetails);

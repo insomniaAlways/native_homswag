@@ -17,6 +17,7 @@ function LoginButtons(props) {
     enableResend,
     isButtonLoading,
     setOtp,
+    skip,
     setButtonLoading } = props
   const [ isRegisterButtonEnable, setRegisterEnable ] = useState(false)
   const [ isOtpButtonEnable, setOtpEnable ] = useState(false)
@@ -73,14 +74,22 @@ function LoginButtons(props) {
     )
   } else {
     return (
-      <View style={styles.signInButtonContainer}>        
+      <View style={styles.signInButtonContainer}>     
         { showOtpField ? 
           <TouchableOpacity style={styles.signInButton} onPress={onSubmit} disabled={!isOtpButtonEnable}>
             <Text style={{textAlign: 'center', width: '100%', fontSize: 18}}>Submit</Text>
-          </TouchableOpacity>:
-          <TouchableOpacity style={[styles.signInButton]} onPress={registerPhone} disabled={!isRegisterButtonEnable}>
-            <Text style={{textAlign: 'center', width: '100%', fontSize: 18}}>Continue</Text>
-          </TouchableOpacity>
+          </TouchableOpacity>: (
+            <>
+              <TouchableOpacity style={[styles.signInButton]} onPress={registerPhone} disabled={!isRegisterButtonEnable}>
+                <Text style={{textAlign: 'center', width: '100%', fontSize: 18}}>Continue</Text>
+              </TouchableOpacity>
+              {/* {showSkipButton &&  */}
+                <TouchableOpacity style={[styles.signInButton]} onPress={skip}>
+                  <Text style={{textAlign: 'center', width: '100%', fontSize: 18}}>Skip</Text>
+                </TouchableOpacity>
+              {/* } */}
+            </>
+          )
         }
       </View>
     )

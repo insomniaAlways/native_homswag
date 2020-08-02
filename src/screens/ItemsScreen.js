@@ -86,7 +86,7 @@ function Items(props) {
   );
 }
 
-mapStateToProps = state => {
+const mapStateToProps = state => {
   return {
     items: state.items.values,
     cartItemModel: state.cartItems,
@@ -94,7 +94,7 @@ mapStateToProps = state => {
   }
 }
 
-mapDispatchToProps = dispatch => {
+const mapDispatchToProps = dispatch => {
   return {
     getfetchItemsFor: (category_id) => dispatch(fetchItems(category_id)),
     getAllCategories: () => dispatch(fetchCategories()),

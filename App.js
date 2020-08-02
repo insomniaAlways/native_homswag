@@ -9,6 +9,19 @@ import { onNetworkAvailable, onNetworkUnAvailable } from './src/store/actions/ne
 import * as Sentry from '@sentry/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import ShowAlert from './src/controllers/alert';
+import LoginModal from './src/components/login-modal';
+
+XMLHttpRequest = GLOBAL.originalXMLHttpRequest ?
+    GLOBAL.originalXMLHttpRequest :
+    GLOBAL.XMLHttpRequest;
+
+  // fetch logger
+global._fetch = fetch;
+global.fetch = function (uri, options, ...args) {
+  return global._fetch(uri, options, ...args).then((response) => {
+    return response;
+  });
+};
 
 Sentry.init({ 
   dsn: 'https://16e35b4da8db4096b2298db1fb8049f0@sentry.io/2787983',
@@ -32,6 +45,7 @@ const App = () => {
     <Provider store={store}>
       <SafeAreaProvider>
         <AppNavigator />
+        <LoginModal />
       </SafeAreaProvider>
     </Provider>
   );
