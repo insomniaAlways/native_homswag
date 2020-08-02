@@ -34,7 +34,6 @@ function LoginModal(props) {
 
   const startTimer = () => {
     enableResend(false);
-    console.log("startTimer");
     clearResendTimer(resendTimer);
     resendTimer = setTimeout(() => {
       enableResend(true);
@@ -50,8 +49,7 @@ function LoginModal(props) {
     toggleModal(false);
   };
 
-  const clearResendTimer = (from) => {
-    console.log("clearResendTimer", from);
+  const clearResendTimer = () => {
     clearTimeout(resendTimer);
   };
 

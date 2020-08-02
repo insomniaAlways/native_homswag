@@ -98,8 +98,6 @@ function LoginButtonHelper(props) {
     return () => clearResendTimer();
   }, [phone]);
 
-  console.log("isResendEnable", isResendEnable);
-
   if (isLoading || isProcessing) {
     return (
       <View style={styles.signInButtonContainer}>

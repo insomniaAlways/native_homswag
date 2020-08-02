@@ -1,60 +1,97 @@
-import React, { useEffect, useLayoutEffect } from 'react';
-import { connect } from 'react-redux';
-import { View, Text, SafeAreaView, StyleSheet, StatusBar } from 'react-native';
-import { fetchAllOrder } from '../store/actions/orderActions'
-import OrderList from '../components/orderList';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { statusBarBrandColor } from '../style/customStyles';
-import * as Sentry from '@sentry/react-native';
-import ShowAlert from '../controllers/alert';
+import React, { useEffect, useLayoutEffect } from "react";
+import { connect } from "react-redux";
+import { View, Text, SafeAreaView, StyleSheet, StatusBar } from "react-native";
+import { fetchAllOrder } from "../store/actions/orderActions";
+import OrderList from "../components/orderList";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { statusBarBrandColor } from "../style/customStyles";
+import * as Sentry from "@sentry/react-native";
+import ShowAlert from "../controllers/alert";
 
 function OrderHistoryScreen(props) {
-  const { orderModel, getOrders, navigation, networkAvailability, session } = props;
+  const {
+    orderModel,
+    getOrders,
+    navigation,
+    networkAvailability,
+    session
+  } = props;
 
   useLayoutEffect(() => {
-    if(!networkAvailability.isOffline) {
-      if(session.isSessionAuthenticated) {
-        getOrders()
+    if (session.isSessionAuthenticated) {
+      if (!networkAvailability.isOffline) {
+        if (session.isSessionAuthenticated) {
+          getOrders();
+        }
       }
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-    if(!orderModel.isLoading && orderModel.error) {
-      if(orderModel.error && orderModel.error.message) {
-        ShowAlert('Oops!', orderModel.error.message)
-      } else {
-        ShowAlert("Oops!", orderModel.error)
+    if (session.isSessionAuthenticated) {
+      if (!orderModel.isLoading && orderModel.error) {
+        if (orderModel.error && orderModel.error.message) {
+          ShowAlert("Oops!", orderModel.error.message);
+        } else {
+          ShowAlert("Oops!", orderModel.error);
+        }
+        Sentry.captureException(orderModel.error);
       }
-      Sentry.captureException(orderModel.error)
     }
-  }, [orderModel.error])
+  }, [orderModel.error]);
 
-  if(networkAvailability.isOffline) {
+  if (networkAvailability.isOffline) {
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <MaterialCommunityIcons name="wifi-strength-alert-outline" size={60} color='grey'/>
-        <View style={{paddingTop: 30, alignItems: 'center'}}>
-          <Text style={{fontSize: 22, fontFamily: 'Roboto-Medium'}}>Whoops!</Text>
-          <Text style={{fontFamily: 'Roboto-LightItalic'}}>No Internet connection</Text>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <MaterialCommunityIcons
+          name="wifi-strength-alert-outline"
+          size={60}
+          color="grey"
+        />
+        <View style={{ paddingTop: 30, alignItems: "center" }}>
+          <Text style={{ fontSize: 22, fontFamily: "Roboto-Medium" }}>
+            Whoops!
+          </Text>
+          <Text style={{ fontFamily: "Roboto-LightItalic" }}>
+            No Internet connection
+          </Text>
         </View>
       </View>
-    )
+    );
   } else {
     return (
-      <View style={{flex: 1}}>
-        <SafeAreaView style={{flex: 1}}>
-        <StatusBar barStyle={"light-content"} backgroundColor={statusBarBrandColor}/>
-          <View style={{padding: 10, paddingLeft: 20}}><Text style={{fontSize: 16, fontWeight: 'bold'}}>My Appointments: </Text></View>
-          {orderModel.isLoading ? 
-            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }}>
+          <StatusBar
+            barStyle={"light-content"}
+            backgroundColor={statusBarBrandColor}
+          />
+          <View style={{ padding: 10, paddingLeft: 20 }}>
+            <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+              My Appointments:{" "}
+            </Text>
+          </View>
+          {orderModel.isLoading ? (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+            >
               <Text>Loading..</Text>
-            </View> :
-            <OrderList orders={orderModel.values} navigation={navigation} orderModel={orderModel} getOrders={getOrders}/>
-          }
+            </View>
+          ) : (
+            <OrderList
+              orders={orderModel.values}
+              navigation={navigation}
+              orderModel={orderModel}
+              getOrders={getOrders}
+            />
+          )}
         </SafeAreaView>
       </View>
-    )
+    );
   }
 }
 
@@ -65,18 +102,18 @@ function OrderHistoryScreen(props) {
 //   }
 // })
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     orderModel: state.orders,
     networkAvailability: state.networkAvailability,
     session: state.session
-  }
-}
+  };
+};
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     getOrders: () => dispatch(fetchAllOrder())
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderHistoryScreen);

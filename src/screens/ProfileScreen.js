@@ -14,17 +14,21 @@ import _ from "lodash";
 import ImagePickerView from "../components/ImagePicker";
 import {
   brandLightBackdroundColor,
-  statusBarLightColor
+  statusBarLightColor,
+  brandColor
 } from "../style/customStyles";
 import * as Sentry from "@sentry/react-native";
 import ShowAlert from "../controllers/alert";
+import { requestLogin } from "../store/actions/authenticationAction";
 
 function ProfileScreen(props) {
   const {
     currentUserModel,
     getUser,
     updateUserDetails,
-    networkAvailability
+    networkAvailability,
+    session,
+    requestLoginUser
   } = props;
   const [currentUserObject, updateCurrentUser] = useState({
     ...currentUserModel.values
@@ -63,28 +67,35 @@ function ProfileScreen(props) {
   };
 
   useLayoutEffect(() => {
-    if (!networkAvailability.isOffline) {
-      async function fetchRecords() {
-        await getUser();
+    if (session.isSessionAuthenticated) {
+      if (!networkAvailability.isOffline) {
+        async function fetchRecords() {
+          await getUser();
+        }
+        fetchRecords();
       }
-      fetchRecords();
     }
   }, []);
 
   useEffect(() => {
-    if (!currentUserModel.isLoading && currentUserModel.error) {
-      setLoading(false);
-      if (currentUserModel.error.message) {
-        ShowAlert("Oops!", currentUserModel.error.message);
-        Sentry.captureException(currentUserModel.error);
-      } else {
-        ShowAlert("Oops!", currentUserModel.error);
-        Sentry.captureException(currentUserModel.error);
+    if (session.isSessionAuthenticated) {
+      if (!currentUserModel.isLoading && currentUserModel.error) {
+        setLoading(false);
+        if (currentUserModel.error.message) {
+          ShowAlert("Oops!", currentUserModel.error.message);
+          Sentry.captureException(currentUserModel.error);
+        } else {
+          ShowAlert("Oops!", currentUserModel.error);
+          Sentry.captureException(currentUserModel.error);
+        }
+      } else if (
+        !currentUserModel.isLoading &&
+        _.isNil(currentUserModel.error)
+      ) {
+        setLoading(false);
+        setEdit(false);
+        updateCurrentUser({ ...currentUserModel.values });
       }
-    } else if (!currentUserModel.isLoading && _.isNil(currentUserModel.error)) {
-      setLoading(false);
-      setEdit(false);
-      updateCurrentUser({ ...currentUserModel.values });
     }
   }, [currentUserModel.isLoading, currentUserModel.error]);
 
@@ -131,18 +142,24 @@ function ProfileScreen(props) {
               marginHorizontal: 40
             }}
           >
-            {isEdit ? (
-              <TouchableOpacity
-                onPress={() => cancelEdit()}
-                disabled={isUploading || currentUserModel.isLoading}
-              >
-                <Text>Cancel</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity onPress={() => setEdit(true)}>
-                <Text>Edit</Text>
-              </TouchableOpacity>
-            )}
+            <>
+              {session.isSessionAuthenticated && (
+                <>
+                  {isEdit ? (
+                    <TouchableOpacity
+                      onPress={() => cancelEdit()}
+                      disabled={isUploading || currentUserModel.isLoading}
+                    >
+                      <Text>Cancel</Text>
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity onPress={() => setEdit(true)}>
+                      <Text>Edit</Text>
+                    </TouchableOpacity>
+                  )}
+                </>
+              )}
+            </>
           </View>
           {isEdit ? (
             <View style={styles.detialsContainer}>
@@ -196,97 +213,128 @@ function ProfileScreen(props) {
             </View>
           ) : (
             <View style={styles.detialsContainer}>
-              <View style={styles.item}>
-                <Text style={styles.label}>Name :</Text>
-                {currentUserObject.name ? (
-                  <Text
-                    style={[
-                      styles.placeholderInput,
-                      styles.field,
-                      styles.textFontFamilyMediumItalic
-                    ]}
-                  >
-                    {currentUserObject.name}
-                  </Text>
-                ) : (
-                  <Text
-                    style={[
-                      styles.placeholderInput,
-                      styles.field,
-                      styles.textFontFamilyLightItalic
-                    ]}
-                  >
-                    Not Available
-                  </Text>
-                )}
-              </View>
-              <View style={styles.item}>
-                <Text style={styles.label}>Phone :</Text>
-                <Text
-                  style={[
-                    styles.placeholderInput,
-                    styles.field,
-                    styles.textFontFamilyMediumItalic
-                  ]}
+              {session.isSessionAuthenticated ? (
+                <>
+                  <View style={styles.item}>
+                    <Text style={styles.label}>Name :</Text>
+                    {currentUserObject.name ? (
+                      <Text
+                        style={[
+                          styles.placeholderInput,
+                          styles.field,
+                          styles.textFontFamilyMediumItalic
+                        ]}
+                      >
+                        {currentUserObject.name}
+                      </Text>
+                    ) : (
+                      <Text
+                        style={[
+                          styles.placeholderInput,
+                          styles.field,
+                          styles.textFontFamilyLightItalic
+                        ]}
+                      >
+                        Not Available
+                      </Text>
+                    )}
+                  </View>
+                  <View style={styles.item}>
+                    <Text style={styles.label}>Phone :</Text>
+                    <Text
+                      style={[
+                        styles.placeholderInput,
+                        styles.field,
+                        styles.textFontFamilyMediumItalic
+                      ]}
+                    >
+                      {currentUserObject.phone}
+                    </Text>
+                  </View>
+                  <View style={styles.item}>
+                    <Text style={styles.label}>Alt. Phone :</Text>
+                    {currentUserObject.alt_phone ? (
+                      <Text
+                        style={[
+                          styles.placeholderInput,
+                          styles.field,
+                          styles.textFontFamilyMediumItalic
+                        ]}
+                      >
+                        {currentUserObject.alt_phone}
+                      </Text>
+                    ) : (
+                      <Text
+                        style={[
+                          styles.placeholderInput,
+                          styles.field,
+                          styles.textFontFamilyLightItalic
+                        ]}
+                      >
+                        Not Available
+                      </Text>
+                    )}
+                  </View>
+                  <View style={styles.item}>
+                    <Text style={styles.label}>Email :</Text>
+                    {currentUserObject.email ? (
+                      <Text
+                        style={[
+                          styles.placeholderInput,
+                          styles.field,
+                          styles.textFontFamilyMediumItalic
+                        ]}
+                      >
+                        {currentUserObject.email}
+                      </Text>
+                    ) : (
+                      <Text
+                        style={[
+                          styles.placeholderInput,
+                          styles.field,
+                          styles.textFontFamilyLightItalic
+                        ]}
+                      >
+                        Not Available
+                      </Text>
+                    )}
+                  </View>
+                  <View style={styles.item}>
+                    <Text style={styles.label}>Rewards :</Text>
+                    <Text style={[styles.placeholderInput, styles.field]}>
+                      {currentUserObject.user_meta &&
+                        currentUserObject.user_meta.reward_points}
+                    </Text>
+                  </View>
+                </>
+              ) : (
+                <View
+                  style={{
+                    width: 300,
+                    height: "100%",
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
                 >
-                  {currentUserObject.phone}
-                </Text>
-              </View>
-              <View style={styles.item}>
-                <Text style={styles.label}>Alt. Phone :</Text>
-                {currentUserObject.alt_phone ? (
-                  <Text
-                    style={[
-                      styles.placeholderInput,
-                      styles.field,
-                      styles.textFontFamilyMediumItalic
-                    ]}
-                  >
-                    {currentUserObject.alt_phone}
-                  </Text>
-                ) : (
-                  <Text
-                    style={[
-                      styles.placeholderInput,
-                      styles.field,
-                      styles.textFontFamilyLightItalic
-                    ]}
-                  >
-                    Not Available
-                  </Text>
-                )}
-              </View>
-              <View style={styles.item}>
-                <Text style={styles.label}>Email :</Text>
-                {currentUserObject.email ? (
-                  <Text
-                    style={[
-                      styles.placeholderInput,
-                      styles.field,
-                      styles.textFontFamilyMediumItalic
-                    ]}
-                  >
-                    {currentUserObject.email}
-                  </Text>
-                ) : (
-                  <Text
-                    style={[
-                      styles.placeholderInput,
-                      styles.field,
-                      styles.textFontFamilyLightItalic
-                    ]}
-                  >
-                    Not Available
-                  </Text>
-                )}
-              </View>
-              <View style={styles.item}>
-                <Text style={styles.label}>Rewards :</Text>
-                <Text style={[styles.placeholderInput, styles.field]}>
-                  {currentUserObject.user_meta &&
-                    currentUserObject.user_meta.reward_points}
-                </Text>
-              </View>
+                  <TouchableOpacity onPress={requestLoginUser}>
+                    <View
+                      style={{
+                        width: 120,
+                        backgroundColor: brandColor,
+                        borderRadius: 5,
+                        paddingVertical: 10,
+                        alignItems: "center"
+                      }}
+                    >
+                      <Text
+                        style={{ color: "#fff", fontFamily: "Roboto-Medium" }}
+                      >
+                        Login
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              )}
             </View>
           )}
         </View>
@@ -407,12 +455,14 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   currentUserModel: state.currentUser,
-  networkAvailability: state.networkAvailability
+  networkAvailability: state.networkAvailability,
+  session: state.session
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getUser: () => dispatch(fetchUser()),
-  updateUserDetails: (data) => dispatch(updateUser(data))
+  updateUserDetails: (data) => dispatch(updateUser(data)),
+  requestLoginUser: () => dispatch(requestLogin())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);
