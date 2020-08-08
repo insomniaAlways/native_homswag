@@ -1,24 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image, Dimensions, Text, ActivityIndicator, TouchableOpacity, Keyboard } from 'react-native';
-import { ImageOverlay } from '../../components/imageOverlay';
-import ImageBackground from '../../assets/images/login_background.png'
-import Logo from '../../assets/images/logo_rounded_512*512.png'
-import { connect } from 'react-redux';
-import { register, validatedAuthToken } from '../../store/actions/authenticationAction';
-import { setSessionUnauthenticated, setSessionAuthenticated } from '../../store/actions/sessionActions';
-import { fetchUser } from '../../store/actions/userActions'
-import AsyncStorage from '@react-native-community/async-storage';
-import * as Animatable from 'react-native-animatable';
-import LoginForm from '../../components/helpers/loginForm';
-import LoginButtons from '../../components/helpers/loginButtons';
-import * as Sentry from '@sentry/react-native';
-import { useSafeArea } from 'react-native-safe-area-context';
-import ShowAlert from '../../controllers/alert';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import React, { useState, useEffect } from "react";
+import {
+  StyleSheet,
+  View,
+  Image,
+  Dimensions,
+  Text,
+  ActivityIndicator,
+  TouchableOpacity,
+  Keyboard
+} from "react-native";
+import { ImageOverlay } from "../../components/imageOverlay";
+import ImageBackground from "../../assets/images/login_background.png";
+import Logo from "../../assets/images/logo.png";
+import { connect } from "react-redux";
+import {
+  register,
+  validatedAuthToken
+} from "../../store/actions/authenticationAction";
+import {
+  setSessionUnauthenticated,
+  setSessionAuthenticated
+} from "../../store/actions/sessionActions";
+import { fetchUser } from "../../store/actions/userActions";
+import AsyncStorage from "@react-native-community/async-storage";
+import * as Animatable from "react-native-animatable";
+import LoginForm from "../../components/helpers/loginForm";
+import LoginButtons from "../../components/helpers/loginButtons";
+import * as Sentry from "@sentry/react-native";
+import { useSafeArea } from "react-native-safe-area-context";
+import ShowAlert from "../../controllers/alert";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const LoginScreen = (props) => {
   const insets = useSafeArea();
-  const { navigation,
+  const {
+    navigation,
     registerUser,
     currentUserModel,
     networkAvailability,
@@ -27,193 +43,256 @@ const LoginScreen = (props) => {
     getUser,
     authModel,
     session,
-    validateCurrentToken } = props
-  const [ phone, setPhone ] = useState();
-  const [ otp, setOtp ] = useState();
-  const [ showOtpField, setShowOtpField ] = useState(false);
-  const [ isLoading, setLoading ] = useState(true)
-  const [ isButtonLoading, setButtonLoading ] = useState(false)
-  const [ isResendEnable, enableResend ] = useState(false)
-  const [ isNewUser, setUserIsNew ] = useState(false)
-  const [ showRetry, toggleRetry ] = useState(false)
+    validateCurrentToken
+  } = props;
+  const [phone, setPhone] = useState();
+  const [otp, setOtp] = useState();
+  const [showOtpField, setShowOtpField] = useState(false);
+  const [isLoading, setLoading] = useState(true);
+  const [isButtonLoading, setButtonLoading] = useState(false);
+  const [isResendEnable, enableResend] = useState(false);
+  const [isNewUser, setUserIsNew] = useState(false);
+  const [showRetry, toggleRetry] = useState(false);
+  const [showSkipButton, setShowSkipButton] = useState(false);
+
   let resendTimer;
   //  ------------------ : Methods: ---------------------
 
   //called when first time login and after logout
   const startLoginProcess = async () => {
-    setLoading(false)
-    await unAuthenticate()
-  }
+    setLoading(false);
+    await unAuthenticate();
+  };
 
   //while application load
   const checkAuthentication = async () => {
     try {
-      if(!session.isSessionAuthenticated) {
-        let token = await AsyncStorage.getItem('token')
-        AsyncStorage.setItem('showSaftyModal', 'true')
-        if(token) {
-          setUserIsNew(false)
-          let tokenObject = JSON.parse(token)
-          if(tokenObject && tokenObject.authToken && tokenObject.refreshToken) {
-            if(!networkAvailability.isOffline) {
-              validateCurrentToken(tokenObject.authToken, tokenObject.refreshToken)
+      if (!session.isSessionAuthenticated) {
+        let token = await AsyncStorage.getItem("token");
+        AsyncStorage.setItem("showSaftyModal", "true");
+        if (token) {
+          setUserIsNew(false);
+          let tokenObject = JSON.parse(token);
+          if (
+            tokenObject &&
+            tokenObject.authToken &&
+            tokenObject.refreshToken
+          ) {
+            if (!networkAvailability.isOffline) {
+              validateCurrentToken(
+                tokenObject.authToken,
+                tokenObject.refreshToken
+              );
             } else {
-              toggleRetry(true)
+              toggleRetry(true);
             }
           } else {
-            startLoginProcess()
+            startLoginProcess();
           }
         } else {
-          setUserIsNew(true)
-          startLoginProcess()
+          setUserIsNew(true);
+          // if(Platform.OS == "ios") {
+          setShowSkipButton(true);
+          // }
+          startLoginProcess();
         }
       } else {
-        setButtonLoading(false)
-        setLoading(false)
-        navigation.navigate('App')
+        setButtonLoading(false);
+        setLoading(false);
+        navigation.navigate("App");
       }
     } catch (e) {
-      if(typeof(e) == "string" && e.includes('JSON')) {
-        ShowAlert('Session expired', 'Please Login again')
+      if (typeof e == "string" && e.includes("JSON")) {
+        ShowAlert("Session expired", "Please Login again");
       } else {
-        if(e && e.message) {
-          ShowAlert('Oops!', e.message)
+        if (e && e.message) {
+          ShowAlert("Oops!", e.message);
         } else {
-          ShowAlert('Oops!', e)
+          ShowAlert("Oops!", e);
         }
-        Sentry.captureException(e)
+        Sentry.captureException(e);
       }
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   //should called while session is authenticated and current user data loaded
   const redirectTo = () => {
-    if(currentUserModel.values && currentUserModel.values.name) {
-      navigation.navigate('App')
+    if (currentUserModel.values && currentUserModel.values.name) {
+      navigation.navigate("App");
     } else if (currentUserModel.values && !currentUserModel.values.name) {
-      navigation.navigate('ProfileUpdate')
+      navigation.navigate("ProfileUpdate");
     }
-    setButtonLoading(false)
-    setLoading(false)
-  }
+    setButtonLoading(false);
+    setLoading(false);
+  };
+
+  const skip = async () => {
+    setLoading(true);
+    await AsyncStorage.setItem("isLoginSkip", "true");
+    setLoading(true);
+    navigation.navigate("App");
+  };
 
   const registerPhone = async () => {
-    Keyboard.dismiss()
-    if(networkAvailability.isOffline) {
-      ShowAlert('Oops!', 'Seems like you are not connected to Internet')
+    Keyboard.dismiss();
+    if (networkAvailability.isOffline) {
+      ShowAlert("Oops!", "Seems like you are not connected to Internet");
     } else {
-      if(phone && phone.length == 10) {
-        setButtonLoading(true)
+      if (phone && phone.length == 10) {
+        setButtonLoading(true);
         try {
-          await registerUser(phone)
-          setShowOtpField(true)
-          setButtonLoading(false)
+          await registerUser(phone);
+          setShowOtpField(true);
+          setButtonLoading(false);
           resendTimer = setTimeout(() => {
-            enableResend(true)
-            clearTimeout(resendTimer)
+            enableResend(true);
+            clearTimeout(resendTimer);
           }, 5000);
-        } catch(e) {
-          setButtonLoading(false)
-          if(e && e.message) {
-            ShowAlert('Oops!', e.message)
+        } catch (e) {
+          setButtonLoading(false);
+          if (e && e.message) {
+            ShowAlert("Oops!", e.message);
           } else {
-            ShowAlert('Oops!', e)
+            ShowAlert("Oops!", e);
           }
-          Sentry.captureException(e)
+          Sentry.captureException(e);
         }
       } else {
-        ShowAlert("Invalid data", "Please provide a valid phone number")
+        ShowAlert("Invalid data", "Please provide a valid phone number");
       }
     }
-  }
+  };
 
   //  ------------------- : END: -----------------------
 
   // ------------------- : Hooks : ---------------------
 
   useEffect(() => {
-    checkAuthentication()
-  }, [])
+    checkAuthentication();
+  }, []);
 
   //trigger when otp validation succeed
   useEffect(() => {
-    if(!authModel.isLoading && authModel.userToken && authModel.refreshToken) {
-      authenticate(authModel.userToken, authModel.refreshToken)
-      if(!isNewUser) {
-        navigation.navigate('App')
+    if (!authModel.isLoading && authModel.userToken && authModel.refreshToken) {
+      authenticate(authModel.userToken, authModel.refreshToken);
+      if (!isNewUser) {
+        navigation.navigate("App");
       }
-    } else if(!authModel.isLoading && authModel.error) {
-      setButtonLoading(false)
-      setLoading(false)
-      if(authModel.error && authModel.error.message) {
-        if(authModel.error.message == "invalid resource") {
-          ShowAlert('Session expired', 'Please Login again')
+    } else if (!authModel.isLoading && authModel.error) {
+      setButtonLoading(false);
+      setLoading(false);
+      if (authModel.error && authModel.error.message) {
+        if (authModel.error.message == "invalid resource") {
+          ShowAlert("Session expired", "Please Login again");
         } else {
-          ShowAlert("Oops!", authModel.error.message)
+          ShowAlert("Oops!", authModel.error.message);
         }
-        Sentry.captureException(authModel.error.message)
+        Sentry.captureException(authModel.error.message);
       } else {
-        ShowAlert("Oops!", authModel.error)
-        Sentry.captureException(authModel.error)
+        ShowAlert("Oops!", authModel.error);
+        Sentry.captureException(authModel.error);
       }
     }
-  }, [authModel.isLoading])
+  }, [authModel.isLoading]);
 
   //trigger after session is authenticated
   useEffect(() => {
-    if(session.isSessionAuthenticated) {
-      getUser()
+    if (session.isSessionAuthenticated) {
+      getUser();
     }
-  }, [session.isSessionAuthenticated])
+  }, [session.isSessionAuthenticated]);
 
   //trigger after only session get authenticated
   //Should responsible for redirection
   useEffect(() => {
-    if(session.isSessionAuthenticated && isNewUser) {
-      if(!currentUserModel.isLoading && currentUserModel.values && currentUserModel.values.id) {
-        redirectTo()
-      } else if(!currentUserModel.isLoading && currentUserModel.error) {
-        setButtonLoading(false)
-        if(currentUserModel.error && currentUserModel.error.message) {
-          ShowAlert('Oops!', currentUserModel.error.message)
-          Sentry.captureException(currentUserModel.error.message)
+    if (session.isSessionAuthenticated && isNewUser) {
+      if (
+        !currentUserModel.isLoading &&
+        currentUserModel.values &&
+        currentUserModel.values.id
+      ) {
+        redirectTo();
+      } else if (!currentUserModel.isLoading && currentUserModel.error) {
+        setButtonLoading(false);
+        if (currentUserModel.error && currentUserModel.error.message) {
+          ShowAlert("Oops!", currentUserModel.error.message);
+          Sentry.captureException(currentUserModel.error.message);
         } else {
-          ShowAlert('Oops!', currentUserModel.error)
-          Sentry.captureException(currentUserModel.error)
+          ShowAlert("Oops!", currentUserModel.error);
+          Sentry.captureException(currentUserModel.error);
         }
       }
     }
-  }, [currentUserModel])
+  }, [currentUserModel]);
 
   // -------------------: END : ---------------------
 
   return (
-    <ImageOverlay
-      style={styles.container}
-      source={ImageBackground}>
-      <View style={{flex: 1, paddingTop: insets.top}}>
+    <ImageOverlay style={styles.container} source={ImageBackground}>
+      <View style={{ flex: 1, paddingTop: insets.top }}>
         <View style={styles.headerContainer}>
-          <Image source={Logo} style={{width: 180, height: 180, maxWidth: 180, maxHeight: 180}}/>
+          <Image
+            source={Logo}
+            style={{
+              width: 180,
+              height: 180,
+              maxWidth: 180,
+              maxHeight: 180,
+              borderRadius: 20
+            }}
+          />
         </View>
-        {showRetry ? 
+        {showRetry ? (
           <Animatable.View
             duration={400}
             style={[styles.formContainer]}
             animation={"fadeInUp"}
           >
-            <View style={{height: '60%', justifyContent: 'space-between', marginBottom: 40}}>
-              <View style={{justifyContent: 'center', flexDirection: 'column', alignItems:'center'}}>
-                <MaterialCommunityIcons name="wifi-off" size={50} style={{marginHorizontal: 16, alignItems: 'center', opacity: 0.62, paddingLeft: 3}}/>
-                <Text style={{fontSize: 22}}>No Internet</Text>
+            <View
+              style={{
+                height: "60%",
+                justifyContent: "space-between",
+                marginBottom: 40
+              }}
+            >
+              <View
+                style={{
+                  justifyContent: "center",
+                  flexDirection: "column",
+                  alignItems: "center"
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="wifi-off"
+                  size={50}
+                  style={{
+                    marginHorizontal: 16,
+                    alignItems: "center",
+                    opacity: 0.62,
+                    paddingLeft: 3
+                  }}
+                />
+                <Text style={{ fontSize: 22 }}>No Internet</Text>
               </View>
-              <TouchableOpacity style={[styles.signInButton]} onPress={() => {toggleRetry(false); checkAuthentication();}}>
-                <Text style={{textAlign: 'center', width: '100%', fontSize: 18}}>Retry</Text>
+              <TouchableOpacity
+                style={[styles.signInButton]}
+                onPress={() => {
+                  toggleRetry(false);
+                  checkAuthentication();
+                }}
+              >
+                <Text
+                  style={{ textAlign: "center", width: "100%", fontSize: 18 }}
+                >
+                  Retry
+                </Text>
               </TouchableOpacity>
             </View>
-          </Animatable.View> :
+          </Animatable.View>
+        ) : (
           <React.Fragment>
-            {!isLoading?
+            {!isLoading ? (
               <Animatable.View
                 duration={400}
                 style={styles.formContainer}
@@ -231,12 +310,22 @@ const LoginScreen = (props) => {
                     isResendEnable={isResendEnable}
                     enableResend={enableResend}
                   />
-                  { isLoading ? 
+                  {isLoading ? (
                     <View style={styles.signInButtonContainer}>
-                      <View style={[styles.signInButton, {justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent'}]}>
+                      <View
+                        style={[
+                          styles.signInButton,
+                          {
+                            justifyContent: "center",
+                            alignItems: "center",
+                            backgroundColor: "transparent"
+                          }
+                        ]}
+                      >
                         <ActivityIndicator size="small" color="#0000ff" />
                       </View>
-                    </View> :
+                    </View>
+                  ) : (
                     <LoginButtons
                       phone={phone}
                       otp={otp}
@@ -247,97 +336,111 @@ const LoginScreen = (props) => {
                       setButtonLoading={setButtonLoading}
                       enableResend={enableResend}
                       setOtp={setOtp}
+                      skip={skip}
                       registerPhone={registerPhone}
                       setShowOtpField={setShowOtpField}
                     />
-                  }
+                  )}
                 </View>
-              </Animatable.View> : 
-              <View style={[styles.formContainer, {justifyContent: 'center'}]}>
+              </Animatable.View>
+            ) : (
+              <View
+                style={[styles.formContainer, { justifyContent: "center" }]}
+              >
                 <ActivityIndicator size="large" color="#0000ff" />
-                <Text style={{color: '#000', fontSize: 20, fontWeight: 'bold', marginTop: 10}}>Loading...</Text>
+                <Text
+                  style={{
+                    color: "#000",
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    marginTop: 10
+                  }}
+                >
+                  Loading...
+                </Text>
               </View>
-            }
+            )}
           </React.Fragment>
-        }
+        )}
       </View>
     </ImageOverlay>
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   authModel: state.auth,
   currentUserModel: state.currentUser,
   networkAvailability: state.networkAvailability,
   session: state.session
-})
+});
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   registerUser: (phone) => dispatch(register(phone)),
   getUser: () => dispatch(fetchUser()),
   unAuthenticate: () => dispatch(setSessionUnauthenticated()),
-  authenticate: (token, refreshToken) => dispatch(setSessionAuthenticated(token, refreshToken)),
-  validateCurrentToken: (authToken, refreshToken) => dispatch(validatedAuthToken(authToken, refreshToken))
+  authenticate: (token, refreshToken) =>
+    dispatch(setSessionAuthenticated(token, refreshToken)),
+  validateCurrentToken: (authToken, refreshToken) =>
+    dispatch(validatedAuthToken(authToken, refreshToken))
+});
 
-})
-
-export default connect(mapStateToProps,mapDispatchToProps)(LoginScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent:'flex-end',
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    justifyContent: "flex-end",
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height
   },
   headerContainer: {
-    position: 'absolute',
+    position: "absolute",
     marginTop: 40,
-    height: '100%',
-    width: '100%',
-    justifyContent: 'flex-start',
-    alignItems: 'center'
+    height: "100%",
+    width: "100%",
+    justifyContent: "flex-start",
+    alignItems: "center"
   },
   formContainer: {
     flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    justifyContent: "flex-end",
+    alignItems: "center",
     paddingHorizontal: 16,
-    paddingTop:40
+    paddingTop: 40
   },
   formContent: {
     flex: 1,
-    width: '100%',
+    width: "100%",
     paddingHorizontal: 16,
-    maxHeight: '60%',
-    backgroundColor: 'rgba(0,0,0,0.2)',
+    maxHeight: "60%",
+    backgroundColor: "rgba(0,0,0,0.2)",
     borderTopEndRadius: 40,
-    borderTopStartRadius: 40,
+    borderTopStartRadius: 40
   },
   signInLabel: {
-    marginTop: 16,
+    marginTop: 16
   },
   signInButton: {
     marginHorizontal: 16,
     marginBottom: 10,
     paddingVertical: 10,
     width: 140,
-    backgroundColor: '#eee',
+    backgroundColor: "#eee",
     borderRadius: 10
   },
   signUpButton: {
     marginVertical: 12,
-    marginHorizontal: 16,
+    marginHorizontal: 16
   },
   forgotPasswordContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
+    flexDirection: "row",
+    justifyContent: "flex-end"
   },
   passwordInput: {
-    marginTop: 16,
+    marginTop: 16
   },
   signInButtonContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center"
   }
 });

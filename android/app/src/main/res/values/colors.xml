@@ -2,4 +2,5 @@
 <resources>
     <color name="primary_dark">#8157D2</color>
     <color name="white">#ffffff</color>
+    <color name="imperial_blue">#102337</color>
 </resources>

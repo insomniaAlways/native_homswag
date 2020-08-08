@@ -1,4 +1,6 @@
-import { VALIDATION_INITIATED, VALIDATION_SUCCESS, SIGN_OUT, VALIDATION_FAILED, ON_LOGIN_INITIATED, ON_LOGIN_SUCCESS, ON_LOGIN_FAILED, FETCH_STORED_TOKEN } from '../actionTypes';
+import { VALIDATION_INITIATED, VALIDATION_SUCCESS, SIGN_OUT,
+  VALIDATION_FAILED, ON_LOGIN_INITIATED, ON_LOGIN_SUCCESS,
+  ON_LOGIN_FAILED, FETCH_STORED_TOKEN, ON_REQUEST_LOGIN, ON_REQUEST_LOGIN_CANCEL } from '../actionTypes';
 import { authModel } from '../intialValues';
 
 const authReducers = (state = authModel, action) => {
@@ -48,6 +50,18 @@ const authReducers = (state = authModel, action) => {
         refreshToken: null,
         error: null
       };
+    }
+    case ON_REQUEST_LOGIN: {
+      return {
+        ...state,
+        isLoginRequested: true
+      }
+    }
+    case ON_REQUEST_LOGIN_CANCEL: {
+      return {
+        ...state,
+        isLoginRequested: false
+      }
     }
     case ON_LOGIN_INITIATED: {
       return {

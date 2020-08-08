@@ -96,7 +96,8 @@ export const authModel = {
   isSignOut: false,
   userToken: null,
   refreshToken: null,
-  error: null
+  error: null,
+  isLoginRequested: false,
 }
 
 export const session = {

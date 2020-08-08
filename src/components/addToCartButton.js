@@ -1,17 +1,24 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+import { requestLogin } from '../store/actions/authenticationAction';
 
 function AddToCartButton(props) {
-  const { setAdded, isOffline, isLoading, setLoading } = props
+  const { setAdded, isOffline, isLoading, setLoading, session, requestLogin } = props
   const addItemToCart = () => {
-    setLoading(true)
-    if(props.addToCart) {
-      props.addToCart(props.item)
-    }
-    if(setAdded) {
-      setAdded(true)
+    if(session.isSessionAuthenticated) {
+      setLoading(true)
+      if(props.addToCart) {
+        props.addToCart(props.item)
+      }
+      if(setAdded) {
+        setAdded(true)
+      }
+    } else {
+      requestLogin()
     }
   }
+
   if(isOffline) {
     return (
       <View style={{ width: 70, padding: 5, borderRadius: 5}}>
@@ -35,4 +42,6 @@ function AddToCartButton(props) {
   }
 }
 
-export default AddToCartButton;
+const mapStateToProps = state => ({session: state.session})
+
+export default connect(mapStateToProps, {requestLogin})(AddToCartButton);

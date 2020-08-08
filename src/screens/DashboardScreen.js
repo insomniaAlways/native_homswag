@@ -28,18 +28,21 @@ function Dashboard(props) {
   const [ storeUrl, setStoreUrl ] = useState('');
   const [ showModal, toggleModal ] = useState(false)
   const [ showSaftyModal, toggleSaftyModal ] = useState(false)
+  const { session } = props
 
   const onRefresh = useCallback(() => {
     if(!props.networkAvailability.isOffline) {
       setRefreshing(true);
       async function fetchData() {
         try {
-          await props.getCart()
           await props.getAllCategories()
-          await props.getUser()
-          await props.getAllItems()
           await props.getPackages()
-          await props.getAllCartItems()
+          await props.getAllItems()
+          if(session && session.isSessionAuthenticated) {
+            await props.getUser()
+            await props.getCart()
+            await props.getAllCartItems()
+          }
           setRefreshing(false)
         } catch (e) {
           if(e.message) {
@@ -55,7 +58,7 @@ function Dashboard(props) {
     } else {
       setRefreshing(false)
     }
-  }, [refreshing]);
+  }, [refreshing, session.isSessionAuthenticated]);
 
   useEffect(() => {
     getLatestAppUpdate()
@@ -68,9 +71,11 @@ function Dashboard(props) {
           props.getAllCategories()
           props.getPackages()
           props.getAllItems()
-          await props.getUser()
-          await props.getCart()
-          await props.getAllCartItems()
+          if(session && session.isSessionAuthenticated) {
+            await props.getUser()
+            await props.getCart()
+            await props.getAllCartItems()
+          }
         } catch (e) {
           if(e.message) {
             ShowAlert('Oops!', e.message)
@@ -82,7 +87,7 @@ function Dashboard(props) {
       }
       fetchData()
     }
-  }, [props.navigation.isFocused])
+  }, [props.navigation.isFocused, session.isSessionAuthenticated])
 
   const getLatestAppUpdate = async () => {
     try {
@@ -234,16 +239,17 @@ function Dashboard(props) {
   );
 }
 
-mapStateToProps = state => {
+const mapStateToProps = state => {
   return {
     categories: state.categories,
     packages: state.packages,
     cart: state.cart,
+    session: state.session,
     networkAvailability: state.networkAvailability
   }
 }
 
-mapDispatchToProps = dispatch => {
+const mapDispatchToProps = dispatch => {
   return {
     getAllCategories: () => dispatch(fetchCategories()),
     getUser: () => dispatch(fetchUser()),

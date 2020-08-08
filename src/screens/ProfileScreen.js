@@ -1,233 +1,405 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, StatusBar } from 'react-native';
-import PlaceHolderTextInput from '../components/placeHolderTextInput';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { connect } from 'react-redux';
-import { fetchUser, updateUser } from '../store/actions/userActions';
-import _ from 'lodash';
-import ImagePickerView from '../components/ImagePicker';
-import { brandLightBackdroundColor, statusBarLightColor } from '../style/customStyles';
-import * as Sentry from '@sentry/react-native';
-import ShowAlert from '../controllers/alert';
+import React, { useEffect, useState, useLayoutEffect } from "react";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  StatusBar
+} from "react-native";
+import PlaceHolderTextInput from "../components/placeHolderTextInput";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { connect } from "react-redux";
+import { fetchUser, updateUser } from "../store/actions/userActions";
+import _ from "lodash";
+import ImagePickerView from "../components/ImagePicker";
+import {
+  brandLightBackdroundColor,
+  statusBarLightColor,
+  brandColor
+} from "../style/customStyles";
+import * as Sentry from "@sentry/react-native";
+import ShowAlert from "../controllers/alert";
+import { requestLogin } from "../store/actions/authenticationAction";
 
 function ProfileScreen(props) {
-  const { currentUserModel, getUser, updateUserDetails, networkAvailability } = props
-  const [ currentUserObject, updateCurrentUser ] = useState({...currentUserModel.values})
-  const [ isEdit, setEdit ] = useState(false)
-  const [ isLoading, setLoading ] = useState(false)
-  const [ isUploading, setUploding ] = useState(false)
+  const {
+    currentUserModel,
+    getUser,
+    updateUserDetails,
+    networkAvailability,
+    session,
+    requestLoginUser
+  } = props;
+  const [currentUserObject, updateCurrentUser] = useState({
+    ...currentUserModel.values
+  });
+  const [isEdit, setEdit] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [isUploading, setUploding] = useState(false);
 
   const updateProfile = () => {
-    if(currentUserObject.name && typeof(currentUserObject.name) == "string" && currentUserObject.name.trim() && currentUserObject.name.trim().length > 0) {
-      setLoading(true)
-      updateUserDetails(_.omitBy({
-        name: currentUserObject.name,
-        alt_phone: currentUserObject.alt_phone,
-        image_source: currentUserObject.image_source,
-        email: currentUserObject.email
-      }, _.isNil))
+    if (
+      currentUserObject.name &&
+      typeof currentUserObject.name == "string" &&
+      currentUserObject.name.trim() &&
+      currentUserObject.name.trim().length > 0
+    ) {
+      setLoading(true);
+      updateUserDetails(
+        _.omitBy(
+          {
+            name: currentUserObject.name,
+            alt_phone: currentUserObject.alt_phone,
+            image_source: currentUserObject.image_source,
+            email: currentUserObject.email
+          },
+          _.isNil
+        )
+      );
     } else {
-      ShowAlert('Oops!', "Please enter your name. Thank You!")
+      ShowAlert("Oops!", "Please enter your name. Thank You!");
     }
-  }
+  };
 
   const imageUploaded = (uri) => {
-    updateCurrentUser({...currentUserObject, image_source: uri})
-    setUploding(false)
-  }
+    updateCurrentUser({ ...currentUserObject, image_source: uri });
+    setUploding(false);
+  };
 
   useLayoutEffect(() => {
-    if(!networkAvailability.isOffline) {
-      async function fetchRecords() {
-        await getUser()
+    if (session.isSessionAuthenticated) {
+      if (!networkAvailability.isOffline) {
+        async function fetchRecords() {
+          await getUser();
+        }
+        fetchRecords();
       }
-      fetchRecords()
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-    if(!currentUserModel.isLoading && currentUserModel.error) {
-      setLoading(false)
-      if(currentUserModel.error.message) {
-        ShowAlert('Oops!', currentUserModel.error.message)
-        Sentry.captureException(currentUserModel.error)
-      } else {
-        ShowAlert('Oops!', currentUserModel.error)
-        Sentry.captureException(currentUserModel.error)
+    if (session.isSessionAuthenticated) {
+      if (!currentUserModel.isLoading && currentUserModel.error) {
+        setLoading(false);
+        if (currentUserModel.error.message) {
+          ShowAlert("Oops!", currentUserModel.error.message);
+          Sentry.captureException(currentUserModel.error);
+        } else {
+          ShowAlert("Oops!", currentUserModel.error);
+          Sentry.captureException(currentUserModel.error);
+        }
+      } else if (
+        !currentUserModel.isLoading &&
+        _.isNil(currentUserModel.error)
+      ) {
+        setLoading(false);
+        setEdit(false);
+        updateCurrentUser({ ...currentUserModel.values });
       }
-    } else if(!currentUserModel.isLoading && _.isNil(currentUserModel.error)){
-      setLoading(false)
-      setEdit(false)
-      updateCurrentUser({...currentUserModel.values})
     }
-  }, [currentUserModel.isLoading, currentUserModel.error])
+  }, [currentUserModel.isLoading, currentUserModel.error]);
 
   const cancelEdit = () => {
-    updateCurrentUser({...currentUserModel.values})
-    setEdit(false)
-    setLoading(false)
-  }
+    updateCurrentUser({ ...currentUserModel.values });
+    setEdit(false);
+    setLoading(false);
+  };
 
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#F7F9FC"}}>
-      <StatusBar backgroundColor={statusBarLightColor} barStyle={"dark-content"} />
-        <View style={{flex: 14, justifyContent: 'center', alignItems: 'center'}}>
-          <View style={styles.container}>
-            <View style={styles.profilePicContainer}>
-              <ImagePickerView
-                styles={styles}
-                image={currentUserObject.image_source}
-                setImage={imageUploaded}
-                user_id={currentUserModel.values.id}
-                isEdit={isEdit}
-                isOffline={networkAvailability.isOffline}
-                isUploading={isUploading}
-                setUploding={setUploding}
-                />
-            </View>
-            <View style={{justifyContent: 'flex-end', alignItems: 'flex-end', width: 'auto', marginHorizontal: 40}}>
-              {isEdit ? 
-                <TouchableOpacity onPress={() => cancelEdit()} disabled={isUploading || currentUserModel.isLoading}>
-                  <Text>Cancel</Text>
-                </TouchableOpacity>:
-                <TouchableOpacity onPress={() => setEdit(true)}>
-                  <Text>Edit</Text>
-                </TouchableOpacity>
-              }
-            </View>
-            {isEdit ? 
-              <View style={styles.detialsContainer}>
-                <View style={styles.item}>
-                  <Text style={styles.label}>Name :</Text>
-                  <PlaceHolderTextInput
-                    placeholder="Name"
-                    containerStyle={styles.placeholderInput}
-                    styles={styles.field}
-                    value={currentUserObject.name}
-                    setValue={updateCurrentUser}
-                    previousState={currentUserObject}
-                    itemKey="name"
-                    editable={!isLoading}/>
-                </View>
-                <View style={styles.item}>
-                  <Text style={styles.label}>Phone :</Text>
-                  <Text style={[styles.placeholderInput, styles.field]}>{currentUserObject.phone}</Text>
-                </View>
-                <View style={styles.item}>
-                  <Text style={styles.label}>Alt. Phone :</Text>
-                  <PlaceHolderTextInput
-                    placeholder="Alternate Phone"
-                    containerStyle={styles.placeholderInput}
-                    styles={styles.field}
-                    value={currentUserObject.alt_phone}
-                    setValue={updateCurrentUser}
-                    keyboardType={'number-pad'}
-                    maxLength={10}
-                    previousState={currentUserObject}
-                    itemKey="alt_phone"
-                    editable={!isLoading}/>
-                </View>
-                <View style={styles.item}>
-                  <Text style={styles.label}>Email :</Text>
-                  <PlaceHolderTextInput
-                    placeholder="Email"
-                    containerStyle={styles.placeholderInput}
-                    styles={styles.field}
-                    value={currentUserObject.email}
-                    setValue={updateCurrentUser}
-                    previousState={currentUserObject}
-                    itemKey="email"
-                    editable={!isLoading}/>
-                </View>
-              </View> :
-              <View style={styles.detialsContainer}>
-                <View style={styles.item}>
-                  <Text style={styles.label}>Name :</Text>
-                  {currentUserObject.name ? 
-                    <Text style={[styles.placeholderInput, styles.field, styles.textFontFamilyMediumItalic]}>{currentUserObject.name}</Text>:
-                    <Text style={[styles.placeholderInput, styles.field, styles.textFontFamilyLightItalic]}>Not Available</Text>
-                  }
-                </View>
-                <View style={styles.item}>
-                  <Text style={styles.label}>Phone :</Text>
-                  <Text style={[styles.placeholderInput, styles.field, styles.textFontFamilyMediumItalic]}>{currentUserObject.phone}</Text>
-                </View>
-                <View style={styles.item}>
-                  <Text style={styles.label}>Alt. Phone :</Text>
-                  {currentUserObject.alt_phone ? 
-                    <Text style={[styles.placeholderInput, styles.field, styles.textFontFamilyMediumItalic]}>{currentUserObject.alt_phone}</Text> :
-                    <Text style={[styles.placeholderInput, styles.field, styles.textFontFamilyLightItalic]}>Not Available</Text>
-                  }
-                </View>
-                <View style={styles.item}>
-                  <Text style={styles.label}>Email :</Text>
-                  {currentUserObject.email ? 
-                    <Text style={[styles.placeholderInput, styles.field, styles.textFontFamilyMediumItalic]}>{currentUserObject.email}</Text> :
-                    <Text style={[styles.placeholderInput, styles.field, styles.textFontFamilyLightItalic]}>Not Available</Text>
-                  }
-                </View>
-                <View style={styles.item}>
-                  <Text style={styles.label}>Rewards :</Text>
-                  <Text style={[styles.placeholderInput, styles.field]}>{currentUserObject.user_meta && currentUserObject.user_meta.reward_points}</Text>
-                </View>
-              </View>
-            }
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#F7F9FC"
+      }}
+    >
+      <StatusBar
+        backgroundColor={statusBarLightColor}
+        barStyle={"dark-content"}
+      />
+      <View
+        style={{ flex: 14, justifyContent: "center", alignItems: "center" }}
+      >
+        <View style={styles.container}>
+          <View style={styles.profilePicContainer}>
+            <ImagePickerView
+              styles={styles}
+              image={currentUserObject.image_source}
+              setImage={imageUploaded}
+              user_id={currentUserModel.values.id}
+              isEdit={isEdit}
+              isOffline={networkAvailability.isOffline}
+              isUploading={isUploading}
+              setUploding={setUploding}
+            />
           </View>
-        </View>
-        <View style={styles.backButtonContainer}>
-          {isLoading ? 
-            <View>
-                <View style={styles.backButton}>
-                  <Text style={{color: "#fff"}}>Saving..</Text>
-                </View>
-              </View> :
-            <View>
-              {isEdit ? 
-                <View>
-                  {networkAvailability.isOffline || isUploading ? 
-                    <TouchableOpacity disabled={true}>
-                      <View style={[styles.backButton, {backgroundColor: brandLightBackdroundColor}]}>
-                        <Text style={{color: "#fff"}}>Save</Text>
-                      </View>
-                    </TouchableOpacity> :
-                    <TouchableOpacity onPress={updateProfile}>
-                      <View style={styles.backButton}>
-                        <Text style={{color: "#fff"}}>Save</Text>
-                      </View>
-                    </TouchableOpacity> 
-                  }
-                </View> :
-                <TouchableOpacity onPress={() => props.navigation.toggleDrawer()}>
-                  <View style={styles.backButton}>
-                    <FontAwesome name="angle-right" size={20} color="white" />
-                  </View>
-                </TouchableOpacity>
-              }
+          <View
+            style={{
+              justifyContent: "flex-end",
+              alignItems: "flex-end",
+              width: "auto",
+              marginHorizontal: 40
+            }}
+          >
+            <>
+              {session.isSessionAuthenticated && (
+                <>
+                  {isEdit ? (
+                    <TouchableOpacity
+                      onPress={() => cancelEdit()}
+                      disabled={isUploading || currentUserModel.isLoading}
+                    >
+                      <Text>Cancel</Text>
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity onPress={() => setEdit(true)}>
+                      <Text>Edit</Text>
+                    </TouchableOpacity>
+                  )}
+                </>
+              )}
+            </>
+          </View>
+          {isEdit ? (
+            <View style={styles.detialsContainer}>
+              <View style={styles.item}>
+                <Text style={styles.label}>Name :</Text>
+                <PlaceHolderTextInput
+                  placeholder="Name"
+                  containerStyle={styles.placeholderInput}
+                  styles={styles.field}
+                  value={currentUserObject.name}
+                  setValue={updateCurrentUser}
+                  previousState={currentUserObject}
+                  itemKey="name"
+                  editable={!isLoading}
+                />
+              </View>
+              <View style={styles.item}>
+                <Text style={styles.label}>Phone :</Text>
+                <Text style={[styles.placeholderInput, styles.field]}>
+                  {currentUserObject.phone}
+                </Text>
+              </View>
+              <View style={styles.item}>
+                <Text style={styles.label}>Alt. Phone :</Text>
+                <PlaceHolderTextInput
+                  placeholder="Alternate Phone"
+                  containerStyle={styles.placeholderInput}
+                  styles={styles.field}
+                  value={currentUserObject.alt_phone}
+                  setValue={updateCurrentUser}
+                  keyboardType={"number-pad"}
+                  maxLength={10}
+                  previousState={currentUserObject}
+                  itemKey="alt_phone"
+                  editable={!isLoading}
+                />
+              </View>
+              <View style={styles.item}>
+                <Text style={styles.label}>Email :</Text>
+                <PlaceHolderTextInput
+                  placeholder="Email"
+                  containerStyle={styles.placeholderInput}
+                  styles={styles.field}
+                  value={currentUserObject.email}
+                  setValue={updateCurrentUser}
+                  previousState={currentUserObject}
+                  itemKey="email"
+                  editable={!isLoading}
+                />
+              </View>
             </View>
-          }
+          ) : (
+            <View style={styles.detialsContainer}>
+              {session.isSessionAuthenticated ? (
+                <>
+                  <View style={styles.item}>
+                    <Text style={styles.label}>Name :</Text>
+                    {currentUserObject.name ? (
+                      <Text
+                        style={[
+                          styles.placeholderInput,
+                          styles.field,
+                          styles.textFontFamilyMediumItalic
+                        ]}
+                      >
+                        {currentUserObject.name}
+                      </Text>
+                    ) : (
+                      <Text
+                        style={[
+                          styles.placeholderInput,
+                          styles.field,
+                          styles.textFontFamilyLightItalic
+                        ]}
+                      >
+                        Not Available
+                      </Text>
+                    )}
+                  </View>
+                  <View style={styles.item}>
+                    <Text style={styles.label}>Phone :</Text>
+                    <Text
+                      style={[
+                        styles.placeholderInput,
+                        styles.field,
+                        styles.textFontFamilyMediumItalic
+                      ]}
+                    >
+                      {currentUserObject.phone}
+                    </Text>
+                  </View>
+                  <View style={styles.item}>
+                    <Text style={styles.label}>Alt. Phone :</Text>
+                    {currentUserObject.alt_phone ? (
+                      <Text
+                        style={[
+                          styles.placeholderInput,
+                          styles.field,
+                          styles.textFontFamilyMediumItalic
+                        ]}
+                      >
+                        {currentUserObject.alt_phone}
+                      </Text>
+                    ) : (
+                      <Text
+                        style={[
+                          styles.placeholderInput,
+                          styles.field,
+                          styles.textFontFamilyLightItalic
+                        ]}
+                      >
+                        Not Available
+                      </Text>
+                    )}
+                  </View>
+                  <View style={styles.item}>
+                    <Text style={styles.label}>Email :</Text>
+                    {currentUserObject.email ? (
+                      <Text
+                        style={[
+                          styles.placeholderInput,
+                          styles.field,
+                          styles.textFontFamilyMediumItalic
+                        ]}
+                      >
+                        {currentUserObject.email}
+                      </Text>
+                    ) : (
+                      <Text
+                        style={[
+                          styles.placeholderInput,
+                          styles.field,
+                          styles.textFontFamilyLightItalic
+                        ]}
+                      >
+                        Not Available
+                      </Text>
+                    )}
+                  </View>
+                  <View style={styles.item}>
+                    <Text style={styles.label}>Rewards :</Text>
+                    <Text style={[styles.placeholderInput, styles.field]}>
+                      {currentUserObject.user_meta &&
+                        currentUserObject.user_meta.reward_points}
+                    </Text>
+                  </View>
+                </>
+              ) : (
+                <View
+                  style={{
+                    width: 300,
+                    height: "100%",
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
+                >
+                  <TouchableOpacity onPress={requestLoginUser}>
+                    <View
+                      style={{
+                        width: 120,
+                        backgroundColor: brandColor,
+                        borderRadius: 5,
+                        paddingVertical: 10,
+                        alignItems: "center"
+                      }}
+                    >
+                      <Text
+                        style={{ color: "#fff", fontFamily: "Roboto-Medium" }}
+                      >
+                        Login
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
+          )}
         </View>
+      </View>
+      <View style={styles.backButtonContainer}>
+        {isLoading ? (
+          <View>
+            <View style={styles.backButton}>
+              <Text style={{ color: "#fff" }}>Saving..</Text>
+            </View>
+          </View>
+        ) : (
+          <View>
+            {isEdit ? (
+              <View>
+                {networkAvailability.isOffline || isUploading ? (
+                  <TouchableOpacity disabled={true}>
+                    <View
+                      style={[
+                        styles.backButton,
+                        { backgroundColor: brandLightBackdroundColor }
+                      ]}
+                    >
+                      <Text style={{ color: "#fff" }}>Save</Text>
+                    </View>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity onPress={updateProfile}>
+                    <View style={styles.backButton}>
+                      <Text style={{ color: "#fff" }}>Save</Text>
+                    </View>
+                  </TouchableOpacity>
+                )}
+              </View>
+            ) : (
+              <TouchableOpacity onPress={() => props.navigation.toggleDrawer()}>
+                <View style={styles.backButton}>
+                  <FontAwesome name="angle-right" size={20} color="white" />
+                </View>
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
+      </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
+    justifyContent: "center",
     marginHorizontal: 20,
     borderRadius: 20,
     paddingBottom: 30,
     shadowColor: "#000",
-    backgroundColor: '#FFFFFF',
-    shadowOffset: { width: 0, height: 2, },
+    backgroundColor: "#FFFFFF",
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
-    borderRadius: 20
+    elevation: 5
   },
   profilePicContainer: {
     height: 180,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center"
   },
   profilePic: {
     height: 140,
@@ -237,23 +409,23 @@ const styles = StyleSheet.create({
   detialsContainer: {
     height: 250,
     paddingHorizontal: 10,
-    alignItems: 'center',
+    alignItems: "center"
   },
   item: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center'
+    flexDirection: "row",
+    alignItems: "center"
   },
   placeholderInput: {
-    width: '64%',
+    width: "64%"
   },
 
   textFontFamilyMediumItalic: {
-    fontFamily: 'Roboto-MediumItalic'
+    fontFamily: "Roboto-MediumItalic"
   },
 
   textFontFamilyLightItalic: {
-    fontFamily: 'Roboto-LightItalic',
+    fontFamily: "Roboto-LightItalic",
     fontSize: 13
   },
 
@@ -268,28 +440,29 @@ const styles = StyleSheet.create({
     paddingTop: 7,
     paddingBottom: 7,
     width: 150,
-    alignItems: 'center',
+    alignItems: "center",
     borderRadius: 50,
-    backgroundColor: '#6495ed'
+    backgroundColor: "#6495ed"
   },
 
   label: {
-    width: '26%',
-    textAlign: 'left',
-    justifyContent: 'center',
-    fontFamily: 'Roboto-Regular'
+    width: "26%",
+    textAlign: "left",
+    justifyContent: "center",
+    fontFamily: "Roboto-Regular"
   }
+});
 
-})
-
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   currentUserModel: state.currentUser,
-  networkAvailability: state.networkAvailability
-})
+  networkAvailability: state.networkAvailability,
+  session: state.session
+});
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   getUser: () => dispatch(fetchUser()),
   updateUserDetails: (data) => dispatch(updateUser(data)),
-})
+  requestLoginUser: () => dispatch(requestLogin())
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);

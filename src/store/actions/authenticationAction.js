@@ -4,7 +4,9 @@ import { VALIDATION_INITIATED,
   VALIDATION_FAILED,
   ON_LOGIN_INITIATED,
   ON_LOGIN_SUCCESS,
-  ON_LOGIN_FAILED } from '../actionTypes';
+  ON_LOGIN_FAILED,
+  ON_REQUEST_LOGIN,
+  ON_REQUEST_LOGIN_CANCEL } from '../actionTypes';
 import { createRecord, initializeAxiosHeader } from '../asyncActions/index';
 
 export const register = (phone) => {
@@ -19,6 +21,17 @@ export const register = (phone) => {
         return dispatch(onLoginFailed(e))
       }
     })
+  }
+}
+
+export const requestLogin = () => {
+  return {
+    type: ON_REQUEST_LOGIN
+  }
+}
+export const requestLoginCancel = () => {
+  return {
+    type: ON_REQUEST_LOGIN_CANCEL
   }
 }
 
